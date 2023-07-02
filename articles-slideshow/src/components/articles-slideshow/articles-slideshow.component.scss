@@ -1,0 +1,221 @@
+@import 'mixins.scss';
+
+:host {
+
+    .articles-slideshow {
+        width: 100%;
+
+        &_item {
+            overflow: hidden;
+
+            &_title,
+            &_description {
+                white-space: normal;
+            }
+        }
+
+        &.sm {
+            .articles-slideshow_item {
+
+                &_title,
+                &_description p {
+
+                    @include small {
+                        font-size: 0.7rem;
+                    }
+
+                    @include medium {
+                        font-size: 0.8rem;
+                    }
+
+                    @include large {
+                        font-size: 0.8rem;
+                    }
+                }
+
+                @include small {
+                    width: 20rem;
+                }
+
+                @include medium {
+                    width: 25rem;
+                }
+
+                @include large {
+                    width: 25rem;
+                }
+            }
+        }
+
+        &.md {
+            .articles-slideshow_item {
+
+                &_title,
+                &_description p {
+
+                    @include small {
+                        font-size: 0.7rem;
+                    }
+
+                    @include medium {
+                        font-size: 1rem;
+                    }
+
+                    @include large {
+                        font-size: 1rem;
+                    }
+                }
+
+                @include small {
+                    width: 20rem;
+                }
+
+                @include medium {
+                    width: 45rem;
+                }
+
+                @include large {
+                    width: 45rem;
+                }
+            }
+        }
+
+        &.lg {
+            .articles-slideshow_item {
+
+                &_title,
+                &_description p {
+
+                    @include small {
+                        font-size: 0.7rem;
+                    }
+
+                    @include medium {
+                        font-size: 1.4rem;
+                    }
+
+                    @include large {
+                        font-size: 1.4rem;
+                    }
+                }
+
+                @include small {
+                    width: 20rem;
+                }
+
+                @include medium {
+                    width: 70rem;
+                }
+
+                @include large {
+                    width: 70rem;
+                }
+            }
+        }
+
+        &.not-row-layout {
+            .articles-slideshow_item_title {
+                margin-top: 0.5rem;
+            }
+
+            &.sm {
+                .articles-slideshow_item {
+
+                    &_title,
+                    &_description p {
+
+                        @include small {
+                            font-size: 0.9rem;
+                        }
+
+                        @include medium {
+                            font-size: 1rem;
+                        }
+
+                        @include large {
+                            font-size: 1rem;
+                        }
+                    }
+
+                    @include small {
+                        width: 10rem;
+                    }
+
+                    @include medium {
+                        width: 15rem;
+                    }
+
+                    @include large {
+                        width: 15rem;
+                    }
+                }
+            }
+
+            &.md {
+                .articles-slideshow_item {
+
+                    &_title,
+                    &_description p {
+
+                        @include small {
+                            font-size: 1rem;
+                        }
+
+                        @include medium {
+                            font-size: 1.2rem;
+                        }
+
+                        @include large {
+                            font-size: 1.2rem;
+                        }
+                    }
+
+                    @include small {
+                        width: 15rem;
+                    }
+
+                    @include medium {
+                        width: 20rem;
+                    }
+
+                    @include large {
+                        width: 20rem;
+                    }
+                }
+            }
+
+            &.lg {
+                .articles-slideshow_item {
+
+                    &_title,
+                    &_description p {
+
+                        @include small {
+                            font-size: 0.7rem;
+                        }
+
+                        @include medium {
+                            font-size: 1.6rem;
+                        }
+
+                        @include large {
+                            font-size: 1.6rem;
+                        }
+                    }
+
+                    @include small {
+                        width: 15rem;
+                    }
+
+                    @include medium {
+                        width: 35rem;
+                    }
+
+                    @include large {
+                        width: 35rem;
+                    }
+                }
+            }
+        }
+    }
+}

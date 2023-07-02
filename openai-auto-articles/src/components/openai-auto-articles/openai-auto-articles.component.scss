@@ -1,0 +1,17 @@
+:host {
+    .queue {
+        display: table;
+
+        &_prompt {
+            width: auto;
+        }
+
+        &_status {
+            width: 9rem;
+        }
+
+        &_time-taken {
+            width: 4rem;
+        }
+    }
+}

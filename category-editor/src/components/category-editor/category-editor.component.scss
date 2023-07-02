@@ -1,0 +1,19 @@
+:host {
+    overflow: hidden;
+
+    .moreinfo-card {
+        background-color: var(--anu-primary-deep-light);
+    }
+
+    .tab-body {
+
+        .tab-item-body {
+            display: none;
+            flex-direction: column;
+
+            &.active {
+                display: flex;
+            }
+        }
+    }
+}

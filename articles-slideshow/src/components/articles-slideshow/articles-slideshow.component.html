@@ -1,0 +1,16 @@
+<anu-slideshow class="articles-slideshow" [ngClass]="[size, !isRowlayout ? 'not-row-layout': '']">
+    <anu-card *ngFor="let art of articles" [imageCssClasses]="cardImageClasses" [contentCssClasses]="cardContentClasses"
+        [isRowLayout]="isRowlayout" class="articles-slideshow_item border border-round spacing-around-horizontal-half">
+        <anu-card-image *ngIf="art?.image?.src">
+            <a [routerLink]="[art?.categories && art.categories[0] || '', art?.id]" class="shadow"><img
+                    [src]="art?.image?.src" [alt]="art?.image?.alt" /></a>
+        </anu-card-image>
+        <anu-card-title class="articles-slideshow_item_title spacing-horizontal-half">
+            <a
+                [routerLink]="[art?.categories && art.categories[0] || '', art?.id]"><strong>{{art?.metaInfo?.title}}</strong></a>
+        </anu-card-title>
+        <anu-card-body *ngIf="showDescription" class="articles-slideshow_item_description spacing-horizontal-half">
+            <p [innerHtml]="trimDescription(art?.metaInfo?.description)"></p>
+        </anu-card-body>
+    </anu-card>
+</anu-slideshow>

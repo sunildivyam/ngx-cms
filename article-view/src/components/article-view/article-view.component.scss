@@ -1,0 +1,43 @@
+@import 'mixins.scss';
+
+@mixin article-view-gradient {
+    background: var(--anu-primary-lightest);
+    background: -moz-linear-gradient(0deg, var(--anu-primary-lightest) 0%, var(--anu-primary-lightest) 51%, var(--anu-primary-lighter) 100%);
+    background: -webkit-linear-gradient(0deg, var(--anu-primary-lightest) 0%, var(--anu-primary-lightest) 51%, var(--anu-primary-lighter) 100%);
+    background: linear-gradient(0deg, var(--anu-primary-lightest) 0%, var(--anu-primary-lightest) 51%, var(--anu-primary-lighter) 100%);
+}
+
+:host {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+
+    .article-view {
+        &-image-container {
+            max-height: 6rem;
+            overflow-y: hidden;
+
+            @include small {
+                max-height: 10rem;
+            }
+
+            @include medium {
+                max-height: 14rem;
+            }
+
+            @include large {
+                max-height: 18rem;
+            }
+        }
+
+        &-heading {
+            width: 100%;
+            @include article-view-gradient;
+        }
+
+        &-image {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
