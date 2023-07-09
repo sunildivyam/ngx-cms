@@ -99,6 +99,8 @@ export const appConfig: AppConfig = {
   privacyPolicyUrl: '/terms-and-conditions-lbxuxsj774zpe3xh/terms-and-conditions-lbxv0dakpn1x6px',
   contactUsUrl: '/contact-us/contact-us-for-sales-enquiry-technology-consulting-business-consulting-research-consulting-or-a-general-enquiry',
   aboutUsUrl: '/about-us/about-annu-advent',
+  apiBaseUrl: '',
+  imagesSourceUrl: '',
   metaInfo: {
     "title": "Annu Business",
     "description": "Annu Business is a dynamic and innovative team of digital content creators who are passionate about crafting captivating and immersive experiences for audiences across various digital platforms. With our diverse skill set and expertise, we specialize in producing high-quality and engaging content that leaves a lasting impact. At Annu Business we are driven by our commitment to excellence, innovation, and audience satisfaction. We embrace the ever-evolving digital landscape, constantly pushing boundaries, and exploring new avenues to deliver content that resonates with our viewers, readers, and listeners. Join us on this exciting journey as we continue to shape the digital content landscape with our creativity, expertise, and unwavering dedication.",
@@ -137,7 +139,7 @@ export const appConfig: AppConfig = {
       title: 'Sample Category 4',
       href: ['./sample-category-4'],
     }
-  ]
+  ],
 };
 
 export const OpenaiAutoArticlesComponent: any = {

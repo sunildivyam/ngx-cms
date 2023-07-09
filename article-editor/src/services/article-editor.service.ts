@@ -8,7 +8,7 @@ import {
 } from '@annuadvent/ngx-cms/content-editor';
 import { MetaInfo } from '@annuadvent/ngx-common-ui/meta';
 import { META_ALLOWED_VALUES } from '@annuadvent/ngx-common-ui/meta';
-import { AppConfig, LibConfig } from '@annuadvent/ngx-core/app-config';
+import { AppConfig, AppConfigService } from '@annuadvent/ngx-core/app-config';
 import { OpenaiService, OPENAI_ID_PHRASES } from '@annuadvent/ngx-tools/openai';
 import {
   CONTENT_PROMPT_PREFIX,
@@ -32,7 +32,7 @@ export class ArticleEditorService {
     private utilsService: UtilsService,
     private openaiService: OpenaiService,
     private html2JsonService: Html2JsonService,
-    private libConfig: LibConfig,
+    private appConfigService: AppConfigService,
     private fireAuthService: FireAuthService
   ) { }
 
@@ -306,7 +306,7 @@ export class ArticleEditorService {
   public generateArticleImageUrl(imageFullPath: string): string {
     return this.utilsService.getImageUrl(
       imageFullPath,
-      this.libConfig.imagesSourceUrl
+      this.appConfigService.config.imagesSourceUrl
     );
   }
 
