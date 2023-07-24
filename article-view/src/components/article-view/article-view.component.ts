@@ -10,6 +10,9 @@ import { Article } from '@annuadvent/ngx-cms/article';
 export class ArticleViewComponent implements OnInit {
   @Input() value: Article | null = null;
   @Input() showMetaInfo: boolean = false;
+  @Input() showAside: boolean = false;
+  @Input() leftAsideClasses: Array<string> = ['col-sm-12', 'col-md-6', 'col-9'];
+  @Input() rightAsideClasses: Array<string> = ['col-sm-12', 'col-md-6', 'col-3'];
 
   constructor(public utilsSvc: UtilsService) { }
 

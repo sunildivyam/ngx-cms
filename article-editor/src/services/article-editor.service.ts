@@ -247,10 +247,8 @@ export class ArticleEditorService {
     articleCategories: Array<string>
   ): string {
     articleCategories = articleCategories || [];
-    const canonicalCategoryId = articleCategories.length
-      ? articleCategories[0]
-      : '';
-    return this.utilsService.getCanonicalUrl(canonicalCategoryId, articleId);
+
+    return this.utilsService.getCanonicalUrl('genre', articleId);
   }
 
   public readDescriptionFromEditorElement(el: EditorElement): string {

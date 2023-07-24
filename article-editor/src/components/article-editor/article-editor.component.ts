@@ -135,7 +135,7 @@ export class ArticleEditorComponent implements OnInit, OnChanges {
       metaInfo: {
         ...this.article.metaInfo,
         url: this.utils.getCanonicalUrl(
-          selectedCategories.length ? selectedCategories[0].id : '',
+          'stories',
           this.article.id
         ),
       },

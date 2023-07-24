@@ -22,6 +22,7 @@ export class ArticlesSlideshowComponent implements OnInit, OnChanges {
   @Input() size: string = 'sm';
   @Input() showDescription: boolean = false;
   @Input() descriptionCharCount: number = 0;
+  @Input() articleHref: string = '';
 
   cardImageClasses: Array<string> = [];
   cardContentClasses: Array<string> = [];

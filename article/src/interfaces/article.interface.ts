@@ -25,6 +25,7 @@ export enum ArticleFeatures {
   primeShow = 'prime-show',
   footerShow = 'footer-show',
   primeShowAside = 'prime-show-aside',
+  mainShow = 'main-show',
   inReview = 'in-review',
   tnc = 'tnc',
   privacy = 'privacy',

@@ -79,7 +79,7 @@ export class CategoryEditorComponent implements OnInit, OnChanges {
       this.category.id = this.value.id;
     }
 
-    this.category = { ...this.category, metaInfo: { ...metaInfo, url: this.utils.getCanonicalUrl(this.category.id) } };
+    this.category = { ...this.category, metaInfo: { ...metaInfo, url: this.utils.getCanonicalUrl('genre', this.category.id) } };
     this.changed.emit({ ...this.category });
   }
 

@@ -12,7 +12,9 @@ export class CategoryArticlesListComponent {
   @Input() articles: Array<Article> = [];
   @Input() headerClassNames: Array<string> = [];
   @Input() listClassNames: Array<string> = [];
-  @Input() href: string = '';
+  @Input() categoryHref: string = '';
+  @Input() articleHref: string = '';
+  @Input() readMoreLabel: string = '';
 
   noDataMessage: string = 'No data Available';
 

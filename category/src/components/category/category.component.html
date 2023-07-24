@@ -1,8 +1,8 @@
 <anu-card [imageCssClasses]="['col-sm-12', 'col-md-4', 'col-lg-4']"
-    [contentCssClasses]="['col-sm-12', 'col-md-8', 'col-lg-8']"
-    class="nowrap-md nowrap-lg">
+    [contentCssClasses]="['col-sm-12', 'col-md-8', 'col-lg-8']" class="nowrap-md nowrap-lg">
     <anu-card-image *ngIf="value?.image?.src">
-        <a *ngIf="titleHref" [routerLink]="titleHref" class="shadow"><img [src]="value?.image?.src" [alt]="value?.image?.alt" /></a>
+        <a *ngIf="titleHref" [routerLink]="titleHref" class="shadow"><img [src]="value?.image?.src"
+                [alt]="value?.image?.alt" /></a>
         <img *ngIf="!titleHref" [src]="value?.image?.src" [alt]="value?.image?.alt" />
     </anu-card-image>
     <anu-card-image *ngIf="!value?.image?.src">
@@ -24,7 +24,8 @@
     </anu-card-body>
     <anu-card-footer *ngIf="showMetaInfo || updateHref || readMoreHref">
         <small *ngIf="showMetaInfo && value?.features" class="row">
-            <span class="spacing-around-half spacing-half border border-round" *ngFor="let feature of value.features"><small>{{feature}}</small></span>
+            <span class="spacing-around-half spacing-half border border-round"
+                *ngFor="let feature of value.features"><small>{{feature}}</small></span>
         </small>
         <div class="row right">
             <div *ngIf="showMetaInfo" class="spacing-around-horizontal">
