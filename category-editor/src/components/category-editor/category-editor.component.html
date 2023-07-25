@@ -1,0 +1,92 @@
+<h2>Category Editor</h2>
+<div class="row spacing-around-vertical" *ngIf="!readonlyId && enableReadonlyIdToggle">
+    <label (dblclick)="categoryIdDblClick($event)">Category Id</label>
+    <input type="text" name="category-id" [(ngModel)]="category.id" />
+</div>
+<p *ngIf="readonlyId" (dblclick)="categoryIdDblClick($event)">/{{category?.id}}</p>
+<section *ngIf="enableDelete" class="row spacing-vertical right">
+    <a class="btn error" href="#" (click)="deleteCategory($event)">Delete Category</a>
+</section>
+<anu-tabs [tabs]="tabs" [activeTab]="activeTab" (changed)="tabChanged($event)"></anu-tabs>
+<section class="container tab-body">
+
+    <section class="tab-item-body" [ngClass]="{'active': activeTab.name === 'moreinfo'}">
+        <anu-card
+            class="shadow spacing spacing-around-vertical moreinfo-card spacing-around-horizontal-md spacing-around-horizontal-lg">
+            <anu-card-body>
+                <div class="row">
+                    <label>Short Title</label>
+                    <input type="text" name="category-short-title" [(ngModel)]="category.shortTitle"
+                        (blur)="onShortTitleChanged($event)" (ngModelChange)="onShortTitleChanged($event)" />
+                </div>
+                <div class="row center stretch">
+                    <!-- Change/Remove Image -->
+                    <div class="col-sm-12">
+                        <a class="spacing-around" href="#" (click)="changeImage($event)">Change image</a>
+                        <a class="spacing-around" href="#" (click)="changeImage($event, true)">Remove image</a>
+                    </div>
+                    <!-- IsFeatured -->
+                    <div class="col-sm-12">
+                        <label class="spacing-horizontal">Featured? <anu-toggle [rounded]="true"
+                                [checked]="category?.isFeatured"
+                                (changed)="isFeaturedChanged($event)"></anu-toggle></label>
+                    </div>
+                </div>
+            </anu-card-body>
+        </anu-card>
+
+        <anu-card
+            class="shadow spacing spacing-around-vertical moreinfo-card spacing-around-horizontal-md spacing-around-horizontal-lg">
+            <anu-card-title>
+                <h2>Link Features to your Category</h2>
+            </anu-card-title>
+            <anu-card-body>
+                <div class="row">
+                    <anu-multi-select-box keyField="id" labelField="title" [items]="categoryFeatures"
+                        [selectedItems]="selectedCategoryFeatures" (changed)="onCategoryFeaturesChanged($event)">
+                    </anu-multi-select-box>
+                </div>
+            </anu-card-body>
+        </anu-card>
+
+        <anu-modal [opened]="toggleImageForm" title="Choose an image" (cancelClick)="cancelImageChange()">
+            <anu-image-form [src]="category?.image?.src" [alt]="category?.image?.alt" (cancel)="cancelImageChange()"
+                (save)="saveImageChange($event)"></anu-image-form>
+        </anu-modal>
+
+        <section class="row spacing-vertical right">
+            <a class="btn" href="#" (click)="saveCategory($event)">Save Category</a>
+        </section>
+    </section>
+
+    <section class="tab-item-body" [ngClass]="{'active': activeTab.name === 'metainfo'}">
+        <anu-meta-form [metaInfo]="category?.metaInfo" [readonlyMetaProps]="readonlyMetaProps"
+            (changed)="categoryMetaChanged($event)"></anu-meta-form>
+        <section class="row spacing-vertical right">
+            <a class="btn" href="#" (click)="saveCategory($event)">Save Category</a>
+        </section>
+    </section>
+
+    <section class="tab-item-body" [ngClass]="{'active': activeTab.name === 'publish'}">
+        <div class="row center stretch">
+            <!-- inReview  -->
+            <div class="col-sm-12">
+                <label class="spacing-horizontal">In Review? <anu-toggle [rounded]="true" [checked]="category?.inReview"
+                        (changed)="inReviewChanged($event)"></anu-toggle></label>
+            </div>
+            <!-- published -->
+            <div class="col-sm-12">
+                <span *ngIf="!enablePublish" [ngClass]="category?.isLive ? 'success' : 'warning'">{{category?.isLive ?
+                    'Published' :
+                    'Unpublished'}}</span>
+                <label *ngIf="enablePublish" class="spacing-horizontal">Published? <anu-toggle [rounded]="true"
+                        [checked]="category?.isLive" (changed)="isLiveChanged($event)"></anu-toggle></label>
+            </div>
+        </div>
+        <h2>Preview</h2>
+        <anu-category class="spacing-around-horizontal-md spacing-around-horizontal-lg" [value]="category"
+            [showMetaInfo]="true"></anu-category>
+
+    </section>
+
+</section>

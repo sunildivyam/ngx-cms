@@ -1,0 +1,117 @@
+<div class="row">
+    <div class="col-12 right">
+        <a class="primary" href="javascript:void(0)" (click)="onBulkArticlesClick()">Bulk Articles</a>
+    </div>
+    <div class="col-12">
+        <anu-openai-form [prompts]='historyPrompts' [selectedPromptText]='' [showHistory]='true'
+            (goClicked)="onNewPrompt($event)">
+        </anu-openai-form>
+    </div>
+</div>
+
+<anu-collapsible *ngIf="errorMsg.length" [collapsed]="false" class="col-12 spacing-around-vertical"
+    [hamBurgerClassNames]="['size-sm']" [isDropdownStyle]="true">
+    <anu-collapsible-header>
+        Queue Messagees
+    </anu-collapsible-header>
+    <anu-collapsible-content class="row">
+        <ol>
+            <li *ngFor="let msg of errorMsg" [innerHTML]="msg"></li>
+        </ol>
+    </anu-collapsible-content>
+</anu-collapsible>
+
+<div *ngIf="openaiArticleQueue.length" class="row">
+    <div class="col-6"><strong>
+            {{(ellapsedTime/60).toFixed(2)}}mins <br />
+            <span *ngIf="!isQueueFinished && !isQueuePaused">Writing article {{openaiArticleQueueIndex + 1}} ...</span>
+        </strong>
+    </div>
+    <div class="col-6 right">
+        <a *ngIf="!isQueueFinished" class="btn primary" href="javascript:void(0)"
+            (click)="togglePauseQueue()">{{isQueuePaused ? 'Start Queue': 'Pause Queue'}}</a>
+    </div>
+</div>
+<!-- Articles Queue -->
+<ol>
+    <li class="flex-container" *ngFor="let artQueue of openaiArticleQueue; let artQindex = index">
+        <anu-collapsible [collapsed]="false" class="col-12" [hamBurgerClassNames]="['size-sm']"
+            [isDropdownStyle]="true">
+            <anu-collapsible-header>
+                <h2>({{artQindex + 1}}): {{artQueue.name}}</h2>
+            </anu-collapsible-header>
+            <anu-collapsible-content class="row">
+                <table class="queue">
+                    <thead>
+                        <tr>
+                            <th class="queue_prompt">Prompt</th>
+                            <th class="queue_status">Status</th>
+                            <th class="queue_time-taken">Time taken(s)</th>
+                            <th class="queue_action">
+                                <span *ngIf="artQueue.saveStatus">Saved</span>
+                                <a *ngIf="!artQueue.saveStatus" class="btn secondary" href="javascript:void(0)"
+                                    (click)="saveArticle(artQindex)">Save</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Already added prompt rows -->
+                        <tr *ngFor="let queueItem of artQueue.openaiPromptQueue; let pmtQindex = index">
+                            <td>
+                                <small>{{queueItem.name}}</small>
+                                <input [readonly]="queueItem.status !== 'notstarted'" type="text"
+                                    [(ngModel)]="queueItem.prompt.prompt" />
+                            </td>
+                            <td
+                                [ngClass]="{'error': queueItem.status === 'failed', 'success': queueItem.status === 'completed', 'warning relative': queueItem.status === 'inprogress'}">
+                                <anu-spinner [show]="queueItem.status === 'inprogress'"></anu-spinner>
+                                <strong>{{queueItem.status}}</strong>
+                            </td>
+                            <td>{{queueItem.timeTaken / 1000}}s</td>
+                            <td>
+                                <a *ngIf="queueItem.status === 'notstarted'" class="error" href="javascript:void(0)"
+                                    (click)="removePromptFromQueue(artQindex, pmtQindex)">X</a>
+                            </td>
+                        </tr>
+
+                        <!-- Additional Prompt Addition row -->
+                        <tr
+                            *ngIf="(openaiArticleQueueIndex < artQindex || (openaiArticleQueueIndex === artQindex && openaiPromptQueueIndex < artQueue.openaiPromptQueue.length))">
+                            <td>
+                                <small>{{artQueue.promptQueueItemToAdd.name}}</small>
+                                <input type="text" [(ngModel)]="artQueue.promptQueueItemToAdd.prompt.prompt" />
+                            </td>
+                            <td
+                                [ngClass]="{'error': artQueue.promptQueueItemToAdd.status === 'failed', 'success': artQueue.promptQueueItemToAdd.status === 'completed', 'warning relative': artQueue.promptQueueItemToAdd.status === 'inprogress'}">
+                                <anu-spinner
+                                    [show]="artQueue.promptQueueItemToAdd.status === 'inprogress'"></anu-spinner>
+                                {{artQueue.promptQueueItemToAdd.status}}
+                            </td>
+                            <td>{{artQueue.promptQueueItemToAdd.timeTaken}}</td>
+                            <td>
+                                <a class="primary" href="javascript:void(0)"
+                                    (click)="addPromptToArticleQueue(artQindex)">Add</a>
+                            </td>
+                        </tr>
+
+                        <!-- Image Prompt Row -->
+                        <tr>
+                            <td colspan="4">
+                                <small>Article's Image Prompt</small>
+                                <input [readonly]="artQindex < openaiArticleQueueIndex" type="text"
+                                    [(ngModel)]="artQueue.imagePromptText" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </anu-collapsible-content>
+        </anu-collapsible>
+    </li>
+</ol>
+
+
+<anu-modal [enableCancel]="true" [enableOk]="true" [opened]="toggleBulkArticlesModal" title="Bulk Articles Prompts"
+    (okClick)="onGenerateBulkArticleQueues()" (cancelClick)="toggleBulkArticlesModal = false">
+    <textarea placeholder="Article titles separated by 3 pipe symbols |||"
+        [(ngModel)]="bulkArticlesPromptsText"></textarea>
+</anu-modal>

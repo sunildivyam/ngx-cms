@@ -1,0 +1,5 @@
+<section class="article container" *ngFor="let article of items">
+    <anu-article class="shadow" [titleHref]="[href, article?.id]" [readMoreHref]="[href, article?.id]"
+        [updateHref]="[href, article?.id]" [value]="article" [isRowLayout]="false"
+        [descriptionCharCount]="350"></anu-article>
+</section>

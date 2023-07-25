@@ -1,0 +1,17 @@
+:host {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: calc(var(--anu-spacing) * 10);
+
+    .popup {
+        padding: 0.5rem 0;
+        border: none;
+        flex-direction: column;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+}

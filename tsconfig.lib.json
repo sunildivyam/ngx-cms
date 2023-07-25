@@ -6,23 +6,29 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "paths": {
+      "@annuadvent/ngx-common-ui": [
+        "dist/ngx-common-ui"
+      ],
+      "@annuadvent/ngx-common-ui/*": [
+        "dist/ngx-common-ui/*"
+      ],
+      "@annuadvent/ngx-core": [
+        "dist/ngx-core"
+      ],
+      "@annuadvent/ngx-core/*": [
+        "dist/ngx-core/*"
+      ],
+      "@annuadvent/ngx-tools": [
+        "dist/ngx-tools"
+      ],
+      "@annuadvent/ngx-tools/*": [
+        "dist/ngx-tools/*"
+      ],
+    }
   },
   "exclude": [
     "**/*.spec.ts"
-  ],
-  "paths": {
-    "@annuadvent/ngx-common-ui": [
-      "dist/ngx-common-ui"
-    ],
-    "@annuadvent/ngx-common-ui/*": [
-      "dist/ngx-common-ui/*"
-    ],
-    "@annuadvent/ngx-core": [
-      "dist/ngx-core"
-    ],
-    "@annuadvent/ngx-core/*": [
-      "dist/ngx-core/*"
-    ],
-  }
+  ]
 }

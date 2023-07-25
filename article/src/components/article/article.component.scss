@@ -1,0 +1,24 @@
+:host {
+    display: flex;
+    flex-direction: column;
+
+    anu-card-image {
+        min-height: 7rem;
+        height: 100%;
+        max-height: 25rem;
+        overflow-y: hidden;
+
+        .article-thumb {
+            border: 2px solid var(--anu-primary-normal);
+            border-radius: var(--anu-border-radius);
+            height: 100%;
+            min-height: 7rem;
+        }
+
+        img {
+            width: 100%;
+            max-height: 450px;
+        }
+    }
+
+}

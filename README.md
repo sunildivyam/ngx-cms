@@ -1,24 +1,13 @@
-# NgxCms
+# @annuadvent/ngx-cms:
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
+The `ngx-cms` library focuses on providing Angular components and services specifically tailored for content management systems (CMS). It offers a set of pre-built UI components optimized for managing and displaying content, such as rich text editors, image galleries, content grids, and content organization tools. Additionally, it provides services for handling content CRUD operations, authentication, and authorization within the CMS environment.
 
-## Code scaffolding
+[ngx-cms Documentation](https://ngx-libs.annuadvent.com/libs/ngx-cms)
 
-Run `ng generate component component-name --project ngx-cms` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-cms`.
-> Note: Don't forget to add `--project ngx-cms` or else it will be added to the default project in your `angular.json` file. 
+[ngx-cms Github](https://github.com/sunildivyam/ngx-cms)
 
-## Build
+[ngx-cms NPM](https://npmjs.com/package/@annuadvent/ngx-cms)
 
-Run `ng build ngx-cms` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Publishing
-
-After building your library with `ng build ngx-cms`, go to the dist folder `cd dist/ngx-cms` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test ngx-cms` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Workspace repository
+- To contribute code with `ngx-cms` library, it is recommended to work through `ngx-workspace` project, that integrates all libraries and provides all required scripts to `build, deploy and test` them.
+- [ngx-workspace Github](https://github.com/sunildivyam/ngx-workspace)

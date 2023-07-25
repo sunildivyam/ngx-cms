@@ -1,0 +1,11 @@
+<h4 class="" [ngClass]="headerClassNames">
+    <a [routerLink]="[categoryHref, category?.id]">{{category?.metaInfo?.title}}</a>
+</h4>
+<ul class="spacing-vertical" [ngClass]="listClassNames">
+    <li class="" *ngFor="let art of articles">
+        <a [routerLink]="[articleHref, art?.id]">{{art?.metaInfo?.title}}</a>
+    </li>
+</ul>
+<div class="row right">
+    <a [routerLink]="[categoryHref, category?.id]">{{readMoreLabel}}</a>
+</div>
