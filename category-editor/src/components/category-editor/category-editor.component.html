@@ -50,7 +50,7 @@
         </anu-card>
 
         <anu-modal [opened]="toggleImageForm" title="Choose an image" (cancelClick)="cancelImageChange()">
-            <anu-image-form [helpText]="imageHelpText" [src]="category?.image?.src" [alt]="category?.image?.alt" (cancel)="cancelImageChange()"
+            <anu-image-form [src]="category?.image?.src" [alt]="category?.image?.alt" (cancel)="cancelImageChange()"
                 (save)="saveImageChange($event)"></anu-image-form>
         </anu-modal>
 
@@ -60,7 +60,8 @@
     </section>
 
     <section class="tab-item-body" [ngClass]="{'active': activeTab.name === 'metainfo'}">
-        <anu-meta-form [metaInfo]="category?.metaInfo" [readonlyMetaProps]="readonlyMetaProps" (changed)="categoryMetaChanged($event)"></anu-meta-form>
+        <anu-meta-form [metaInfo]="category?.metaInfo" [readonlyMetaProps]="readonlyMetaProps"
+            (changed)="categoryMetaChanged($event)"></anu-meta-form>
         <section class="row spacing-vertical right">
             <a class="btn" href="#" (click)="saveCategory($event)">Save Category</a>
         </section>

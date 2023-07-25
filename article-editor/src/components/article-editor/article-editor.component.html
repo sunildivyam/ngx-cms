@@ -66,9 +66,7 @@
             </anu-card-body>
         </anu-card>
         <anu-modal [opened]="toggleImageForm" title="Choose an image" (cancelClick)="cancelImageChange()">
-            <anu-image-form [enableOpenaiAutoImage]="enableOpenai" [helpText]="imageHelpText"
-                [imageFileName]="article?.id + '.jpg'" [imagePromptText]="article?.metaInfo?.title"
-                [src]="article?.image?.src" [alt]="article?.image?.alt" (cancel)="cancelImageChange()"
+            <anu-image-form [src]="article?.image?.src" [alt]="article?.image?.alt" (cancel)="cancelImageChange()"
                 (save)="saveImageChange($event)"></anu-image-form>
         </anu-modal>
 

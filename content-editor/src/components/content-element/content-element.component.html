@@ -6,37 +6,38 @@
 </div>
 
 <!-- Headings h1 - h6 -->
-<anu-leaf-element class="col-12" *ngIf="['h1','h2','h3','h4','h5','h6', 'p', 'li', 'img', 'anu-code-block'].includes(editorElement?.tagName)" [value]="editorElement"
-    (changed)="onBlur()" (focusin)="focusin()" (enterKeyPressed)="enterKeyPressed($event)"
+<anu-leaf-element class="col-12"
+    *ngIf="['h1','h2','h3','h4','h5','h6', 'p', 'li', 'img', 'anu-code-block'].includes(editorElement?.tagName)"
+    [value]="editorElement" (changed)="onBlur()" (focusin)="focusin()" (enterKeyPressed)="enterKeyPressed($event)"
     (backspaceKeyPressed)="backspaceKeyPressed($event)" [fullTree]="fullTree"></anu-leaf-element>
 
 <!-- Container Elements -->
 <ng-container *ngIf="editorElement?.isContainer">
     <article *ngIf="editorElement?.tagName === 'article'">
         <ng-container *ngFor="let child of editorElement?.children">
-            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child" [fullTree]="fullTree" (changed)="onBlur()"
-                (focusin)="focusin()">
+            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child"
+                [fullTree]="fullTree" (changed)="onBlur()" (focusin)="focusin()">
             </anu-content-element>
         </ng-container>
     </article>
     <div *ngIf="editorElement?.tagName === 'div'">
         <ng-container *ngFor="let child of editorElement?.children">
-            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child" [fullTree]="fullTree" (changed)="onBlur()"
-                (focusin)="focusin()">
+            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child"
+                [fullTree]="fullTree" (changed)="onBlur()" (focusin)="focusin()">
             </anu-content-element>
         </ng-container>
     </div>
     <ul *ngIf="editorElement?.tagName === 'ul'">
         <ng-container *ngFor="let child of editorElement?.children">
-            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child" [fullTree]="fullTree" (changed)="onBlur()"
-                (focusin)="focusin()">
+            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child"
+                [fullTree]="fullTree" (changed)="onBlur()" (focusin)="focusin()">
             </anu-content-element>
         </ng-container>
     </ul>
     <ol *ngIf="editorElement?.tagName === 'ol'">
         <ng-container *ngFor="let child of editorElement?.children">
-            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child" [fullTree]="fullTree" (changed)="onBlur()"
-                (focusin)="focusin()">
+            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child"
+                [fullTree]="fullTree" (changed)="onBlur()" (focusin)="focusin()">
             </anu-content-element>
         </ng-container>
     </ol>
@@ -45,7 +46,7 @@
 <!-- Image Form Modal-->
 <ng-container *ngIf="toggleImageForm">
     <anu-modal title="Choose an image" [opened]="toggleImageForm" (cancelClick)="cancelImageModal()">
-        <anu-image-form [enableOpenaiAutoImage]="enableOpenai" [src]="imageInfo.src" [alt]="imageInfo.alt" (cancel)="cancelImageModal()"
+        <anu-image-form [src]="imageInfo.src" [alt]="imageInfo.alt" (cancel)="cancelImageModal()"
             (save)="saveImage($event)">
         </anu-image-form>
     </anu-modal>
