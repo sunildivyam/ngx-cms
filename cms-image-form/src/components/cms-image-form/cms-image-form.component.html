@@ -1,0 +1,30 @@
+<form class="container disable-select">
+    <div class="container border border-round spacing-half">
+    <label>Image source</label>
+    <input type="text" [(ngModel)]="src" name="image-src" />
+    <label>Image alt text</label>
+    <input type="text" [(ngModel)]="alt" name="image-alt" />
+    <div class="row spacing">
+        <div class="col-6 center"><a class="btn primary" href="#" (click)="cancelClicked($event)">Cancel</a></div>
+        <div class="col-6 center"><a class="btn primary" href="#" (click)="saveClicked($event)">Save</a></div>
+    </div>
+</div>
+    <anu-collapsible *ngIf="enableOpenai" [isDropdownStyle]="true" [collapsed]="false" class="spacing spacing-around-vertical shadow border-radius container" [hamBurgerClassNames]="['size-sm']">
+        <anu-collapsible-header>
+            <strong>Autogenerate Image</strong>
+        </anu-collapsible-header>
+        <anu-collapsible-content class="spacing">
+            <anu-openai-image-form 
+                (fileUploaded)="openaiFileUploaded($event)"></anu-openai-image-form>
+        </anu-collapsible-content>
+    </anu-collapsible>
+
+    <anu-collapsible *ngIf="enableImageBrowser" [isDropdownStyle]="true" [collapsed]="false" class="spacing spacing-around-vertical shadow border-radius container" [hamBurgerClassNames]="['size-sm']">
+        <anu-collapsible-header>
+            <strong>Browse from Server</strong>
+        </anu-collapsible-header>
+        <anu-collapsible-content>
+            <anu-image-browser></anu-image-browser>
+        </anu-collapsible-content>
+    </anu-collapsible>
+</form>

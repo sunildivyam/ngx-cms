@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToolbarModule } from '@annuadvent/ngx-common-ui/toolbar';
 import { ModalModule } from '@annuadvent/ngx-common-ui/modal';
-import { ImageFormModule } from '@annuadvent/ngx-common-ui/image-form';
+import { CmsImageFormModule } from '@annuadvent/ngx-cms/cms-image-form';
 import { LinkFormModule } from '@annuadvent/ngx-common-ui/link-form';
 import { CodeBlockModule } from '@annuadvent/ngx-common-ui/code-block';
 import { ContenteditableValueAccessorDirective } from './directives/contenteditable-value-accessor.directive';
@@ -29,7 +29,7 @@ import { LeafElementComponent } from './components/leaf-element/leaf-element.com
     FormsModule,
     ToolbarModule,
     ModalModule,
-    ImageFormModule,
+    CmsImageFormModule,
     LinkFormModule,
     CodeBlockModule
   ],

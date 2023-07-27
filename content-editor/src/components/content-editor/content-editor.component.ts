@@ -3,7 +3,7 @@ import { EditorElement, Rectangle } from '../../interfaces/content-editor.interf
 import { EDITOR_ROOT_ELEMENT, TOOLBAR_FORMATTING } from '../../constants/content-editor.constants';
 import { ToolbarItem } from '@annuadvent/ngx-common-ui/toolbar';
 import { Link } from '@annuadvent/ngx-common-ui/link-form';
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { SelectionService } from '../../services/selection.service';
 
 @Component({

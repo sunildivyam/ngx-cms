@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Link } from '@annuadvent/ngx-common-ui/link-form';
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { Observable, Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { Rectangle } from '../interfaces/content-editor.interface';

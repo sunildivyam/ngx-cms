@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Article } from '@annuadvent/ngx-cms/article';
 import { UtilsService } from '@annuadvent/ngx-core/utils';
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import {
   EditorElement,
   EditorElementData,

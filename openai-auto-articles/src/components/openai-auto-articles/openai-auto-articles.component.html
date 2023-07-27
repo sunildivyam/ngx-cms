@@ -110,7 +110,7 @@
 </ol>
 
 
-<anu-modal [enableCancel]="true" [enableOk]="true" [opened]="toggleBulkArticlesModal" title="Bulk Articles Prompts"
+<anu-modal [enableCancel]="true" [enableOk]="true" [opened]="toggleBulkArticlesModal" modalTitle="Bulk Articles Prompts"
     (okClick)="onGenerateBulkArticleQueues()" (cancelClick)="toggleBulkArticlesModal = false">
     <textarea placeholder="Article titles separated by 3 pipe symbols |||"
         [(ngModel)]="bulkArticlesPromptsText"></textarea>

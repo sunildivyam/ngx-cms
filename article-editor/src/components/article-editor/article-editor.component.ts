@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { UtilsService } from '@annuadvent/ngx-core/utils';
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { MetaInfo } from '@annuadvent/ngx-common-ui/meta';
 import { Tab } from '@annuadvent/ngx-common-ui/tabs';
 import { Article, ArticleFeatures } from '@annuadvent/ngx-cms/article';
