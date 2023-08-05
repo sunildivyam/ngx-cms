@@ -5,6 +5,7 @@ export interface OpenaiPromptQueueItem {
   prompt: OpenaiPrompt;
   status: OpenaiPromptQueueItemStatus;
   timeTaken: number;
+  heading?: string;
 }
 
 export interface OpenaiArticleQueueItem {

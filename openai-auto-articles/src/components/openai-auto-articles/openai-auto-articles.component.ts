@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UtilsService } from '@annuadvent/ngx-core/utils';
 import { ArticleEditorService } from '@annuadvent/ngx-cms/article-editor';
 import { Html2JsonService } from '@annuadvent/ngx-cms/content-editor';
@@ -6,8 +6,10 @@ import {
   OpenaiService,
   OpenaiPrompt,
   OpenaiPromptTypeEnum,
-  OPENAI_ID_PHRASES,
   OpenaiImageSize,
+  OpenaiConfigService,
+  OpenaiConfig,
+  OpenaiConfiguration,
 } from '@annuadvent/ngx-tools/openai';
 import {
   OpenaiPromptQueueItem,
@@ -31,7 +33,7 @@ import {
   PROMPTS_SEPARATOR,
 } from '../../constants/openai-auto-articles.constants';
 import { Article } from '@annuadvent/ngx-cms/article';
-import { AppConfig } from '@annuadvent/ngx-core/app-config';
+import { AppConfig, AppConfigService } from '@annuadvent/ngx-core/app-config';
 import { FireArticlesHttpService } from '@annuadvent/ngx-tools/fire-cms';
 import { EditorElement } from '@annuadvent/ngx-cms/content-editor';
 import { FireStorageImageService } from '@annuadvent/ngx-tools/fire-storage';
@@ -42,11 +44,10 @@ import { FireAuthService } from '@annuadvent/ngx-tools/fire-auth';
   templateUrl: './openai-auto-articles.component.html',
   styleUrls: ['./openai-auto-articles.component.scss'],
 })
-export class OpenaiAutoArticlesComponent {
+export class OpenaiAutoArticlesComponent implements OnInit {
   @Input() openaiArticleQueue: Array<OpenaiArticleQueueItem> = [];
   @Input() openaiPromptQueueIndex: number = 0; // inprogress prompt index
   @Input() openaiArticleQueueIndex: number = 0; // inprogress article index
-  @Input() appConfig: AppConfig = null;
 
   errorMsg: Array<string> = [];
   isQueuePaused: boolean = true;
@@ -59,21 +60,43 @@ export class OpenaiAutoArticlesComponent {
   bulkArticlesPromptsText: string = '';
   toggleBulkArticlesModal: boolean = false;
 
+  //Openai Config Modal
+  toggleOpenaiConfigModal: boolean = false;
+
   //Timers
   expectedTotalTime: number = 0;
   ellapsedTime: number = 0;
   queueInterval: any = null;
   batchStartTime: number = 0;
 
+  // resultPreview of queue items
+  currentMdText: string = '';
+  currentMdConvertedText: string = '';
+
   constructor(
     private utilsService: UtilsService,
     private aeService: ArticleEditorService,
     private openaiService: OpenaiService,
-    private html2json: Html2JsonService,
+    public html2json: Html2JsonService,
     private fireArticlesHttpService: FireArticlesHttpService,
     private fireStorageImageService: FireStorageImageService,
-    private fireAuthService: FireAuthService
-  ) { }
+    private fireAuthService: FireAuthService,
+    private appConfigService: AppConfigService,
+    private openaiConfigService: OpenaiConfigService,
+  ) {
+    this.openaiConfigService.config.subscribe((config: OpenaiConfiguration) => {
+      const openaiConfig: OpenaiConfig = {
+        apiKey: config?.apiKey?.value || '',
+        organization: config?.headers?.value['OpenAI-Organization'].value || ''
+      }
+
+      this.openaiService.initOpenai(openaiConfig);
+    })
+  }
+
+  public ngOnInit(): void {
+    this.openaiConfigService.initOpenai((this.appConfigService.openai as OpenaiConfig).apiKey, (this.appConfigService.openai as OpenaiConfig).organization);
+  }
 
   public startTimer(): void {
     this.stopTimer();
@@ -159,6 +182,7 @@ export class OpenaiAutoArticlesComponent {
       prompt: this.utilsService.deepCopy(prompt),
       status: OpenaiPromptQueueItemStatus.notstarted,
       timeTaken: 0,
+      heading: prompt.prompt,
     };
 
     switch (promptType) {
@@ -166,22 +190,26 @@ export class OpenaiAutoArticlesComponent {
         promptQueueItem.name = DESCRIPTION_PROMPT_NAME;
         promptQueueItem.prompt.promptType = OpenaiPromptTypeEnum.description;
         promptQueueItem.prompt.prompt = `${DESCRIPTION_PROMPT_PREFIX} ${promptQueueItem.prompt.prompt}`;
+        promptQueueItem.heading = DESCRIPTION_PROMPT_NAME;
 
         break;
       case OpenaiPromptTypeEnum.keywords:
         promptQueueItem.name = KEYWORDS_PROMPT_NAME;
         promptQueueItem.prompt.promptType = OpenaiPromptTypeEnum.keywords;
         promptQueueItem.prompt.prompt = `${KEYWORDS_PROMPT_PREFIX} ${promptQueueItem.prompt.prompt}`;
+        promptQueueItem.heading = KEYWORDS_PROMPT_NAME;
         break;
       case OpenaiPromptTypeEnum.subtopics:
         promptQueueItem.name = SUBTOPICS_PROMPT_NAME;
         promptQueueItem.prompt.promptType = OpenaiPromptTypeEnum.subtopics;
         promptQueueItem.prompt.prompt = `${SUBTOPICS_PROMPT_PREFIX} ${promptQueueItem.prompt.prompt}`;
+        promptQueueItem.heading = SUBTOPICS_PROMPT_NAME;
         break;
       case OpenaiPromptTypeEnum.questions:
         promptQueueItem.name = QUESTIONS_PROMPT_NAME;
         promptQueueItem.prompt.promptType = OpenaiPromptTypeEnum.questions;
         promptQueueItem.prompt.prompt = `${QUESTIONS_PROMPT_PREFIX} ${promptQueueItem.prompt.prompt}`;
+        promptQueueItem.heading = QUESTIONS_PROMPT_NAME;
         break;
       default:
         promptQueueItem.prompt.promptType = OpenaiPromptTypeEnum.content;
@@ -230,6 +258,7 @@ export class OpenaiAutoArticlesComponent {
       ],
       promptQueueItemToAdd: this.utilsService.deepCopy(EMPTY_PROMPT_QUEUE_ITEM),
       imagePromptText: prompt.prompt,
+      saveStatus: true,
     };
 
     this.openaiArticleQueue.push(openaiArticleQueueItem);
@@ -237,6 +266,11 @@ export class OpenaiAutoArticlesComponent {
 
   public removePromptFromQueue(artQindex, pmtQindex): void {
     this.openaiArticleQueue[artQindex].openaiPromptQueue.splice(pmtQindex, 1);
+  }
+
+  public showQueueItemResultModal(artQindex, pmtQindex): void {
+    this.currentMdText = this.openaiArticleQueue[artQindex].openaiPromptQueue[pmtQindex].prompt?.message?.mdText || '';
+    this.currentMdConvertedText = this.currentMdText;
   }
 
   public addPromptToArticleQueue(artQindex): void {
@@ -306,9 +340,7 @@ export class OpenaiAutoArticlesComponent {
             .openaiPromptQueue[batchIndices[index]];
         if (item.status === 'fulfilled') {
           // Write result back to original promptQueue, on successful prompt
-          pmtQItem.prompt.message.json = this.html2json.html2json(
-            this.html2json.md2html(item.value)
-          );
+          pmtQItem.prompt.message.mdText = item.value;
           pmtQItem.status = OpenaiPromptQueueItemStatus.completed;
           pmtQItem.timeTaken = Date.now() - this.batchStartTime;
         } else {
@@ -391,7 +423,7 @@ export class OpenaiAutoArticlesComponent {
     batchIndices.forEach((itemIndex) => {
       const promptQueueItem =
         this.openaiArticleQueue[articleQueueIndex].openaiPromptQueue[itemIndex];
-      const jsonEl = promptQueueItem.prompt.message.json;
+      const jsonEl = this.html2json.md2json(promptQueueItem.prompt.message.mdText);
       switch (promptQueueItem.prompt.promptType) {
         case OpenaiPromptTypeEnum.questions:
           this.generatePromptQueueItemsFromKeywords(jsonEl);
@@ -478,13 +510,11 @@ export class OpenaiAutoArticlesComponent {
 
     const article: Article = this.aeService.createInitializedArticle(
       artQItem.name,
-      this.appConfig
     );
 
     artQItem.openaiPromptQueue.forEach((item, index) => {
       const jsonEl = this.aeService.cleanAndFormatEditorEl(
-        item.prompt.message.json,
-        OPENAI_ID_PHRASES
+        this.html2json.md2json(item.prompt.message.mdText),
       );
       if (jsonEl) {
         if (index === 0) {
@@ -508,7 +538,7 @@ export class OpenaiAutoArticlesComponent {
             default:
               article.body.children = [].concat(
                 article.body.children,
-                this.aeService.generateArticleSubheading(item.prompt.prompt),
+                this.aeService.generateArticleSubheading(item.heading),
                 jsonEl.children
               );
           }

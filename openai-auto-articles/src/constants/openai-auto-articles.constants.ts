@@ -16,7 +16,8 @@ export const EMPTY_PROMPT_QUEUE_ITEM: OpenaiPromptQueueItem = {
         promptType: OpenaiPromptTypeEnum.content
     } as OpenaiPrompt,
     status: OpenaiPromptQueueItemStatus.notstarted,
-    timeTaken: 0
+    timeTaken: 0,
+    heading: '',
 };
 
 export const DESCRIPTION_PROMPT_NAME = 'description';

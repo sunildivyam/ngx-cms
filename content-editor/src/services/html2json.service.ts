@@ -29,6 +29,14 @@ export class Html2JsonService {
     return htmlJson;
   }
 
+  public md2json(mdText: string): EditorElement {
+    return this.html2json(this.md2html(mdText));
+  }
+
+  public md2jsonText(mdText: string): string {
+    return JSON.stringify(this.html2json(this.md2html(mdText)), null, '\t');
+  }
+
   private parseHtmlElement(el: HTMLElement | ChildNode): EditorElement {
     const tagName = (
       (el as HTMLElement).tagName || (el as ChildNode).nodeName

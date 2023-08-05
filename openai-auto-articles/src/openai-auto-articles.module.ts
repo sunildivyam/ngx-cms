@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { SpinnerModule } from '@annuadvent/ngx-common-ui/spinner';
 import { CollapsibleModule } from '@annuadvent/ngx-common-ui/collapsible';
 import { ModalModule } from '@annuadvent/ngx-common-ui/modal';
+import { CodeBlockModule } from '@annuadvent/ngx-common-ui/code-block';
 
 
 
@@ -20,6 +21,7 @@ import { ModalModule } from '@annuadvent/ngx-common-ui/modal';
     SpinnerModule,
     CollapsibleModule,
     ModalModule,
+    CodeBlockModule,
   ],
   exports: [
     OpenaiAutoArticlesComponent
