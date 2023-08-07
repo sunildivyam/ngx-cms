@@ -16,12 +16,15 @@ import { Category } from '@annuadvent/ngx-cms/category';
 import { EditorElement, EDITOR_ROOT_ELEMENT } from '@annuadvent/ngx-cms/content-editor';
 import { ARTICLE_EDITOR_TABS } from '../../constants/article-editor.constants';
 
-const SAMPLE_ARTICLE = {
+const SAMPLE_ARTICLE: Article = {
   body: { ...EDITOR_ROOT_ELEMENT },
   metaInfo: {
     title: EDITOR_ROOT_ELEMENT.children[0]?.data?.text,
     description: EDITOR_ROOT_ELEMENT.children[1]?.data?.text,
   },
+  features: [],
+  categories: [],
+  image: { src: '', alt: '' }
 };
 
 @Component({
