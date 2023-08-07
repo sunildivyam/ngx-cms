@@ -27,8 +27,8 @@ export const QUESTIONS_PROMPT_NAME = 'questions';
 
 export const DESCRIPTION_PROMPT_PREFIX = 'Write a good description for';
 export const KEYWORDS_PROMPT_PREFIX = 'List good keywords or subtopics for';
-export const SUBTOPICS_PROMPT_PREFIX = 'List 5 good closely related subtopics for';
-export const QUESTIONS_PROMPT_PREFIX = 'List 5 good related questions for';
+export const SUBTOPICS_PROMPT_PREFIX = 'List 2 good closely related subtopics for';
+export const QUESTIONS_PROMPT_PREFIX = 'List 2 good related questions for';
 
 
 export const OPENAI_MAX_REQUEST_COUNT = 3;

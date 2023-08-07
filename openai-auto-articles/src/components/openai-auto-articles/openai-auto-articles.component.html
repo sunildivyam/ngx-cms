@@ -33,15 +33,15 @@
     </div>
 </div>
 <!-- Articles Queue -->
-<ol class="spacing-half">
+<ol class="spacing-half container">
     <li class="flex-container" *ngFor="let artQueue of openaiArticleQueue; let artQindex = index">
         <anu-collapsible [collapsed]="false" class="col-12" [hamBurgerClassNames]="['size-sm']"
             [isDropdownStyle]="true">
             <anu-collapsible-header>
                 <h2>({{artQindex + 1}}): {{artQueue.name}}</h2>
             </anu-collapsible-header>
-            <anu-collapsible-content class="row">
-                <table class="queue">
+            <anu-collapsible-content class="row queue-table-container">
+                <table class="queue queue-table">
                     <thead>
                         <tr>
                             <th class="queue_prompt">Prompt</th>

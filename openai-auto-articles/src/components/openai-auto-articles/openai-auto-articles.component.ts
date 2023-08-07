@@ -90,7 +90,7 @@ export class OpenaiAutoArticlesComponent implements OnInit {
         organization: config?.headers?.value['OpenAI-Organization'].value || ''
       }
 
-      this.openaiService.initOpenai(openaiConfig);
+      openaiConfig?.apiKey && this.openaiService.initOpenai(openaiConfig);
     })
   }
 

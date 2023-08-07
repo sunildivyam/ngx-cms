@@ -254,7 +254,7 @@ export class ArticleEditorService {
   ): string {
     articleCategories = articleCategories || [];
 
-    return this.utilsService.getCanonicalUrl('genre', articleId);
+    return this.utilsService.getCanonicalUrl('stories', articleId);
   }
 
   public readDescriptionFromEditorElement(el: EditorElement): string {

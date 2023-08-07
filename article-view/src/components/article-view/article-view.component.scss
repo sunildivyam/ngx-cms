@@ -19,6 +19,14 @@
             z-index: 1;
             color: var(--anu-accent-deep-light);
             background: rgba(0, 0, 0, 0.5);
+
+            @include medium {
+                margin-top: 15rem;
+            }
+
+            @include large {
+                margin-top: 15rem;
+            }
         }
 
         &-meta-container {

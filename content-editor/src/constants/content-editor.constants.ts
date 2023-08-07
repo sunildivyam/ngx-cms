@@ -151,4 +151,10 @@ export const TOOLBAR_STYLES: Array<ToolbarItem> = [
     label: 'H6',
     icon: '',
   } as ToolbarItem,
+  {
+    name: 'markup',
+    title: 'Markup',
+    label: 'Markup',
+    icon: '',
+  } as ToolbarItem,
 ];
