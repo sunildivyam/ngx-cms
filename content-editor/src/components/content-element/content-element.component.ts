@@ -1,7 +1,7 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ToolbarItem } from '@annuadvent/ngx-common-ui/toolbar';
 import { EditorElement } from '../../interfaces/content-editor.interface';
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { ContentEditorService } from '../../services/content-editor.service';
 import { TOOLBAR_STYLES } from '../../constants/content-editor.constants';
 
@@ -23,6 +23,9 @@ export class ContentElementComponent implements OnInit, AfterContentChecked, OnC
     src: 'https://',
     alt: ''
   };
+
+  showMarkupModal: boolean = false;
+  markModalText: string = '';
 
   constructor(private cdr: ChangeDetectorRef, private ceService: ContentEditorService) { }
 
@@ -82,6 +85,14 @@ export class ContentElementComponent implements OnInit, AfterContentChecked, OnC
         this.isToolbar = !this.isToolbar;
         break;
 
+      case 'markup':
+        if (['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(this.editorElement?.tagName)) {
+          this.markModalText = this.editorElement?.data?.text || '';
+          this.showMarkupModal = true;
+        }
+
+        break;
+
       default:
         this.ceService.replaceElement(this.editorElement, item.name, this.fullTree);
         this.isToolbar = !this.isToolbar;
@@ -96,5 +107,11 @@ export class ContentElementComponent implements OnInit, AfterContentChecked, OnC
     this.ceService.replaceElement(this.editorElement, 'img', this.fullTree, image);
     this.toggleImageForm = false;
     this.isToolbar = !this.isToolbar;
+  }
+
+  public markupModalOk(): void {
+    this.showMarkupModal = false;
+    this.editorElement.data = this.editorElement.data || {};
+    this.editorElement.data.text = this.markModalText;
   }
 }

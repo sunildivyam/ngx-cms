@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { UtilsService } from '@annuadvent/ngx-core/utils';
 import { Category, SAMPLE_CATEGORY, CategoryFeatures } from '@annuadvent/ngx-cms/category';
 import { CATEGORY_EDITOR_TABS } from '../../constants/category-editor.constants';
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { MetaInfo } from '@annuadvent/ngx-common-ui/meta';
 import { Tab } from '@annuadvent/ngx-common-ui/tabs';
 
@@ -18,6 +18,7 @@ export class CategoryEditorComponent implements OnInit, OnChanges {
   @Input() readonlyTitle: boolean = false;
   @Input() enableUniqueId: boolean = true;
   @Input() enablePublish: boolean = true;
+  @Input() enableOpenai: boolean = true;
   @Input() enableDelete: boolean = true;
   @Input() enableReadonlyIdToggle: boolean = true;
 

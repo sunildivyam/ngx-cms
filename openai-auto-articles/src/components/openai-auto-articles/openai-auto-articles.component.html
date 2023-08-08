@@ -1,12 +1,12 @@
+<div class="row right">
+    <a class="primary" href="javascript:void(0)" (click)="toggleOpenaiConfigModal = true">Settings</a>
+    <span class="spacing-horizontal">|</span>
+    <a class="primary" href="javascript:void(0)" (click)="onBulkArticlesClick()">Bulk Articles</a>
+</div>
 <div class="row">
-    <div class="col-12 right">
-        <a class="primary" href="javascript:void(0)" (click)="onBulkArticlesClick()">Bulk Articles</a>
-    </div>
-    <div class="col-12">
-        <anu-openai-form [prompts]='historyPrompts' [selectedPromptText]='' [showHistory]='true'
-            (goClicked)="onNewPrompt($event)">
-        </anu-openai-form>
-    </div>
+    <anu-openai-form class="container" [prompts]="historyPrompts" [selectedPromptText]="" [showHistory]="false"
+        [showPrompts]="false" (goClicked)="onNewPrompt($event)">
+    </anu-openai-form>
 </div>
 
 <anu-collapsible *ngIf="errorMsg.length" [collapsed]="false" class="col-12 spacing-around-vertical"
@@ -33,15 +33,15 @@
     </div>
 </div>
 <!-- Articles Queue -->
-<ol>
+<ol class="spacing-half container">
     <li class="flex-container" *ngFor="let artQueue of openaiArticleQueue; let artQindex = index">
         <anu-collapsible [collapsed]="false" class="col-12" [hamBurgerClassNames]="['size-sm']"
             [isDropdownStyle]="true">
             <anu-collapsible-header>
                 <h2>({{artQindex + 1}}): {{artQueue.name}}</h2>
             </anu-collapsible-header>
-            <anu-collapsible-content class="row">
-                <table class="queue">
+            <anu-collapsible-content class="row queue-table-container">
+                <table class="queue queue-table">
                     <thead>
                         <tr>
                             <th class="queue_prompt">Prompt</th>
@@ -59,6 +59,10 @@
                         <tr *ngFor="let queueItem of artQueue.openaiPromptQueue; let pmtQindex = index">
                             <td>
                                 <small>{{queueItem.name}}</small>
+                                <label>Heading</label>
+                                <input [readonly]="queueItem.status !== 'notstarted'" type="text"
+                                    [(ngModel)]="queueItem.heading" />
+                                <label>Prompt</label>
                                 <input [readonly]="queueItem.status !== 'notstarted'" type="text"
                                     [(ngModel)]="queueItem.prompt.prompt" />
                             </td>
@@ -71,6 +75,8 @@
                             <td>
                                 <a *ngIf="queueItem.status === 'notstarted'" class="error" href="javascript:void(0)"
                                     (click)="removePromptFromQueue(artQindex, pmtQindex)">X</a>
+                                <a *ngIf="queueItem.status === 'completed'" class="success" href="javascript:void(0)"
+                                    (click)="showQueueItemResultModal(artQindex, pmtQindex)">⛲</a>
                             </td>
                         </tr>
 
@@ -110,8 +116,25 @@
 </ol>
 
 
-<anu-modal [enableCancel]="true" [enableOk]="true" [opened]="toggleBulkArticlesModal" title="Bulk Articles Prompts"
+<anu-modal [enableCancel]="true" [enableOk]="true" [opened]="toggleBulkArticlesModal" modalTitle="Bulk Articles Prompts"
     (okClick)="onGenerateBulkArticleQueues()" (cancelClick)="toggleBulkArticlesModal = false">
     <textarea placeholder="Article titles separated by 3 pipe symbols |||"
         [(ngModel)]="bulkArticlesPromptsText"></textarea>
+</anu-modal>
+
+<anu-modal [enableCancel]="true" [enableOk]="false" [opened]="toggleOpenaiConfigModal" modalTitle="Openai Configuration"
+    (cancelClick)="toggleOpenaiConfigModal = false" cancelLabel="Go Back">
+    <anu-openai-configuration></anu-openai-configuration>
+</anu-modal>
+
+
+<anu-modal [enableCancel]="true" [enableOk]="false" [opened]="!!currentMdText" modalTitle="Queue Item Result Preview"
+    (cancelClick)="currentMdConvertedText = currentMdText = ''" cancelLabel="Go Back">
+    <div class="row spacing-around-vertical">
+        <a class="btn" (click)="currentMdConvertedText = currentMdText">Markdown</a>
+        <a class="btn" (click)="currentMdConvertedText = html2json.md2jsonText(currentMdText)">JSON</a>
+        <a class="btn" (click)="currentMdConvertedText = html2json.md2html(currentMdText)">HTML</a>
+    </div>
+    <anu-code-block [enableEdit]="false" [language]="'markup'" [source]='currentMdConvertedText'>
+    </anu-code-block>
 </anu-modal>

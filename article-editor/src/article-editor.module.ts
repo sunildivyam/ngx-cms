@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TabsModule } from '@annuadvent/ngx-common-ui/tabs';
 import { CardModule } from '@annuadvent/ngx-common-ui/card';
-import { ImageFormModule } from '@annuadvent/ngx-common-ui/image-form';
+import { CmsImageFormModule } from '@annuadvent/ngx-cms/cms-image-form';
 import { ModalModule } from '@annuadvent/ngx-common-ui/modal';
 import { MetaModule } from '@annuadvent/ngx-common-ui/meta';
 import { MultiSelectBoxModule } from '@annuadvent/ngx-common-ui/multi-select-box';
@@ -23,7 +23,7 @@ import { FireAuthModule } from '@annuadvent/ngx-tools/fire-auth';
     TabsModule,
     ContentEditorModule,
     CardModule,
-    ImageFormModule,
+    CmsImageFormModule,
     ModalModule,
     MetaModule,
     ArticleModule,

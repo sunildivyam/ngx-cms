@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Article } from '@annuadvent/ngx-cms/article';
 import { UtilsService } from '@annuadvent/ngx-core/utils';
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import {
   EditorElement,
   EditorElementData,
 } from '@annuadvent/ngx-cms/content-editor';
 import { MetaInfo } from '@annuadvent/ngx-common-ui/meta';
 import { META_ALLOWED_VALUES } from '@annuadvent/ngx-common-ui/meta';
-import { AppConfig, AppConfigService } from '@annuadvent/ngx-core/app-config';
-import { OpenaiService, OPENAI_ID_PHRASES } from '@annuadvent/ngx-tools/openai';
+import { AppConfigService } from '@annuadvent/ngx-core/app-config';
+import { OpenaiConfigService, OpenaiService } from '@annuadvent/ngx-tools/openai';
 import {
   CONTENT_PROMPT_PREFIX,
   DESCRIPTION_PROMPT_PREFIX,
@@ -27,14 +27,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class ArticleEditorService {
   article$ = new BehaviorSubject<Article>({});
+  cleanupPhrases: string = '';
 
   constructor(
     private utilsService: UtilsService,
     private openaiService: OpenaiService,
+    private openaiConfigService: OpenaiConfigService,
     private html2JsonService: Html2JsonService,
     private appConfigService: AppConfigService,
     private fireAuthService: FireAuthService
-  ) { }
+  ) {
+
+    this.openaiConfigService.config.subscribe(config => {
+      this.cleanupPhrases = config.cleanupKeywords?.value;
+    });
+  }
 
   public get article(): Observable<Article> {
     return this.article$.asObservable();
@@ -42,8 +49,9 @@ export class ArticleEditorService {
 
   public createInitializedArticle(
     articleTitle: string,
-    appConfig: AppConfig
   ): Article {
+    const appConfig = this.appConfigService.config;
+
     return {
       id: this.utilsService.getUniqueFromString(articleTitle),
       metaInfo: {
@@ -84,7 +92,6 @@ export class ArticleEditorService {
   }
   public async generateArticleFromOpenai(
     articleTitle: string,
-    appConfig: AppConfig,
     keyWordsPromptPrefix: string,
     descriptionPromptPrefix: string,
     contentPromptPrefix: string
@@ -93,7 +100,6 @@ export class ArticleEditorService {
 
     const article: Article = this.createInitializedArticle(
       articleTitle,
-      appConfig
     );
     this.article$.next(article);
 
@@ -224,7 +230,7 @@ export class ArticleEditorService {
       const tempArticle: Article = this.utilsService.deepCopy(
         this.article$.value
       );
-      tempArticle.body = this.cleanAndFormatEditorEl(body, OPENAI_ID_PHRASES);
+      tempArticle.body = this.cleanAndFormatEditorEl(body);
       this.article$.next(tempArticle);
 
       // Delay if OPENAI_REQUEST_TIME_LIMIT API time limit is not completed yet.
@@ -248,7 +254,7 @@ export class ArticleEditorService {
   ): string {
     articleCategories = articleCategories || [];
 
-    return this.utilsService.getCanonicalUrl('genre', articleId);
+    return this.utilsService.getCanonicalUrl('stories', articleId);
   }
 
   public readDescriptionFromEditorElement(el: EditorElement): string {
@@ -310,9 +316,8 @@ export class ArticleEditorService {
 
   public cleanAndFormatEditorEl(
     jsonEl: EditorElement,
-    phrases: Array<string>
   ): EditorElement {
-    return this.formatEditorElement(this.cleanEditorEl(jsonEl, phrases));
+    return this.formatEditorElement(this.cleanEditorEl(jsonEl));
   }
 
   /**
@@ -321,13 +326,13 @@ export class ArticleEditorService {
    *
    * @public
    * @param {EditorElement} jsonEl
-   * @param {Array<string>} phrases
    * @returns {EditorElement}
    */
   public cleanEditorEl(
     jsonEl: EditorElement,
-    phrases: Array<string>
   ): EditorElement {
+    const phrases = this.cleanupPhrases.split(', ');
+
     if (!phrases || !phrases.length) return this.utilsService.deepCopy(jsonEl);
     if (!jsonEl) return jsonEl;
 
@@ -341,7 +346,7 @@ export class ArticleEditorService {
       return null;
     } else if (jsonEl?.children && jsonEl.children.length) {
       jsonEl.children = jsonEl.children
-        .map((el) => this.cleanEditorEl(el, phrases))
+        .map((el) => this.cleanEditorEl(el))
         .filter((el) => el !== null);
       return jsonEl;
     }

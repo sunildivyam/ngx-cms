@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EditorElement, EditorElementData } from '../interfaces/content-editor.interface';
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { SUPPORTED_TAGS } from '../constants/content-editor.constants';
 
 @Injectable({

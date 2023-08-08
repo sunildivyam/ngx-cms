@@ -5,7 +5,7 @@ import { ContentEditorModule } from '@annuadvent/ngx-cms/content-editor';
 
 import { TabsModule } from '@annuadvent/ngx-common-ui/tabs';
 import { CardModule } from '@annuadvent/ngx-common-ui/card';
-import { ImageFormModule } from '@annuadvent/ngx-common-ui/image-form';
+import { CmsImageFormModule } from '@annuadvent/ngx-cms/cms-image-form';
 import { ModalModule } from '@annuadvent/ngx-common-ui/modal';
 import { MetaModule } from '@annuadvent/ngx-common-ui/meta';
 import { MultiSelectBoxModule } from '@annuadvent/ngx-common-ui/multi-select-box';
@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
     TabsModule,
     ContentEditorModule,
     CardModule,
-    ImageFormModule,
+    CmsImageFormModule,
     ModalModule,
     MetaModule,
     MultiSelectBoxModule,

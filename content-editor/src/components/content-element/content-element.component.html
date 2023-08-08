@@ -45,9 +45,15 @@
 
 <!-- Image Form Modal-->
 <ng-container *ngIf="toggleImageForm">
-    <anu-modal title="Choose an image" [opened]="toggleImageForm" (cancelClick)="cancelImageModal()">
-        <anu-image-form [src]="imageInfo.src" [alt]="imageInfo.alt" (cancel)="cancelImageModal()"
-            (save)="saveImage($event)">
-        </anu-image-form>
+    <anu-modal [opened]="toggleImageForm" (cancelClick)="cancelImageModal()">
+        <anu-cms-image-form [src]="imageInfo.src" [alt]="imageInfo.alt" (cancel)="cancelImageModal()"
+            [enableOpenai]="enableOpenai" (save)="saveImage($event)">
+        </anu-cms-image-form>
     </anu-modal>
 </ng-container>
+
+<!-- markupModal -->
+<anu-modal *ngIf="editorElement?.data" [opened]="showMarkupModal" (cancelClick)="showMarkupModal = false"
+    (okClick)="markupModalOk()" okLabel="Update" [enableCancel]="true" [enableOk]="true" modalTitle="Update Markup">
+    <textarea [(ngModel)]="markModalText"></textarea>
+</anu-modal>

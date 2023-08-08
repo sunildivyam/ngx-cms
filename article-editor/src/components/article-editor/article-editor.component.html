@@ -65,9 +65,9 @@
                 </div>
             </anu-card-body>
         </anu-card>
-        <anu-modal [opened]="toggleImageForm" title="Choose an image" (cancelClick)="cancelImageChange()">
-            <anu-image-form [src]="article?.image?.src" [alt]="article?.image?.alt" (cancel)="cancelImageChange()"
-                (save)="saveImageChange($event)"></anu-image-form>
+        <anu-modal [opened]="toggleImageForm" (cancelClick)="cancelImageChange()">
+            <anu-cms-image-form [src]="article?.image?.src" [alt]="article?.image?.alt" (cancel)="cancelImageChange()" [enableOpenai]="enableOpenai"
+                (save)="saveImageChange($event)"></anu-cms-image-form>
         </anu-modal>
 
         <section class="row spacing-vertical right">

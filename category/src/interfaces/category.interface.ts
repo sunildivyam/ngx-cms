@@ -1,4 +1,4 @@
-import { ImageInfo } from '@annuadvent/ngx-common-ui/image-form';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { MetaInfo } from '@annuadvent/ngx-common-ui/meta';
 
 export interface Category {
