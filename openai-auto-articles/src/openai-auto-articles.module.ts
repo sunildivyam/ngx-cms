@@ -4,15 +4,19 @@ import { OpenaiAutoArticlesComponent } from './components/openai-auto-articles/o
 import { OpenaiModule } from '@annuadvent/ngx-tools/openai';
 import { FormsModule } from '@angular/forms';
 import { SpinnerModule } from '@annuadvent/ngx-common-ui/spinner';
+import { CardModule } from '@annuadvent/ngx-common-ui/card';
 import { CollapsibleModule } from '@annuadvent/ngx-common-ui/collapsible';
 import { ModalModule } from '@annuadvent/ngx-common-ui/modal';
 import { CodeBlockModule } from '@annuadvent/ngx-common-ui/code-block';
+import { AiArticlesComponent } from './components/ai-articles/ai-articles.component';
+import { QueueModule } from '@annuadvent/ngx-tools/queue';
 
 
 
 @NgModule({
   declarations: [
-    OpenaiAutoArticlesComponent
+    OpenaiAutoArticlesComponent,
+    AiArticlesComponent,
   ],
   imports: [
     CommonModule,
@@ -22,9 +26,12 @@ import { CodeBlockModule } from '@annuadvent/ngx-common-ui/code-block';
     CollapsibleModule,
     ModalModule,
     CodeBlockModule,
+    QueueModule,
+    CardModule,
   ],
   exports: [
-    OpenaiAutoArticlesComponent
+    OpenaiAutoArticlesComponent,
+    AiArticlesComponent,
   ]
 })
 export class OpenaiAutoArticlesModule { }
