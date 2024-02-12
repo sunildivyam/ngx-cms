@@ -1,16 +1,28 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ToolbarItem } from '@annuadvent/ngx-common-ui/toolbar';
-import { EditorElement } from '../../interfaces/content-editor.interface';
-import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
-import { ContentEditorService } from '../../services/content-editor.service';
-import { TOOLBAR_STYLES } from '../../constants/content-editor.constants';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from "@angular/core";
+import { ToolbarItem } from "@annuadvent/ngx-common-ui/toolbar";
+import { EditorElement } from "../../interfaces/content-editor.interface";
+import { ImageInfo } from "@annuadvent/ngx-cms/cms-image-form";
+import { ContentEditorService } from "../../services/content-editor.service";
+import { TOOLBAR_STYLES } from "../../constants/content-editor.constants";
 
 @Component({
-  selector: 'anu-content-element',
-  templateUrl: './content-element.component.html',
-  styleUrls: ['./content-element.component.scss']
+  selector: "anu-content-element",
+  templateUrl: "./content-element.component.html",
+  styleUrls: ["./content-element.component.scss"],
 })
-export class ContentElementComponent implements OnInit, AfterContentChecked, OnChanges {
+export class ContentElementComponent
+  implements OnInit, AfterContentChecked, OnChanges
+{
   @Input() editorElement: EditorElement = {} as EditorElement;
   @Input() fullTree: EditorElement = {} as EditorElement;
   @Input() enableOpenai: boolean = false;
@@ -20,14 +32,17 @@ export class ContentElementComponent implements OnInit, AfterContentChecked, OnC
   styleToolbar: Array<ToolbarItem> = TOOLBAR_STYLES;
   toggleImageForm: boolean = false;
   imageInfo: ImageInfo = {
-    src: 'https://',
-    alt: ''
+    src: "https://",
+    alt: "",
   };
 
   showMarkupModal: boolean = false;
-  markModalText: string = '';
+  markModalText: string = "";
 
-  constructor(private cdr: ChangeDetectorRef, private ceService: ContentEditorService) { }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private ceService: ContentEditorService
+  ) {}
 
   ngOnInit(): void {
     this.setStyleToolbarItems();
@@ -42,7 +57,7 @@ export class ContentElementComponent implements OnInit, AfterContentChecked, OnC
   }
 
   private setStyleToolbarItems() {
-    if (this.editorElement?.tagName === 'li') {
+    if (this.editorElement?.tagName === "li") {
       // this.styleToolbar = this.styleToolbar.filter(item => ['ul', 'ol'].includes(item.name)) // disable non list elements
     }
   }
@@ -75,26 +90,40 @@ export class ContentElementComponent implements OnInit, AfterContentChecked, OnC
 
   public styleToolbarSelected(item: ToolbarItem) {
     switch (item.name) {
-      case 'img':
+      case "img":
         this.toggleImageForm = true;
-        this.imageInfo.alt = this.editorElement?.data?.alt || this.editorElement?.data?.text;
+        this.imageInfo.alt =
+          this.editorElement?.data?.alt || this.editorElement?.data?.text;
         break;
 
-      case 'anu-code-block':
-        this.ceService.replaceElement(this.editorElement, item.name, this.fullTree, { source: '<h1>Sample source code</h1>', language: 'markup' });
+      case "anu-code-block":
+        this.ceService.replaceElement(
+          this.editorElement,
+          item.name,
+          this.fullTree,
+          { source: "<h1>Sample source code</h1>", language: "markup" }
+        );
         this.isToolbar = !this.isToolbar;
         break;
 
-      case 'markup':
-        if (['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(this.editorElement?.tagName)) {
-          this.markModalText = this.editorElement?.data?.text || '';
+      case "markup":
+        if (
+          ["p", "li", "h1", "h2", "h3", "h4", "h5", "h6"].includes(
+            this.editorElement?.tagName
+          )
+        ) {
+          this.markModalText = this.editorElement?.data?.text || "";
           this.showMarkupModal = true;
         }
 
         break;
 
       default:
-        this.ceService.replaceElement(this.editorElement, item.name, this.fullTree);
+        this.ceService.replaceElement(
+          this.editorElement,
+          item.name,
+          this.fullTree
+        );
         this.isToolbar = !this.isToolbar;
     }
   }
@@ -104,7 +133,12 @@ export class ContentElementComponent implements OnInit, AfterContentChecked, OnC
   }
 
   public saveImage(image: ImageInfo) {
-    this.ceService.replaceElement(this.editorElement, 'img', this.fullTree, image);
+    this.ceService.replaceElement(
+      this.editorElement,
+      "img",
+      this.fullTree,
+      image
+    );
     this.toggleImageForm = false;
     this.isToolbar = !this.isToolbar;
   }

@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
-import { EditorElement, EditorElementData } from '../interfaces/content-editor.interface';
-import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
-import { SUPPORTED_TAGS } from '../constants/content-editor.constants';
+import { Injectable } from "@angular/core";
+import {
+  EditorElement,
+  EditorElementData,
+} from "../interfaces/content-editor.interface";
+import { ImageInfo } from "@annuadvent/ngx-cms/cms-image-form";
+import { SUPPORTED_TAGS } from "../constants/content-editor.constants";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ContentEditorService {
-
-  constructor() { }
+  constructor() {}
 
   private getEditorElementName(elType: string): string {
     return `${elType}-${Date.now()}`;
@@ -43,7 +45,7 @@ export class ContentEditorService {
     const parent = this.findParent(el, fullTree);
     const index = parent.children.indexOf(el);
     //Remove focus from all other elements
-    parent.children.forEach(ch => ch.focused = false);
+    parent.children.forEach((ch) => (ch.focused = false));
 
     //Add element with focus
     parent.children.splice(index + 1, 0, {
@@ -51,13 +53,16 @@ export class ContentEditorService {
       name: this.getEditorElementName(oldEl.tagName),
       focused: true,
       data: {
-        src: '',
-        url: '',
-        text: '',
-        alt: '',
-        source: SUPPORTED_TAGS.CODE_BLOCK === oldEl.tagName ? '<h1>Sample source code</h1>' : '',
-        language: SUPPORTED_TAGS.CODE_BLOCK === oldEl.tagName ? 'markup' : '',
-      } as EditorElementData
+        src: "",
+        url: "",
+        text: "",
+        alt: "",
+        source:
+          SUPPORTED_TAGS.CODE_BLOCK === oldEl.tagName
+            ? "<h1>Sample source code</h1>"
+            : "",
+        language: SUPPORTED_TAGS.CODE_BLOCK === oldEl.tagName ? "markup" : "",
+      } as EditorElementData,
     } as EditorElement);
   }
 
@@ -70,7 +75,7 @@ export class ContentEditorService {
     // Find the parent of selected Element
     const parent = this.findParent(el, fullTree);
     if (!parent) {
-      console.error('No Parent found or Element is Root element itself.');
+      console.error("No Parent found or Element is Root element itself.");
       return;
     }
     const index = parent.children.indexOf(el);
@@ -78,9 +83,14 @@ export class ContentEditorService {
     parent.children.splice(index, 1);
 
     if (parent.children.length) {
-      const nextOrPreviousItemIndex = index >= parent.children.length ? index - 1 : index;
+      const nextOrPreviousItemIndex =
+        index >= parent.children.length ? index - 1 : index;
       const childToFocus = parent.children[nextOrPreviousItemIndex];
-      if (childToFocus.isContainer && childToFocus.children && childToFocus.children.length) {
+      if (
+        childToFocus.isContainer &&
+        childToFocus.children &&
+        childToFocus.children.length
+      ) {
         childToFocus.children[childToFocus.children.length - 1].focused = true;
       } else {
         childToFocus.focused = true;
@@ -95,15 +105,19 @@ export class ContentEditorService {
       fullTree.focused = false;
     }
     if (fullTree.children && fullTree.children.length) {
-      fullTree.children.forEach(child => this.setFocusOffAll(child))
+      fullTree.children.forEach((child) => this.setFocusOffAll(child));
     }
   }
 
-  public replaceElement(el: EditorElement, tagName: string, fullTree: EditorElement, data: ImageInfo | any = null) {
-
+  public replaceElement(
+    el: EditorElement,
+    tagName: string,
+    fullTree: EditorElement,
+    data: ImageInfo | any = null
+  ) {
     if (el.tagName === SUPPORTED_TAGS.LIST_ITEM) {
       const parent = this.findParent(el, fullTree);
-      if (['ol', 'ul'].includes(tagName)) {
+      if (["ol", "ul"].includes(tagName)) {
         if (parent.tagName !== tagName) {
           parent.name = this.getEditorElementName(tagName);
           parent.tagName = tagName;
@@ -129,7 +143,7 @@ export class ContentEditorService {
         parentOfParent.children.splice(indexOfParent, 0, newItem);
       }
     } else {
-      if (['ol', 'ul'].includes(tagName)) {
+      if (["ol", "ul"].includes(tagName)) {
         const newListItem = { ...el };
         newListItem.tagName = SUPPORTED_TAGS.LIST_ITEM;
         newListItem.name = this.getEditorElementName(SUPPORTED_TAGS.LIST_ITEM);
@@ -159,7 +173,6 @@ export class ContentEditorService {
         el.name = this.getEditorElementName(tagName);
       }
     }
-
 
     /*
       if source LI

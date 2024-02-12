@@ -1,12 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CodeBlockInfo } from '@annuadvent/ngx-common-ui/code-block';
-import { SUPPORTED_TAGS } from '../../constants/content-editor.constants';
-import { EditorElement, EditorElementData } from '../../interfaces/content-editor.interface';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { CodeBlockInfo } from "@annuadvent/ngx-common-ui/code-block";
+import { SUPPORTED_TAGS } from "../../constants/content-editor.constants";
+import {
+  EditorElement,
+  EditorElementData,
+} from "../../interfaces/content-editor.interface";
 
 @Component({
-  selector: 'anu-leaf-element',
-  templateUrl: './leaf-element.component.html',
-  styleUrls: ['./leaf-element.component.scss']
+  selector: "anu-leaf-element",
+  templateUrl: "./leaf-element.component.html",
+  styleUrls: ["./leaf-element.component.scss"],
 })
 export class LeafElementComponent implements OnInit {
   @Input() value: EditorElement = {} as EditorElement;
@@ -18,13 +21,12 @@ export class LeafElementComponent implements OnInit {
 
   /**
    * checks if CodeBlock modal is open, then prevent from reciving keydown.enter and keydown.backspace events.
-  */
+   */
   sourceModalOpenStatus: boolean = false;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public enterPressed(event: any, value: EditorElement): void {
     //checks if CodeBlock modal is open, then prevent from reciving keydown.enter and keydown.backspace events
@@ -35,7 +37,11 @@ export class LeafElementComponent implements OnInit {
   }
 
   public backspacePressed(event: any): void {
-    if ((!this.value?.data?.text || this.value?.tagName === SUPPORTED_TAGS.CODE_BLOCK) && !this.sourceModalOpenStatus) {
+    if (
+      (!this.value?.data?.text ||
+        this.value?.tagName === SUPPORTED_TAGS.CODE_BLOCK) &&
+      !this.sourceModalOpenStatus
+    ) {
       event.preventDefault();
       this.backspaceKeyPressed.emit(this.value);
     }
@@ -56,13 +62,16 @@ export class LeafElementComponent implements OnInit {
   }
 
   public codeBlockChanged(codeBlockInfo: CodeBlockInfo) {
-    this.value.data = { source: codeBlockInfo.source, language: codeBlockInfo.language } as EditorElementData
+    this.value.data = {
+      source: codeBlockInfo.source,
+      language: codeBlockInfo.language,
+    } as EditorElementData;
     this.changed.emit(this.value);
   }
 
   /**
    * checks if CodeBlock modal is open, then prevent from reciving keydown.enter and keydown.backspace events.
-  */
+   */
   public sourceModalOpenStatusChanged(opened: boolean) {
     this.sourceModalOpenStatus = opened;
   }
