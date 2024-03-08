@@ -1,24 +1,22 @@
 :host {
-    overflow: hidden;
+  overflow: hidden;
 
-    .article-card {
-        background-color: var(--anu-primary-deep-light);
-        padding-left: calc(var(--anu-spacing) * 2);
+  .article-card {
+    padding-left: calc(var(--anu-spacing) * 2);
+  }
+
+  .moreinfo-card {
+    background-color: var(--anu-secondary-lightest);
+  }
+
+  .tab-body {
+    .tab-item-body {
+      display: none;
+      flex-direction: column;
+
+      &.active {
+        display: flex;
+      }
     }
-
-    .moreinfo-card {
-        background-color: var(--anu-primary-deep-light);
-    }
-
-    .tab-body {
-
-        .tab-item-body {
-            display: none;
-            flex-direction: column;
-
-            &.active {
-                display: flex;
-            }
-        }
-    }
+  }
 }
