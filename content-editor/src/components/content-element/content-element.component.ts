@@ -90,6 +90,15 @@ export class ContentElementComponent
 
   public styleToolbarSelected(item: ToolbarItem) {
     switch (item.name) {
+      case "table":
+        this.ceService.replaceElement(
+          this.editorElement,
+          "anu-code-block", // item.name,
+          this.fullTree,
+          { source: "<h1>Sample source code</h1>", language: "markup" }
+        );
+        this.isToolbar = !this.isToolbar;
+        break;
       case "img":
         this.toggleImageForm = true;
         this.imageInfo.alt =

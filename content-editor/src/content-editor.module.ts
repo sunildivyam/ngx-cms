@@ -12,6 +12,8 @@ import { FormatInlineDirective } from "./directives/format-inline.directive";
 import { ContentEditorComponent } from "./components/content-editor/content-editor.component";
 import { ContentElementComponent } from "./components/content-element/content-element.component";
 import { LeafElementComponent } from "./components/leaf-element/leaf-element.component";
+import { TableComponent } from "./components/table/table.component";
+import { TableFormComponent } from "./components/table-form/table-form.component";
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { LeafElementComponent } from "./components/leaf-element/leaf-element.com
     ContentElementComponent,
     FormatInlineDirective,
     LeafElementComponent,
+    TableComponent,
+    TableFormComponent,
   ],
   imports: [
     CommonModule,
@@ -38,6 +42,8 @@ import { LeafElementComponent } from "./components/leaf-element/leaf-element.com
     ContentElementComponent,
     FormatInlineDirective,
     LeafElementComponent,
+    TableComponent,
+    TableFormComponent,
   ],
 })
 export class ContentEditorModule {}

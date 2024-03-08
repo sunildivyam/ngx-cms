@@ -10,3 +10,6 @@ export * from "./src/components/leaf-element/leaf-element.component";
 export * from "./src/services/content-editor.service";
 export * from "./src/services/html2json.service";
 export * from "./src/services/selection.service";
+export * from "./src/components/table/table.component";
+export * from "./src/components/table-form/table-form.component";
+export * from "./src/interfaces/table.interface";
