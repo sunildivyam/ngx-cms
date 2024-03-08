@@ -1,133 +1,233 @@
 <div class="row right">
-    <!-- Open ai Configuration -->
-    <a class="primary" href="javascript:void(0)" (click)="toggleOpenaiConfigModal = true">Settings</a>
-    <span class="spacing-horizontal">|</span>
-    <!-- Add Bulk Articles to Queue -->
-    <a class="primary" href="javascript:void(0)" (click)="toggleBulkArticlesModal = true">Bulk Articles</a>
+  <!-- Open ai Configuration -->
+  <a
+    class="primary"
+    href="javascript:void(0)"
+    (click)="toggleOpenaiConfigModal = true"
+    >Settings</a
+  >
+  <span class="spacing-h">|</span>
+  <!-- Add Bulk Articles to Queue -->
+  <a
+    class="primary"
+    href="javascript:void(0)"
+    (click)="toggleBulkArticlesModal = true"
+    >Bulk Articles</a
+  >
 </div>
 
 <div class="row">
-    <!-- Add Single Article to Queue -->
-    <anu-openai-form class="container" [prompts]="historyPrompts" [selectedPromptText]="" [showHistory]="false"
-        [showPrompts]="false" (goClicked)="onNewPrompt($event)">
-    </anu-openai-form>
+  <!-- Add Single Article to Queue -->
+  <anu-openai-form
+    class="container"
+    [prompts]="historyPrompts"
+    [selectedPromptText]=""
+    [showHistory]="false"
+    [showPrompts]="false"
+    (goClicked)="onNewPrompt($event)"
+  >
+  </anu-openai-form>
 </div>
 
+<anu-queue-status
+  class="row spacing-around-v"
+  (startClick)="startArticlesQueue($event)"
+  [queue]="aiArticlesService.articlesQ"
+></anu-queue-status>
 
-<anu-queue-status class="row spacing-around-vertical" (startClick)="startArticlesQueue($event)"
-    [queue]="aiArticlesService.articlesQ"></anu-queue-status>
-
-<anu-collapsible *ngIf="errors?.length" [collapsed]="false" class="col-12 spacing-around-vertical shadow"
-    [hamBurgerClassNames]="['size-sm']" [isDropdownStyle]="true">
-    <anu-collapsible-header>
-        Queue Messagees
-    </anu-collapsible-header>
-    <anu-collapsible-content class="row">
-        <ol>
-            <li *ngFor="let msg of errors" [innerHTML]="msg"></li>
-        </ol>
-    </anu-collapsible-content>
+<anu-collapsible
+  *ngIf="errors?.length"
+  [collapsed]="false"
+  class="col-12 spacing-around-v shadow"
+  [hamBurgerClassNames]="['size-sm']"
+  [isDropdownStyle]="true"
+>
+  <anu-collapsible-header> Queue Messagees </anu-collapsible-header>
+  <anu-collapsible-content class="row">
+    <ol>
+      <li *ngFor="let msg of errors" [innerHTML]="msg"></li>
+    </ol>
+  </anu-collapsible-content>
 </anu-collapsible>
 
-<anu-collapsible *ngFor="let artQItem of aiArticlesService.articlesQ.queueValue; let artQIndex = index"
-    [collapsed]="false" class="container shadow spacing-around-vertical border-round"
-    [hamBurgerClassNames]="['size-sm']" [isDropdownStyle]="true">
-    <anu-collapsible-header class="spacing">
-        <h2>({{artQIndex + 1}}): {{artQItem.id}}</h2>
-    </anu-collapsible-header>
-    <anu-collapsible-content class="container">
-
-        <div class="row stretch">
-            <div>
-                <anu-queue-status class="row" [queue]="artQItem?.data"></anu-queue-status>
-            </div>
-            <a *ngIf="articleSaveStatus[artQItem.id] === false" class="success" href="javascript:void(0)"
-                (click)="saveArticle(artQItem)"><strong>Save</strong></a>
-        </div>
-
-        <div class="row">
-            <anu-card
-                class="col-sm-12 col-md-6 col-lg-6 border border-round overflow-hidden prompt-item spacing-around-vertical"
-                *ngFor="let pQItem of artQItem.data.queueValue; let pmtQindex = index;">
-                <anu-card-title class="primary-darker-grad spacing-half">
-                    <h3 class="accent-deep-light">{{pQItem.id}}</h3>
-                </anu-card-title>
-                <anu-card-body class="container relative spacing-half">
-                    <!-- Prompt Heading -->
-                    <div class="col-12" *ngIf="pQItem.data.prompt.promptType === 'content'">
-                        <label>Heading</label>
-                        <input [readonly]="pQItem.status !== 'notstarted'" type="text"
-                            [(ngModel)]="pQItem.data.heading" />
-                    </div>
-
-                    <!-- Prompt's prompt text -->
-                    <div class="col-12">
-                        <label>Prompt</label>
-                        <input [readonly]="pQItem.status !== 'notstarted'" type="text"
-                            [(ngModel)]="pQItem.data.prompt.prompt" />
-                    </div>
-
-                    <!-- loader -->
-                    <anu-spinner [show]="pQItem.status === 'inprogress'"></anu-spinner>
-                </anu-card-body>
-                <anu-card-footer class="primary-lightest-grad">
-                    <div class="row stretch spacing">
-                        <div class=""
-                            [ngClass]="{'error': pQItem.status === 'failed', 'success': pQItem.status === 'completed', 'warning relative': pQItem.status === 'inprogress'}">
-                            <strong>{{pQItem.status}}</strong>
-                        </div>
-                        <div class="">{{pQItem.timeEllapsed}}s</div>
-
-                        <div class="">
-                            <a *ngIf="pQItem.status === 'notstarted'" class="success" href="javascript:void(0)"
-                                (click)="updatePromptInQueue(artQIndex, pQItem)"><strong>Update</strong></a>
-                        </div>
-
-                        <div class="">
-                            <a *ngIf="pQItem.status === 'notstarted'" class="error" href="javascript:void(0)"
-                                (click)="removePromptFromQueue(artQIndex, pQItem)"><strong>X</strong></a>
-
-                            <a *ngIf="pQItem.status === 'completed'" class="success" href="javascript:void(0)"
-                                (click)="showQueueItemResultModal(artQIndex, pQItem)">⛲</a>
-                        </div>
-                    </div>
-                </anu-card-footer>
-            </anu-card>
-
-            <anu-card *ngIf="artQItem.status !== 'completed'"
-                class="col-sm-12 col-md-6 col-lg-6 border border-round overflow-hidden prompt-item spacing-around-vertical">
-                <anu-card-body class="container relative spacing-half">
-                    <a class="success" href="javascript:void(0)" class="btn primary"
-                        (click)="addPromptInQueue(artQIndex)"><strong>Add Prompt</strong></a>
-                </anu-card-body>
-            </anu-card>
-
-        </div>
-    </anu-collapsible-content>
-</anu-collapsible>
-
-
-
-
-<anu-modal [enableCancel]="true" [enableOk]="true" [opened]="toggleBulkArticlesModal" modalTitle="Bulk Articles Prompts"
-    (okClick)="onGenerateBulkArticleQueues()" (cancelClick)="toggleBulkArticlesModal = false">
-    <textarea placeholder="Article titles separated by 3 pipe symbols |||"
-        [(ngModel)]="bulkArticlesPromptsText"></textarea>
-</anu-modal>
-
-<anu-modal [enableCancel]="true" [enableOk]="false" [opened]="toggleOpenaiConfigModal" modalTitle="Openai Configuration"
-    (cancelClick)="toggleOpenaiConfigModal = false" cancelLabel="Go Back">
-    <anu-openai-configuration></anu-openai-configuration>
-</anu-modal>
-
-
-<anu-modal [enableCancel]="true" [enableOk]="false" [opened]="!!currentMdText" modalTitle="Queue Item Result Preview"
-    (cancelClick)="currentMdConvertedText = currentMdText = ''" cancelLabel="Go Back">
-    <div class="row spacing-around-vertical">
-        <a class="btn" (click)="currentMdConvertedText = currentMdText">Markdown</a>
-        <a class="btn" (click)="currentMdConvertedText = html2json.md2jsonText(currentMdText)">JSON</a>
-        <a class="btn" (click)="currentMdConvertedText = html2json.md2html(currentMdText)">HTML</a>
+<anu-collapsible
+  *ngFor="
+    let artQItem of aiArticlesService.articlesQ.queueValue;
+    let artQIndex = index
+  "
+  [collapsed]="false"
+  class="container shadow spacing-around-v border-round"
+  [hamBurgerClassNames]="['size-sm']"
+  [isDropdownStyle]="true"
+>
+  <anu-collapsible-header class="spacing">
+    <h2>({{ artQIndex + 1 }}): {{ artQItem.id }}</h2>
+  </anu-collapsible-header>
+  <anu-collapsible-content class="container">
+    <div class="row stretch">
+      <div>
+        <anu-queue-status
+          class="row"
+          [queue]="artQItem?.data"
+        ></anu-queue-status>
+      </div>
+      <a
+        *ngIf="articleSaveStatus[artQItem.id] === false"
+        class="success"
+        href="javascript:void(0)"
+        (click)="saveArticle(artQItem)"
+        ><strong>Save</strong></a
+      >
     </div>
-    <anu-code-block [enableEdit]="false" [language]="'markup'" [source]='currentMdConvertedText'>
-    </anu-code-block>
+
+    <div class="row">
+      <anu-card
+        class="col-sm-12 col-md-6 col-lg-6 border border-round overflow-hidden prompt-item spacing-around-v"
+        *ngFor="let pQItem of artQItem.data.queueValue; let pmtQindex = index"
+      >
+        <anu-card-title class="primary-darker-grad spacing-half">
+          <h3 class="accent-deep-light">{{ pQItem.id }}</h3>
+        </anu-card-title>
+        <anu-card-body class="container relative spacing-half">
+          <!-- Prompt Heading -->
+          <div
+            class="col-12"
+            *ngIf="pQItem.data.prompt.promptType === 'content'"
+          >
+            <label>Heading</label>
+            <input
+              [readonly]="pQItem.status !== 'notstarted'"
+              type="text"
+              [(ngModel)]="pQItem.data.heading"
+            />
+          </div>
+
+          <!-- Prompt's prompt text -->
+          <div class="col-12">
+            <label>Prompt</label>
+            <input
+              [readonly]="pQItem.status !== 'notstarted'"
+              type="text"
+              [(ngModel)]="pQItem.data.prompt.prompt"
+            />
+          </div>
+
+          <!-- loader -->
+          <anu-spinner [show]="pQItem.status === 'inprogress'"></anu-spinner>
+        </anu-card-body>
+        <anu-card-footer class="primary-lightest-grad">
+          <div class="row stretch spacing">
+            <div
+              class=""
+              [ngClass]="{
+                error: pQItem.status === 'failed',
+                success: pQItem.status === 'completed',
+                'warning relative': pQItem.status === 'inprogress'
+              }"
+            >
+              <strong>{{ pQItem.status }}</strong>
+            </div>
+            <div class="">{{ pQItem.timeEllapsed }}s</div>
+
+            <div class="">
+              <a
+                *ngIf="pQItem.status === 'notstarted'"
+                class="success"
+                href="javascript:void(0)"
+                (click)="updatePromptInQueue(artQIndex, pQItem)"
+                ><strong>Update</strong></a
+              >
+            </div>
+
+            <div class="">
+              <a
+                *ngIf="pQItem.status === 'notstarted'"
+                class="error"
+                href="javascript:void(0)"
+                (click)="removePromptFromQueue(artQIndex, pQItem)"
+                ><strong>X</strong></a
+              >
+
+              <a
+                *ngIf="pQItem.status === 'completed'"
+                class="success"
+                href="javascript:void(0)"
+                (click)="showQueueItemResultModal(artQIndex, pQItem)"
+                >⛲</a
+              >
+            </div>
+          </div>
+        </anu-card-footer>
+      </anu-card>
+
+      <anu-card
+        *ngIf="artQItem.status !== 'completed'"
+        class="col-sm-12 col-md-6 col-lg-6 border border-round overflow-hidden prompt-item spacing-around-v"
+      >
+        <anu-card-body class="container relative spacing-half">
+          <a
+            class="success"
+            href="javascript:void(0)"
+            class="btn primary"
+            (click)="addPromptInQueue(artQIndex)"
+            ><strong>Add Prompt</strong></a
+          >
+        </anu-card-body>
+      </anu-card>
+    </div>
+  </anu-collapsible-content>
+</anu-collapsible>
+
+<anu-modal
+  [enableCancel]="true"
+  [enableOk]="true"
+  [opened]="toggleBulkArticlesModal"
+  modalTitle="Bulk Articles Prompts"
+  (okClick)="onGenerateBulkArticleQueues()"
+  (cancelClick)="toggleBulkArticlesModal = false"
+>
+  <textarea
+    placeholder="Article titles separated by 3 pipe symbols |||"
+    [(ngModel)]="bulkArticlesPromptsText"
+  ></textarea>
+</anu-modal>
+
+<anu-modal
+  [enableCancel]="true"
+  [enableOk]="false"
+  [opened]="toggleOpenaiConfigModal"
+  modalTitle="Openai Configuration"
+  (cancelClick)="toggleOpenaiConfigModal = false"
+  cancelLabel="Go Back"
+>
+  <anu-openai-configuration></anu-openai-configuration>
+</anu-modal>
+
+<anu-modal
+  [enableCancel]="true"
+  [enableOk]="false"
+  [opened]="!!currentMdText"
+  modalTitle="Queue Item Result Preview"
+  (cancelClick)="currentMdConvertedText = currentMdText = ''"
+  cancelLabel="Go Back"
+>
+  <div class="row spacing-around-v">
+    <a class="btn" (click)="currentMdConvertedText = currentMdText">Markdown</a>
+    <a
+      class="btn"
+      (click)="currentMdConvertedText = html2json.md2jsonText(currentMdText)"
+      >JSON</a
+    >
+    <a
+      class="btn"
+      (click)="currentMdConvertedText = html2json.md2html(currentMdText)"
+      >HTML</a
+    >
+  </div>
+  <anu-code-block
+    [enableEdit]="false"
+    [language]="'markup'"
+    [source]="currentMdConvertedText"
+  >
+  </anu-code-block>
 </anu-modal>
