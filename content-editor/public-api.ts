@@ -13,3 +13,5 @@ export * from "./src/services/selection.service";
 export * from "./src/components/table/table.component";
 export * from "./src/components/table-form/table-form.component";
 export * from "./src/interfaces/table.interface";
+export * from "./src/constants/table.constants";
+export * from "./src/enums/table.enums";

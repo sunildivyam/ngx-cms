@@ -1,11 +1,13 @@
+import { TableInfo } from './table.interface';
+
 export interface EditorElementData {
-  href?: string;
-  src?: string;
-  alt?: string;
-  text?: string;
-  source?: string;
-  language?: string;
-  enableEdit?: string;
+  src?: string; // Image src
+  alt?: string; // Image alt
+  text?: string; // html/text content
+  source?: string; // Code block
+  language?: string; // Code block
+  enableEdit?: string; // Code block
+  tableData?: TableInfo; // Table Data
 }
 
 export interface EditorElement {

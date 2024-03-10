@@ -16,6 +16,7 @@ export enum SUPPORTED_TAGS {
   UNORDERED_LIST = "ul",
   ARTICLE = "article",
   DIV = "div",
+  TABLE = "anu-table",
 }
 
 export const EDITOR_ROOT_ELEMENT: EditorElement = {
@@ -93,7 +94,7 @@ export const TOOLBAR_STYLES: Array<ToolbarItem> = [
       "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAxJJREFUaEPtmkuoTlEUx383YkAoQmQgI49SQh4lihJKJt4DZUCRQh6RyECeA4+594SSCTOPKPIeeJRHyHtiJAYM2H+tneN07tnfd86+93y3zp6c7579Wr+91trrtNZtI9x6AquApcAYoFd4Su6It8AMQM/SrS2wwlDgEjC29E7/LxANIg9AJ3+nA4T3KFEg8gDWAYdtt5/ADuAM8KmkNnYBO22N0hB5ADr9ibbRVmBfScH99CSA3pWCyAP4BvS2XYc4R/7cQQBa9p059utm98gD+J1YLOTszeyb1oCfWwiilQAKaaLVAJqGqAJgo/OtgwGba9ixqwCYBNxuwGkagqgCQLIrus+JAVEVQF/gLDC3LERVAF5uBcqpwKB2QLYkIvbwrDFVA4QUEIxFNUDoCEv21xrwBxjzW6gZpdQaqDXQjL1kjK1NqDah2oT+nUDmVV5/SpQ0kdD0+haqb6GQjQT6axPq0iZUUvudM72q7/xodGkAnwVQ3uZJapdZwDjLUl8FlgWk+AUcA9bbuOtWMMmatsIyEy+BC27eAGClDTwJfGlvrzSA93otqInJJmHWuFzOPWADcDMA8B0YDChNr3bfJbQmZMxRukSCdwMuAgusFvfYxo4HHsQGWOhOZXViUZ2WTu0ucM3eq6qzPwGg18oB3UoJoyqQqkFqnQbgKzdelqfAKEvabkoIqAKJ14BenwMWJfr7OFN5D+jZ8gCyY2lphFVkJLBM8ZDZuMwtmgbkcC9Sqpb6R5sPFNHANmCPqzMfADabzb8yqCOA+qMB5PmnnLgIwDDgEdAd0O/Z7kDO202l8pL8JRrAiYwc/hJgegkNyHx0pW4H1gKLgSnASAc2PzZA6BotogEBqHj+xhy7v9UJ5gFy/Kga6CiAr86JTwPLzUZnAle6GoCiuQKTApX+B0PBM08DR4GPKaeU7/ytKReNxEVNSBpQ6+duHQW6H/Z3HkDWhaLKzuUsgL02WgHnYWqmHG0y8MFujmS37vOBwA2/sHX2AHbbbz29wGmhplnN7Blwyr6L/DdUFsBx4Lk6/gDA1w1Abv2dCQAAAABJRU5ErkJggg==",
   } as ToolbarItem,
   {
-    name: "table",
+    name: "anu-table",
     title: "Table",
     label: "",
     icon: "",

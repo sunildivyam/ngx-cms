@@ -1,1 +1,75 @@
-<p>table works!</p>
+<anu-toolbar
+  class="toolbar"
+  *ngIf="enableEdit"
+  [items]="toolbarItems"
+  (changed)="toolbarChanged($event)"
+></anu-toolbar>
+
+<table
+  *ngIf="value"
+  [ngClass]="value.classNames"
+  [style.width]="value.width || 'auto'"
+  [style.height]="value.height || 'auto'"
+  [cellSpacing]="value.cellSpacing || 'initial'"
+  [cellPadding]="value.cellPadding || 'initial'"
+>
+  <thead *ngIf="value.thRow">
+    <th [ngClass]="thCell.classNames" *ngFor="let thCell of value.thRow.cells">
+      <!-- If cell value is rich text
+      <ng-container *ngIf="thCell.valueType === cellValueTypes.rich">
+        <anu-content-editor
+          [enableOpenai]="false"
+          class="col-12"
+          [value]="thCell.richValue"
+          (changed)="cellValueChanged($event)"
+        ></anu-content-editor>
+      </ng-container>-->
+      <!-- If cell value is Plain text -->
+      <ng-container *ngIf="thCell.valueType === cellValueTypes.plain">{{
+        thCell.plainValue
+      }}</ng-container>
+    </th>
+  </thead>
+  <tbody>
+    <tr [ngClass]="row.classNames" *ngFor="let row of value.rows">
+      <td
+        [ngClass]="cell.classNames"
+        [style.width]="cell.width"
+        [style.height]="cell.height"
+        *ngFor="let cell of row.cells"
+      >
+        <!-- If cell value is rich text
+
+        <anu-content-element
+          *ngIf="cell.valueType === cellValueTypes.rich"
+          [enableOpenai]="false"
+          class="col-12"
+          [editorElement]="cell.richValue"
+          (changed)="cellValueChanged($event)"
+        ></anu-content-element>-->
+
+        <!-- If cell value is Plain text -->
+        <ng-container *ngIf="cell.valueType === cellValueTypes.plain">{{
+          cell.plainValue
+        }}</ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<anu-modal
+  [opened]="showTableForm"
+  modalTitle="Table Information"
+  okLabel="Update Table"
+  [enableOk]="true"
+  [enableCancel]="true"
+  (okClick)="modalOkClicked($event)"
+  (cancelClick)="modalCancelClicked($event)"
+>
+  <div class="col-12">
+    <label for="">Row Count</label>
+    <input type="number" [(ngModel)]="rowCount" min="2" max="10" />
+    <label for="">Column Count</label>
+    <input type="number" [(ngModel)]="columnCount" min="2" max="10" />
+  </div>
+</anu-modal>

@@ -5,6 +5,7 @@ import {
   EditorElement,
   EditorElementData,
 } from "../../interfaces/content-editor.interface";
+import { TableInfo } from "../../interfaces/table.interface";
 
 @Component({
   selector: "anu-leaf-element",
@@ -74,5 +75,10 @@ export class LeafElementComponent implements OnInit {
    */
   public sourceModalOpenStatusChanged(opened: boolean) {
     this.sourceModalOpenStatus = opened;
+  }
+
+  public tableChanged(tableInfo: TableInfo) {
+    this.value.data.tableData = tableInfo;
+    this.changed.emit(this.value);
   }
 }

@@ -1,11 +1,26 @@
-import { EditorElement } from "./content-editor.interface";
+import { TableCellValueTypeEnums } from '../enums/table.enums';
+import { EditorElement } from './content-editor.interface';
+
+export interface TableInfo {
+  classNames?: Array<string>;
+  width?: string;
+  height?: string;
+  cellSpacing?: string;
+  cellPadding?: string;
+  thRow?: TableRow;
+  rows?: Array<TableRow>;
+}
 
 export interface TableRow {
-  id: string;
-  data: Array<TableCell>;
+  classNames?: Array<string>;
+  cells?: Array<TableCell>;
 }
 
 export interface TableCell {
-  id: string;
-  data: EditorElement;
+  classNames?: Array<string>;
+  width?: string;
+  height?: string;
+  valueType?: TableCellValueTypeEnums;
+  richValue?: EditorElement; //if cell valueType  rich = EditorElement
+  plainValue?: string; //if cell valueType  plain = string
 }
