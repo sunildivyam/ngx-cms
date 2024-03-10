@@ -17,6 +17,7 @@ export interface EditorElement {
   focused?: boolean;
   data?: EditorElementData;
   children?: Array<EditorElement>;
+  classNames?: Array<string>;
 }
 
 export interface Rectangle {

@@ -32,6 +32,7 @@
       'anu-table'
     ].includes(editorElement?.tagName)
   "
+  [ngClass]="editorElement.classNames"
   [value]="editorElement"
   (changed)="onBlur()"
   (focusin)="focusin()"
@@ -122,4 +123,20 @@
   modalTitle="Update Markup"
 >
   <textarea [(ngModel)]="markModalText"></textarea>
+</anu-modal>
+
+<!-- StylesModal -->
+<anu-modal
+  *ngIf="editorElement?.data"
+  [opened]="showStylesModal"
+  (cancelClick)="showStylesModal = false"
+  [enableCancel]="true"
+  [cancelLabel]="'Close'"
+  [enableOk]="false"
+  modalTitle="Apply Styles"
+>
+  <anu-element-styles
+    [selectedStyles]="editorElement?.classNames"
+    (changed)="elementStylesChanged($event)"
+  ></anu-element-styles>
 </anu-modal>

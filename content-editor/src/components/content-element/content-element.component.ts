@@ -40,6 +40,9 @@ export class ContentElementComponent
   showMarkupModal: boolean = false;
   markModalText: string = '';
 
+  // Styles Modal
+  showStylesModal: boolean = false;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private ceService: ContentEditorService
@@ -133,6 +136,17 @@ export class ContentElementComponent
         }
 
         break;
+      case 'element-styles':
+        if (
+          ['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img'].includes(
+            this.editorElement?.tagName
+          )
+        ) {
+          this.isToolbar = !this.isToolbar;
+          this.showStylesModal = true;
+        }
+
+        break;
 
       default:
         this.ceService.replaceElement(
@@ -163,5 +177,9 @@ export class ContentElementComponent
     this.showMarkupModal = false;
     this.editorElement.data = this.editorElement.data || {};
     this.editorElement.data.text = this.markModalText;
+  }
+
+  public elementStylesChanged(classNames: Array<string>): void {
+    this.editorElement.classNames = [...classNames];
   }
 }

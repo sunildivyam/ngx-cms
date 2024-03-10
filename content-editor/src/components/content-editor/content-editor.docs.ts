@@ -17,6 +17,7 @@ export const EDITOR_ELEMENT: EditorElement = {
     {
       name: 'h2-1234',
       tagName: 'h2',
+      classNames: ['border-round', 'secondary-lighter-grad-h'],
       data: {
         text: 'Sample Heading 2',
       },
@@ -31,6 +32,7 @@ export const EDITOR_ELEMENT: EditorElement = {
     {
       name: 'img-1234',
       tagName: 'img',
+      classNames: ['row', 'right'],
       data: {
         src: '/assets/start-your-business.jpg',
         alt: 'Sample Image',

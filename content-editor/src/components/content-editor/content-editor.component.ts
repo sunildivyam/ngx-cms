@@ -70,9 +70,7 @@ export class ContentEditorComponent implements OnInit {
     }
   };
 
-  ngOnInit(): void {
-    console.log(this.value);
-  }
+  ngOnInit(): void {}
 
   public contentChanged(el: EditorElement) {
     this.changed.emit(this.value);
