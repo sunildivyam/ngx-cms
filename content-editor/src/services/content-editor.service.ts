@@ -1,19 +1,51 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   EditorElement,
   EditorElementData,
-} from "../interfaces/content-editor.interface";
-import { ImageInfo } from "@annuadvent/ngx-cms/cms-image-form";
-import { SUPPORTED_TAGS } from "../constants/content-editor.constants";
+} from '../interfaces/content-editor.interface';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
+import { SUPPORTED_TAGS } from '../constants/content-editor.constants';
+import { SAMPLE_TABLE } from '../constants/table.constants';
+import { UtilsService } from '@annuadvent/ngx-core/utils';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ContentEditorService {
-  constructor() {}
+  constructor(private utilsService: UtilsService) {}
 
   private getEditorElementName(elType: string): string {
     return `${elType}-${Date.now()}`;
+  }
+
+  public initElementData(tagName: string, data: any = {}): EditorElementData {
+    data = data || {};
+
+    const elData: EditorElementData = {};
+    switch (tagName) {
+      case SUPPORTED_TAGS.IMAGE:
+        const { src, alt } = data;
+        elData.src = src || '';
+        elData.alt = alt || '';
+        break;
+      case SUPPORTED_TAGS.CODE_BLOCK:
+        const { source, language, enableEdit } = data;
+        elData.source = source || '<h1>Sample source code</h1>';
+        elData.language = language || 'markup';
+        elData.enableEdit = enableEdit || false;
+        break;
+      case SUPPORTED_TAGS.TABLE:
+        const { tableData } = data;
+        elData.tableData = this.utilsService.deepCopy(
+          tableData || SAMPLE_TABLE
+        );
+        break;
+      default:
+        const { text } = data;
+        elData.text = text || '';
+    }
+
+    return elData;
   }
 
   public findParent(el: EditorElement, parent: EditorElement): EditorElement {
@@ -40,30 +72,34 @@ export class ContentEditorService {
     return foundParent;
   }
 
-  public addNewEditorElement(el: EditorElement, fullTree: EditorElement) {
-    const oldEl = { ...el };
-    const parent = this.findParent(el, fullTree);
-    const index = parent.children.indexOf(el);
-    //Remove focus from all other elements
+  /**
+   * This function creates a new element based on existing element, and appends it to the parent of existing element.
+   * @param existingEl  existing element, whose empty copy will be created as a new element.
+   * @param fullTree
+   */
+  public addNewEditorElement(
+    existingEl: EditorElement,
+    fullTree: EditorElement
+  ): void {
+    const el = { ...existingEl };
+    const parent = this.findParent(existingEl, fullTree);
+    const index = parent.children.findIndex(
+      (itm) => itm.name === existingEl.name
+    );
+
+    //Remove focus from all other elements of its parent
     parent.children.forEach((ch) => (ch.focused = false));
 
-    //Add element with focus
-    parent.children.splice(index + 1, 0, {
-      tagName: oldEl.tagName,
-      name: this.getEditorElementName(oldEl.tagName),
+    // Prepare new element for adding it to parent, and addd focus to it.
+    const newEl: EditorElement = {
+      tagName: el.tagName,
+      name: this.getEditorElementName(el.tagName),
       focused: true,
-      data: {
-        src: "",
-        url: "",
-        text: "",
-        alt: "",
-        source:
-          SUPPORTED_TAGS.CODE_BLOCK === oldEl.tagName
-            ? "<h1>Sample source code</h1>"
-            : "",
-        language: SUPPORTED_TAGS.CODE_BLOCK === oldEl.tagName ? "markup" : "",
-      } as EditorElementData,
-    } as EditorElement);
+      data: this.initElementData(el.tagName), // Init with tagName specific empty or default data values
+    };
+
+    // Append newEl to its Parent (means parent's children)
+    parent.children.splice(index + 1, 0, newEl);
   }
 
   public removeEditorElement(el: EditorElement, fullTree: EditorElement) {
@@ -75,10 +111,10 @@ export class ContentEditorService {
     // Find the parent of selected Element
     const parent = this.findParent(el, fullTree);
     if (!parent) {
-      console.error("No Parent found or Element is Root element itself.");
+      console.error('No Parent found or Element is Root element itself.');
       return;
     }
-    const index = parent.children.indexOf(el);
+    const index = parent.children.findIndex((itm) => itm.name === el.name);
     // remove selected child
     parent.children.splice(index, 1);
 
@@ -109,84 +145,93 @@ export class ContentEditorService {
     }
   }
 
+  /**
+   *
+   * @param el Existing Element that will be replaced with new element
+   * @param tagName New Element Tag Name
+   * @param fullTree Root most Editor Element, means Root element having compltete tree.
+   * @param data New item data
+   */
   public replaceElement(
     el: EditorElement,
     tagName: string,
     fullTree: EditorElement,
-    data: ImageInfo | any = null
+    data: EditorElementData = null
   ) {
-    if (el.tagName === SUPPORTED_TAGS.LIST_ITEM) {
+    /*
+     * If existing focused element is LI of a UL/OL, check if new El is UL/OL, then do not replace el, but just change type of list to that of new el.
+     * First Check if new El is an element that requires a parent, like li must have UL/OL as parent. Table-> TR- TD could be the other example. Then process them first
+     */
+    if (
+      el.tagName ===
+      SUPPORTED_TAGS.LIST_ITEM /*, el.tagName === otherElWithRequiredParent */
+    ) {
       const parent = this.findParent(el, fullTree);
-      if (["ol", "ul"].includes(tagName)) {
+
+      // if new el is UL/OL, then change only el type to new El list type, else do nothing.
+      if (
+        [SUPPORTED_TAGS.ORDERED_LIST, SUPPORTED_TAGS.UNORDERED_LIST].includes(
+          tagName as SUPPORTED_TAGS
+        )
+      ) {
+        // if list type is different of existing list item, then change else do nothing
         if (parent.tagName !== tagName) {
           parent.name = this.getEditorElementName(tagName);
           parent.tagName = tagName;
         }
       } else {
-        // remove LI and add copy as new item below the parent List (ul/ol)
+        // If new el is not UL/OL, but any other and existing el is LI, then
+        // remove existing LI and add copy as new item below the parent List (ul/ol)
         const newItem = { ...el };
         newItem.tagName = tagName;
         newItem.name = this.getEditorElementName(tagName);
-        if (tagName === SUPPORTED_TAGS.IMAGE && data) {
-          newItem.data.src = data.src;
-          newItem.data.alt = data.alt;
-          delete newItem.data.text;
-        }
+        newItem.data = this.initElementData(tagName, data);
 
+        // find parent of OL/UL of existing LI, so that new El cab be added to it
         const parentOfParent = this.findParent(parent, fullTree);
-        let indexOfParent = parentOfParent.children.indexOf(parent);
+        let indexOfParent = parentOfParent.children.findIndex(
+          (itm) => itm.name === parent.name
+        );
+
         if (parent.children.length > 1) {
           indexOfParent++;
         }
+
         this.removeEditorElement(el, fullTree);
         this.setFocusOffAll(fullTree);
+
+        // Add new el as sibling of existing UL/OL of existing LI
         parentOfParent.children.splice(indexOfParent, 0, newItem);
       }
     } else {
-      if (["ol", "ul"].includes(tagName)) {
+      // If new El is any other element than LI, then check if it is a direct Individual element or a container.
+
+      // Check if new El is container Element, like UL/OL, then add relevant child/children before replacement process
+      if (
+        [SUPPORTED_TAGS.ORDERED_LIST, SUPPORTED_TAGS.UNORDERED_LIST].includes(
+          tagName as SUPPORTED_TAGS
+        )
+      ) {
+        // Create a new LI for the new List (UL/OL)
         const newListItem = { ...el };
         newListItem.tagName = SUPPORTED_TAGS.LIST_ITEM;
         newListItem.name = this.getEditorElementName(SUPPORTED_TAGS.LIST_ITEM);
-        if (el.tagName === SUPPORTED_TAGS.IMAGE) {
-          newListItem.data.text = newListItem.data.alt;
-          delete newListItem.data.alt;
-          delete newListItem.data.src;
-        }
+        newListItem.data = this.initElementData(SUPPORTED_TAGS.LIST_ITEM, data);
 
+        // Convert existing el to UL/OL, add above created li to it.
         el.tagName = tagName;
         el.name = this.getEditorElementName(tagName);
         el.isContainer = true;
         el.children = [newListItem];
+
+        // As it's a container, so remove data and focus props from it.
         delete el.data;
         delete el.focused;
       } else {
-        if (tagName === SUPPORTED_TAGS.IMAGE && data) {
-          el.data.src = data.src;
-          el.data.alt = data.alt;
-          delete el.data.text;
-        } else if (tagName === SUPPORTED_TAGS.CODE_BLOCK && data) {
-          el.data.source = data.source;
-          el.data.language = data.language;
-        }
-
         el.tagName = tagName;
         el.name = this.getEditorElementName(tagName);
+        if (data) el.data = this.initElementData(tagName, data);
       }
     }
-
-    /*
-      if source LI
-        if  Bullet/Numbering
-          find parent and change type to ol/ul
-        else
-          hide toolbar icons => p/H1-H6
-      else
-        if (target == ul/ol)
-          change name
-          isContainer = true
-          add one child LI and focus
-        else
-          change name as is
-    */
   }
 }

@@ -1,15 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { CodeBlockInfo } from "@annuadvent/ngx-common-ui/code-block";
-import { SUPPORTED_TAGS } from "../../constants/content-editor.constants";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CodeBlockInfo } from '@annuadvent/ngx-common-ui/code-block';
+import { SUPPORTED_TAGS } from '../../constants/content-editor.constants';
 import {
   EditorElement,
   EditorElementData,
-} from "../../interfaces/content-editor.interface";
+} from '../../interfaces/content-editor.interface';
+import { TableInfo } from '../../interfaces/table.interface';
 
 @Component({
-  selector: "anu-leaf-element",
-  templateUrl: "./leaf-element.component.html",
-  styleUrls: ["./leaf-element.component.scss"],
+  selector: 'anu-leaf-element',
+  templateUrl: './leaf-element.component.html',
+  styleUrls: ['./leaf-element.component.scss'],
 })
 export class LeafElementComponent implements OnInit {
   @Input() value: EditorElement = {} as EditorElement;
@@ -74,5 +75,13 @@ export class LeafElementComponent implements OnInit {
    */
   public sourceModalOpenStatusChanged(opened: boolean) {
     this.sourceModalOpenStatus = opened;
+  }
+
+  public tableChanged(tableInfo: TableInfo) {
+    this.value = {
+      ...this.value,
+      data: { ...this.value.data, tableData: tableInfo },
+    };
+    this.changed.emit(this.value);
   }
 }

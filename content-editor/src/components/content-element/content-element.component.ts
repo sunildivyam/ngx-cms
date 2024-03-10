@@ -8,17 +8,18 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-} from "@angular/core";
-import { ToolbarItem } from "@annuadvent/ngx-common-ui/toolbar";
-import { EditorElement } from "../../interfaces/content-editor.interface";
-import { ImageInfo } from "@annuadvent/ngx-cms/cms-image-form";
-import { ContentEditorService } from "../../services/content-editor.service";
-import { TOOLBAR_STYLES } from "../../constants/content-editor.constants";
+} from '@angular/core';
+import { ToolbarItem } from '@annuadvent/ngx-common-ui/toolbar';
+import { EditorElement } from '../../interfaces/content-editor.interface';
+import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
+import { ContentEditorService } from '../../services/content-editor.service';
+import { TOOLBAR_STYLES } from '../../constants/content-editor.constants';
+import { SAMPLE_TABLE } from '../../constants/table.constants';
 
 @Component({
-  selector: "anu-content-element",
-  templateUrl: "./content-element.component.html",
-  styleUrls: ["./content-element.component.scss"],
+  selector: 'anu-content-element',
+  templateUrl: './content-element.component.html',
+  styleUrls: ['./content-element.component.scss'],
 })
 export class ContentElementComponent
   implements OnInit, AfterContentChecked, OnChanges
@@ -32,12 +33,15 @@ export class ContentElementComponent
   styleToolbar: Array<ToolbarItem> = TOOLBAR_STYLES;
   toggleImageForm: boolean = false;
   imageInfo: ImageInfo = {
-    src: "https://",
-    alt: "",
+    src: 'https://',
+    alt: '',
   };
 
   showMarkupModal: boolean = false;
-  markModalText: string = "";
+  markModalText: string = '';
+
+  // Styles Modal
+  showStylesModal: boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -57,7 +61,7 @@ export class ContentElementComponent
   }
 
   private setStyleToolbarItems() {
-    if (this.editorElement?.tagName === "li") {
+    if (this.editorElement?.tagName === 'li') {
       // this.styleToolbar = this.styleToolbar.filter(item => ['ul', 'ol'].includes(item.name)) // disable non list elements
     }
   }
@@ -90,30 +94,56 @@ export class ContentElementComponent
 
   public styleToolbarSelected(item: ToolbarItem) {
     switch (item.name) {
-      case "img":
+      case 'img':
         this.toggleImageForm = true;
         this.imageInfo.alt =
           this.editorElement?.data?.alt || this.editorElement?.data?.text;
+        if (this.editorElement?.data?.src) {
+          this.imageInfo.src = this.editorElement?.data?.src;
+        }
         break;
 
-      case "anu-code-block":
+      case 'anu-code-block':
         this.ceService.replaceElement(
           this.editorElement,
           item.name,
           this.fullTree,
-          { source: "<h1>Sample source code</h1>", language: "markup" }
+          { source: '<h1>Sample source code</h1>', language: 'markup' }
         );
         this.isToolbar = !this.isToolbar;
         break;
 
-      case "markup":
+      case 'anu-table':
+        this.ceService.replaceElement(
+          this.editorElement,
+          item.name,
+          this.fullTree,
+          {
+            tableData: SAMPLE_TABLE,
+          }
+        );
+        this.isToolbar = !this.isToolbar;
+        break;
+
+      case 'markup':
         if (
-          ["p", "li", "h1", "h2", "h3", "h4", "h5", "h6"].includes(
+          ['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(
             this.editorElement?.tagName
           )
         ) {
-          this.markModalText = this.editorElement?.data?.text || "";
+          this.markModalText = this.editorElement?.data?.text || '';
           this.showMarkupModal = true;
+        }
+
+        break;
+      case 'element-styles':
+        if (
+          ['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img'].includes(
+            this.editorElement?.tagName
+          )
+        ) {
+          this.isToolbar = !this.isToolbar;
+          this.showStylesModal = true;
         }
 
         break;
@@ -135,7 +165,7 @@ export class ContentElementComponent
   public saveImage(image: ImageInfo) {
     this.ceService.replaceElement(
       this.editorElement,
-      "img",
+      'img',
       this.fullTree,
       image
     );
@@ -147,5 +177,9 @@ export class ContentElementComponent
     this.showMarkupModal = false;
     this.editorElement.data = this.editorElement.data || {};
     this.editorElement.data.text = this.markModalText;
+  }
+
+  public elementStylesChanged(classNames: Array<string>): void {
+    this.editorElement.classNames = [...classNames];
   }
 }

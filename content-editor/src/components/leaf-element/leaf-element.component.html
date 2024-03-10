@@ -135,3 +135,17 @@
   (focusin)="onFocus($event)"
   (blur)="onBlur($event)"
 ></anu-code-block>
+
+<anu-table
+  *ngIf="value.tagName === 'anu-table'"
+  [value]="value?.data?.tableData"
+  [enableEdit]="true"
+  tabindex="0"
+  (keydown.enter)="enterPressed($event, value)"
+  (keydown.backspace)="backspacePressed($event)"
+  (changed)="tableChanged($event)"
+  [id]="value.name"
+  [focus]="value?.focused"
+  (focusin)="onFocus($event)"
+  (blur)="onBlur($event)"
+></anu-table>
