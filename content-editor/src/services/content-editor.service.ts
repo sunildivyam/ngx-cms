@@ -6,12 +6,13 @@ import {
 import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { SUPPORTED_TAGS } from '../constants/content-editor.constants';
 import { SAMPLE_TABLE } from '../constants/table.constants';
+import { UtilsService } from '@annuadvent/ngx-core/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContentEditorService {
-  constructor() {}
+  constructor(private utilsService: UtilsService) {}
 
   private getEditorElementName(elType: string): string {
     return `${elType}-${Date.now()}`;
@@ -35,11 +36,13 @@ export class ContentEditorService {
         break;
       case SUPPORTED_TAGS.TABLE:
         const { tableData } = data;
-        elData.tableData = tableData || SAMPLE_TABLE;
+        elData.tableData = this.utilsService.deepCopy(
+          tableData || SAMPLE_TABLE
+        );
         break;
       default:
         const { text } = data;
-        elData.tableData = text || '';
+        elData.text = text || '';
     }
 
     return elData;
@@ -80,7 +83,9 @@ export class ContentEditorService {
   ): void {
     const el = { ...existingEl };
     const parent = this.findParent(existingEl, fullTree);
-    const index = parent.children.indexOf(existingEl);
+    const index = parent.children.findIndex(
+      (itm) => itm.name === existingEl.name
+    );
 
     //Remove focus from all other elements of its parent
     parent.children.forEach((ch) => (ch.focused = false));
@@ -109,7 +114,7 @@ export class ContentEditorService {
       console.error('No Parent found or Element is Root element itself.');
       return;
     }
-    const index = parent.children.indexOf(el);
+    const index = parent.children.findIndex((itm) => itm.name === el.name);
     // remove selected child
     parent.children.splice(index, 1);
 
@@ -184,7 +189,9 @@ export class ContentEditorService {
 
         // find parent of OL/UL of existing LI, so that new El cab be added to it
         const parentOfParent = this.findParent(parent, fullTree);
-        let indexOfParent = parentOfParent.children.indexOf(parent);
+        let indexOfParent = parentOfParent.children.findIndex(
+          (itm) => itm.name === parent.name
+        );
 
         if (parent.children.length > 1) {
           indexOfParent++;

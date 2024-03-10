@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TableInfo } from '../../interfaces/table.interface';
-import { TableCellValueTypeEnums } from '../../enums/table.enums';
-import { EditorElement } from '../../interfaces/content-editor.interface';
 import { ToolbarItem } from '@annuadvent/ngx-common-ui/toolbar';
 import { TABLE_TOOLBAR_ITEMS } from '../../constants/table.constants';
+import { TableService } from '../../services/table.service';
+import { UtilsService } from '@annuadvent/ngx-core/utils';
 
 @Component({
   selector: 'anu-table',
@@ -17,39 +17,31 @@ export class TableComponent implements OnInit {
   @Output() changed = new EventEmitter<TableInfo>();
   @Output() tableModalOpenStatusChanged = new EventEmitter<boolean>();
 
-  cellValueTypes = TableCellValueTypeEnums;
   toolbarItems: Array<ToolbarItem> = [...TABLE_TOOLBAR_ITEMS];
   showTableForm: boolean = false;
   rowCount: number = 2;
   columnCount: number = 2;
 
-  tableInfo: TableInfo = {
-    classNames: [],
-    width: '600px',
-    height: '400px',
-    cellSpacing: '0px',
-    cellPadding: '0px',
-  };
+  tableInfo: TableInfo = null;
 
-  constructor() {}
-
-  ngOnInit(): void {
-    console.log('Table', this.value);
+  constructor(
+    private tableService: TableService,
+    private utilsService: UtilsService
+  ) {
+    this.value = this.tableService.getTable(2, 2);
   }
 
-  public cellValueChanged(cellValue: EditorElement): void {
-    console.log(cellValue);
-    this.changed.emit(this.value);
-  }
+  ngOnInit(): void {}
 
   public toolbarChanged(selectedItem: ToolbarItem): void {
+    this.tableInfo = this.utilsService.deepCopy(this.value);
     this.showTableForm = true;
     this.tableModalOpenStatusChanged.emit(true);
   }
 
   public modalOkClicked(modalOpened: boolean): void {
     this.showTableForm = modalOpened;
-    this.value = this.tableInfo;
+    this.value = this.utilsService.deepCopy(this.tableInfo);
     this.changed.emit(this.value);
     this.tableModalOpenStatusChanged.emit(modalOpened);
   }
@@ -57,5 +49,26 @@ export class TableComponent implements OnInit {
   public modalCancelClicked(modalOpened: boolean): void {
     this.showTableForm = modalOpened;
     this.tableModalOpenStatusChanged.emit(modalOpened);
+  }
+
+  public tableChanged(tInfo: TableInfo): void {
+    this.tableInfo = this.utilsService.deepCopy(tInfo);
+  }
+
+  public textSelected() {
+    // TODO
+  }
+
+  public enterPressed(event: any): void {
+    event.stopPropagation();
+  }
+
+  public backspacePressed(event: any): void {
+    event.stopPropagation();
+  }
+
+  public onBlur(event: any) {
+    event.stopPropagation();
+    this.changed.emit(this.value);
   }
 }

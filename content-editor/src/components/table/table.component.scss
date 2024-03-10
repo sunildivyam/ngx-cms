@@ -1,0 +1,10 @@
+:host {
+  overflow-x: auto;
+
+  .toolbar {
+    position: absolute;
+    right: 1rem;
+    margin-top: 0.5rem;
+    opacity: 0.5;
+  }
+}

@@ -1,1 +1,59 @@
-<p>table-form works!</p>
+<ng-container *ngIf="tableInfo">
+  <div class="row bottom">
+    <label class="col-lg-2 col-md-2 col-sm-4">
+      Rows
+      <input
+        type="number"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        (ngModelChange)="onChange()"
+        [(ngModel)]="rowCount"
+      />
+    </label>
+    <label class="col-lg-2 col-md-2 col-sm-4">
+      Columns
+      <input
+        type="number"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        (ngModelChange)="onChange()"
+        [(ngModel)]="columnCount"
+      />
+    </label>
+
+    <label class="col-lg-2 col-md-2 col-sm-4">
+      Width
+      <input
+        type="text"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        (ngModelChange)="onChange()"
+        [(ngModel)]="tableInfo.width"
+      />
+    </label>
+    <label class="col-lg-2 col-md-2 col-sm-4">
+      Height
+      <input
+        type="text"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        (ngModelChange)="onChange()"
+        [(ngModel)]="tableInfo.height"
+      />
+    </label>
+    <label class="col-lg-2 col-md-2 col-sm-4">
+      Cell Padding
+      <input
+        type="text"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        (ngModelChange)="onChange()"
+        [(ngModel)]="tableInfo.cellPadding"
+      />
+    </label>
+    <label class="col-lg-2 col-md-2 col-sm-4">
+      Cell Spacing
+      <input
+        type="text"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        (ngModelChange)="onChange()"
+        [(ngModel)]="tableInfo.cellSpacing"
+      />
+    </label>
+  </div>
+</ng-container>

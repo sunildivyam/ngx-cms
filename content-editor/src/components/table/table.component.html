@@ -15,19 +15,15 @@
 >
   <thead *ngIf="value.thRow">
     <th [ngClass]="thCell.classNames" *ngFor="let thCell of value.thRow.cells">
-      <!-- If cell value is rich text
-      <ng-container *ngIf="thCell.valueType === cellValueTypes.rich">
-        <anu-content-editor
-          [enableOpenai]="false"
-          class="col-12"
-          [value]="thCell.richValue"
-          (changed)="cellValueChanged($event)"
-        ></anu-content-editor>
-      </ng-container>-->
-      <!-- If cell value is Plain text -->
-      <ng-container *ngIf="thCell.valueType === cellValueTypes.plain">{{
-        thCell.plainValue
-      }}</ng-container>
+      <p
+        contenteditable
+        [(ngModel)]="thCell.value"
+        tabindex="0"
+        (anuFormatInline)="textSelected()"
+        (keydown.enter)="enterPressed($event)"
+        (keydown.backspace)="backspacePressed($event)"
+        (blur)="onBlur($event)"
+      ></p>
     </th>
   </thead>
   <tbody>
@@ -38,20 +34,15 @@
         [style.height]="cell.height"
         *ngFor="let cell of row.cells"
       >
-        <!-- If cell value is rich text
-
-        <anu-content-element
-          *ngIf="cell.valueType === cellValueTypes.rich"
-          [enableOpenai]="false"
-          class="col-12"
-          [editorElement]="cell.richValue"
-          (changed)="cellValueChanged($event)"
-        ></anu-content-element>-->
-
-        <!-- If cell value is Plain text -->
-        <ng-container *ngIf="cell.valueType === cellValueTypes.plain">{{
-          cell.plainValue
-        }}</ng-container>
+        <p
+          contenteditable
+          [(ngModel)]="cell.value"
+          tabindex="0"
+          (anuFormatInline)="textSelected()"
+          (keydown.enter)="enterPressed($event)"
+          (keydown.backspace)="backspacePressed($event)"
+          (blur)="onBlur($event)"
+        ></p>
       </td>
     </tr>
   </tbody>
@@ -66,10 +57,8 @@
   (okClick)="modalOkClicked($event)"
   (cancelClick)="modalCancelClicked($event)"
 >
-  <div class="col-12">
-    <label for="">Row Count</label>
-    <input type="number" [(ngModel)]="rowCount" min="2" max="10" />
-    <label for="">Column Count</label>
-    <input type="number" [(ngModel)]="columnCount" min="2" max="10" />
-  </div>
+  <anu-table-form
+    [value]="tableInfo"
+    (changed)="tableChanged($event)"
+  ></anu-table-form>
 </anu-modal>
