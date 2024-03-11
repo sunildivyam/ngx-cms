@@ -17,7 +17,7 @@ export const EDITOR_ELEMENT: EditorElement = {
     {
       name: 'h2-1234',
       tagName: 'h2',
-      classNames: ['border-round', 'secondary-lighter-grad-h'],
+      classNames: [],
       data: {
         text: 'Sample Heading 2',
       },

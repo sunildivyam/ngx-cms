@@ -15,7 +15,21 @@
   [cellPadding]="value.cellPadding || 'initial'"
 >
   <thead *ngIf="value.thRow">
-    <th [ngClass]="thCell.classNames" *ngFor="let thCell of value.thRow.cells">
+    <th
+      class="relative"
+      [ngClass]="thCell.classNames"
+      *ngFor="let thCell of value.thRow.cells"
+    >
+      <!-- Cell Toolbar Start -->
+      <anu-toolbar
+        *ngIf="enableEdit && thCell === activeCell"
+        class="toolbar-cell"
+        [isVertical]="true"
+        [items]="toolbarItems"
+        (changed)="onStylesToolbarClick($event)"
+      ></anu-toolbar>
+      <!-- Cell Toolbar End-->
+
       <p
         contenteditable
         [(ngModel)]="thCell.value"
@@ -24,17 +38,28 @@
         (keydown.enter)="enterPressed($event)"
         (keydown.backspace)="backspacePressed($event)"
         (blur)="onBlur($event)"
+        (focusin)="activeCell = thCell"
       ></p>
     </th>
   </thead>
   <tbody>
     <tr [ngClass]="row.classNames" *ngFor="let row of value.rows">
       <td
+        class="relative"
         [ngClass]="cell.classNames"
         [style.width]="cell.width"
         [style.height]="cell.height"
         *ngFor="let cell of row.cells"
       >
+        <!-- Cell Toolbar Start -->
+        <anu-toolbar
+          *ngIf="enableEdit && cell === activeCell"
+          class="toolbar-cell"
+          [isVertical]="true"
+          [items]="toolbarItems"
+          (changed)="onStylesToolbarClick($event)"
+        ></anu-toolbar>
+        <!-- Cell Toolbar End-->
         <p
           contenteditable
           [(ngModel)]="cell.value"
@@ -43,6 +68,7 @@
           (keydown.enter)="enterPressed($event)"
           (keydown.backspace)="backspacePressed($event)"
           (blur)="onBlur($event)"
+          (focusin)="activeCell = cell"
         ></p>
       </td>
     </tr>
@@ -62,4 +88,20 @@
     [value]="tableInfo"
     (changed)="tableChanged($event)"
   ></anu-table-form>
+</anu-modal>
+
+<!-- StylesModal -->
+<anu-modal
+  *ngIf="value"
+  [opened]="showStylesModal"
+  (cancelClick)="showStylesModal = false"
+  [enableCancel]="true"
+  [cancelLabel]="'Close'"
+  [enableOk]="false"
+  modalTitle="Apply Styles"
+>
+  <anu-element-styles
+    [selectedStyles]="activeCell?.classNames"
+    (changed)="elementStylesChanged($event)"
+  ></anu-element-styles>
 </anu-modal>

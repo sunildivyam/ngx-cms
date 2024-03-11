@@ -1,10 +1,25 @@
 :host {
   overflow-x: auto;
 
+  table {
+    th,
+    td {
+      p {
+        color: inherit;
+      }
+    }
+  }
   .toolbar {
     position: absolute;
     right: 1rem;
     margin-top: 0.5rem;
     opacity: 0.5;
+
+    &-cell {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      opacity: 0.5;
+    }
   }
 }

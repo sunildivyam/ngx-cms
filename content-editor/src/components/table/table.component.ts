@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TableInfo } from '../../interfaces/table.interface';
+import { TableCell, TableInfo } from '../../interfaces/table.interface';
 import { ToolbarItem } from '@annuadvent/ngx-common-ui/toolbar';
 import { TABLE_TOOLBAR_ITEMS } from '../../constants/table.constants';
 import { TableService } from '../../services/table.service';
@@ -23,6 +23,11 @@ export class TableComponent implements OnInit {
   columnCount: number = 2;
 
   tableInfo: TableInfo = null;
+  activeCell: TableCell = null;
+  showStylesModal: boolean = false;
+
+  // Styles Toolbar
+  // showStylesToolbar: boolean = false;
 
   constructor(
     private tableService: TableService,
@@ -70,5 +75,14 @@ export class TableComponent implements OnInit {
   public onBlur(event: any) {
     event.stopPropagation();
     this.changed.emit(this.value);
+  }
+
+  public elementStylesChanged(selectedClassNames: Array<string>): void {
+    this.activeCell.classNames = selectedClassNames;
+    this.changed.emit(this.value);
+  }
+
+  public onStylesToolbarClick(item: ToolbarItem): void {
+    this.showStylesModal = true;
   }
 }

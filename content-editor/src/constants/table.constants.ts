@@ -27,13 +27,13 @@ export const TABLE_TOOLBAR_ITEMS = [
 ];
 
 export const SAMPLE_TABLE: TableInfo = {
-  classNames: ['border', 'primary-lighter-grad'],
+  classNames: ['border'],
   width: 'auto',
   height: 'auto',
   cellSpacing: '0px',
   cellPadding: '0px',
   thRow: {
-    classNames: ['primary-darkest-grad', 'accent-deep-light'],
+    classNames: [],
     cells: [
       {
         classNames: ['text-center'],
@@ -50,11 +50,11 @@ export const SAMPLE_TABLE: TableInfo = {
       classNames: [],
       cells: [
         {
-          classNames: ['text-left', 'accent-normal'],
+          classNames: ['text-center'],
           value: 'Sample text',
         },
         {
-          classNames: ['text-center', 'accent-normal'],
+          classNames: ['text-center'],
           value: 'Sample text',
         },
       ],
@@ -63,11 +63,11 @@ export const SAMPLE_TABLE: TableInfo = {
       classNames: [],
       cells: [
         {
-          classNames: ['text-left', 'accent-normal'],
+          classNames: ['text-center'],
           value: 'Sample text',
         },
         {
-          classNames: ['text-center', 'accent-normal'],
+          classNames: ['text-center'],
           value: 'Sample text',
         },
       ],
