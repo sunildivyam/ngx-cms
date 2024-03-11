@@ -46,7 +46,7 @@ export class TableComponent implements OnInit {
 
   public modalOkClicked(modalOpened: boolean): void {
     this.showTableForm = modalOpened;
-    this.value = this.utilsService.deepCopy(this.tableInfo);
+    this.value = this.tableInfo;
     this.changed.emit(this.value);
     this.tableModalOpenStatusChanged.emit(modalOpened);
   }
@@ -57,7 +57,7 @@ export class TableComponent implements OnInit {
   }
 
   public tableChanged(tInfo: TableInfo): void {
-    this.tableInfo = this.utilsService.deepCopy(tInfo);
+    this.tableInfo = tInfo;
   }
 
   public textSelected() {

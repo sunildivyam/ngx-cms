@@ -78,10 +78,7 @@ export class LeafElementComponent implements OnInit {
   }
 
   public tableChanged(tableInfo: TableInfo) {
-    this.value = {
-      ...this.value,
-      data: { ...this.value.data, tableData: tableInfo },
-    };
+    this.value.data.tableData = tableInfo;
     this.changed.emit(this.value);
   }
 }

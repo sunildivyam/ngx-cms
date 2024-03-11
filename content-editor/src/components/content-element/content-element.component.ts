@@ -138,19 +138,9 @@ export class ContentElementComponent
         break;
       case 'element-styles':
         if (
-          [
-            'p',
-            'li',
-            'h1',
-            'h2',
-            'h3',
-            'h4',
-            'h5',
-            'h6',
-            'img',
-            'anu-code-block',
-            'anu-table',
-          ].includes(this.editorElement?.tagName)
+          ['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img'].includes(
+            this.editorElement?.tagName
+          )
         ) {
           this.isToolbar = !this.isToolbar;
           this.showStylesModal = true;
@@ -191,5 +181,6 @@ export class ContentElementComponent
 
   public elementStylesChanged(classNames: Array<string>): void {
     this.editorElement.classNames = [...classNames];
+    this.changed.emit(this.editorElement);
   }
 }

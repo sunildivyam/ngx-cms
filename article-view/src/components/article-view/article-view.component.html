@@ -42,7 +42,10 @@
     ></h1>
   </div>
   <!-- Article body -->
-  <anu-article-element [value]="value?.body"></anu-article-element>
+  <anu-article-element
+    class="container"
+    [value]="value?.body"
+  ></anu-article-element>
 </div>
 
 <div *ngIf="showAside" class="flex-container article-view-body-container">
