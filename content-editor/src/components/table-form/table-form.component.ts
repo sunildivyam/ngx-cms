@@ -31,17 +31,26 @@ export class TableFormComponent implements OnInit, OnChanges {
   columnCount: number = 2;
   tableInfo: TableInfo;
 
+  // Load Table from markup variables
+  tableMarkup: string = '';
+  markUpError: string = '';
+
   constructor(
     private utilsService: UtilsService,
     private tableService: TableService
   ) {}
 
-  ngOnInit(): void {
+  private initForm(): void {
     this.tableInfo = this.utilsService.deepCopy(this.value);
+    this.rowCount = this.tableInfo?.rows?.length || 2;
+    this.columnCount = this.tableInfo?.thRow?.cells?.length || 2;
+  }
+  ngOnInit(): void {
+    this.initForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.tableInfo = this.utilsService.deepCopy(this.value);
+    this.initForm();
   }
 
   public onChange(): void {
@@ -55,5 +64,19 @@ export class TableFormComponent implements OnInit, OnChanges {
 
       this.changed.emit(this.utilsService.deepCopy(this.tableInfo));
     });
+  }
+
+  public onPreview(): void {
+    this.markUpError = '';
+
+    const tableInfo = this.tableService.getTableInfoFromMarkup(
+      this.tableMarkup
+    );
+    if (tableInfo) {
+      this.tableInfo = this.utilsService.deepCopy(tableInfo);
+      this.changed.emit(this.utilsService.deepCopy(this.tableInfo));
+    } else {
+      this.markUpError = 'No valid table in the markup';
+    }
   }
 }

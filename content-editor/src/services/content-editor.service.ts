@@ -3,7 +3,6 @@ import {
   EditorElement,
   EditorElementData,
 } from '../interfaces/content-editor.interface';
-import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
 import { SUPPORTED_TAGS } from '../constants/content-editor.constants';
 import { SAMPLE_TABLE } from '../constants/table.constants';
 import { UtilsService } from '@annuadvent/ngx-core/utils';

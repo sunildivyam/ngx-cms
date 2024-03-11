@@ -57,3 +57,14 @@
     </label>
   </div>
 </ng-container>
+
+<div class="row">
+  <label>Load Table from HTML markup</label>
+  <label *ngIf="markUpError" class="error">{{ markUpError }}</label>
+  <textarea
+    placeholder="Type or paste here your table markup..."
+    [(ngModel)]="tableMarkup"
+    (ngModelChange)="onPreview()"
+    [ngModelOptions]="{ updateOn: 'blur' }"
+  ></textarea>
+</div>

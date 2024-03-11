@@ -36,11 +36,11 @@ export const SAMPLE_TABLE: TableInfo = {
     classNames: [],
     cells: [
       {
-        classNames: ['text-center'],
+        classNames: [],
         value: 'Column1',
       },
       {
-        classNames: ['text-center'],
+        classNames: [],
         value: 'Column2',
       },
     ],
@@ -50,25 +50,12 @@ export const SAMPLE_TABLE: TableInfo = {
       classNames: [],
       cells: [
         {
-          classNames: ['text-center'],
-          value: 'Sample text',
+          classNames: [],
+          value: '',
         },
         {
-          classNames: ['text-center'],
-          value: 'Sample text',
-        },
-      ],
-    },
-    {
-      classNames: [],
-      cells: [
-        {
-          classNames: ['text-center'],
-          value: 'Sample text',
-        },
-        {
-          classNames: ['text-center'],
-          value: 'Sample text',
+          classNames: [],
+          value: '',
         },
       ],
     },

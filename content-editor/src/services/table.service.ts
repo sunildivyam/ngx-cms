@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { TableCell, TableInfo, TableRow } from '../interfaces/table.interface';
 import { SAMPLE_TABLE } from '../constants/table.constants';
+import { DOCUMENT } from '@angular/common';
 
 /**
  * TableService service provides methods and functionality for tabular content creation.
@@ -12,7 +13,8 @@ import { SAMPLE_TABLE } from '../constants/table.constants';
   providedIn: 'root',
 })
 export class TableService {
-  constructor() {}
+  constructor(@Inject(DOCUMENT) private document: Document) {}
+
   /**
    *  Creates specified number of Empty initialized Table cells
    * @param count number of cells
@@ -25,7 +27,7 @@ export class TableService {
         classNames: [],
         width: 'auto',
         height: 'auto',
-        value: 'Sample text',
+        value: '',
       } as TableCell);
     }
 
@@ -57,7 +59,7 @@ export class TableService {
       : [];
 
     newRow.cells.splice(
-      cellCount - 1,
+      cellCount,
       isAdditionalCells ? 0 : newRow.cells.length - cellCount,
       ...additionalCells
     );
@@ -94,6 +96,49 @@ export class TableService {
     }
 
     tableInfo.rows = rows;
+    return tableInfo;
+  }
+
+  public getTableInfoFromMarkup(tableMarkUp: string): TableInfo {
+    if (!tableMarkUp) return null;
+
+    const tableInfo: TableInfo = {};
+
+    const rootEl = this.document.createElement('div');
+    rootEl.innerHTML = tableMarkUp;
+    const table = rootEl.querySelector('table');
+
+    if (!table) return null;
+
+    const tHs = table.querySelectorAll('tr > th');
+    const tRs = table.querySelectorAll('tr:not(:has(th))');
+
+    const thRow: TableRow = { cells: [] };
+    const rows: Array<TableRow> = [];
+
+    tHs?.forEach((th: Element) => {
+      thRow.cells.push({
+        value: th.innerHTML,
+      } as TableCell);
+    });
+
+    tRs?.forEach((tr: Element) => {
+      const tDs = tr.querySelectorAll('td');
+      const cells: Array<TableCell> = [];
+
+      tDs?.forEach((td: Element) => {
+        cells.push({
+          value: td.innerHTML,
+        });
+      });
+      rows.push({
+        cells: cells,
+      });
+    });
+
+    tableInfo.thRow = thRow;
+    tableInfo.rows = rows;
+
     return tableInfo;
   }
 }

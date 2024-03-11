@@ -14,12 +14,14 @@
     right: 1rem;
     margin-top: 0.5rem;
     opacity: 0.5;
+    z-index: 1;
 
     &-cell {
       position: absolute;
       left: 0px;
       top: 0px;
       opacity: 0.5;
+      z-index: 1;
     }
   }
 }
