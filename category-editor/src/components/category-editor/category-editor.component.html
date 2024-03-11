@@ -35,7 +35,7 @@
             (ngModelChange)="onShortTitleChanged($event)"
           />
         </div>
-        <div class="row center stretch">
+        <div class="row center stretch spacing-around-v">
           <!-- Change/Remove Image -->
           <div class="col-sm-12">
             <a class="spacing-around" href="#" (click)="changeImage($event)"
@@ -116,7 +116,7 @@
     class="tab-item-body"
     [ngClass]="{ active: activeTab.name === 'publish' }"
   >
-    <div class="row center stretch">
+    <div class="row center stretch spacing-around-v">
       <!-- inReview  -->
       <div class="col-sm-12">
         <label class="spacing-h"
@@ -133,7 +133,7 @@
         <span
           *ngIf="!enablePublish"
           [ngClass]="category?.isLive ? 'success' : 'warning'"
-          >{{ category?.isLive ? "Published" : "Unpublished" }}</span
+          >{{ category?.isLive ? 'Published' : 'Unpublished' }}</span
         >
         <label *ngIf="enablePublish" class="spacing-h"
           >Published?
