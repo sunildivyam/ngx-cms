@@ -1,109 +1,181 @@
 <h2>Article Editor</h2>
-<div class="row spacing-around-vertical" *ngIf="!readonlyId && enableReadonlyIdToggle">
-    <label (dblclick)="articledDblClick($event)">Article Id</label>
-    <input type="text" name="article-id" [(ngModel)]="article.id" />
+<div class="row spacing-around-v" *ngIf="!readonlyId && enableReadonlyIdToggle">
+  <label (dblclick)="articledDblClick($event)">Article Id</label>
+  <input type="text" name="article-id" [(ngModel)]="article.id" />
 </div>
-<p *ngIf="readonlyId" (dblclick)="articledDblClick($event)">/{{article?.id}}</p>
-<section *ngIf="enableDelete" class="row spacing-vertical right">
-    <a class="btn error" href="#" (click)="deleteArticle($event)">Delete Article</a>
+<p *ngIf="readonlyId" (dblclick)="articledDblClick($event)">
+  /{{ article?.id }}
+</p>
+<section *ngIf="enableDelete" class="row spacing-v right">
+  <a class="btn error" href="#" (click)="deleteArticle($event)"
+    >Delete Article</a
+  >
 </section>
-<anu-tabs [tabs]="tabs" [activeTab]="activeTab" (changed)="tabChanged($event)"></anu-tabs>
+<anu-tabs
+  [tabs]="tabs"
+  [activeTab]="activeTab"
+  (changed)="tabChanged($event)"
+></anu-tabs>
 <section class="container tab-body">
+  <section
+    class="tab-item-body col-12"
+    [ngClass]="{ active: activeTab.name === 'article' }"
+  >
+    <anu-card class="shadow spacing article-card col-12">
+      <anu-card-body class="col-12">
+        <h1>{{ article?.metaInfo?.title }}</h1>
+        <p>{{ article?.metaInfo?.description }}</p>
+        <label>You can start writing your content below:</label>
+        <anu-content-editor
+          [enableOpenai]="enableOpenai"
+          class="col-12"
+          [value]="article?.body"
+          (changed)="articleBodyChanged($event)"
+        ></anu-content-editor>
+      </anu-card-body>
+    </anu-card>
 
-    <section class="tab-item-body col-12" [ngClass]="{'active': activeTab.name === 'article'}">
-        <anu-card class="shadow spacing article-card col-12">
-            <anu-card-body class="col-12">
-                <h1>{{article?.metaInfo?.title}}</h1>
-                <p>{{article?.metaInfo?.description}}</p>
-                <label>You can start writing your content below:</label>
-                <anu-content-editor [enableOpenai]="enableOpenai" class="col-12" [value]="article?.body"
-                    (changed)="articleBodyChanged($event)"></anu-content-editor>
-            </anu-card-body>
-        </anu-card>
-
-        <section class="row spacing-vertical right">
-            <a class="btn" href="#" (click)="saveArticle($event)">Save Article</a>
-        </section>
+    <section class="row spacing-v right">
+      <a class="btn" href="#" (click)="saveArticle($event)">Save Article</a>
     </section>
+  </section>
 
-    <section class="tab-item-body" [ngClass]="{'active': activeTab.name === 'moreinfo'}">
-        <anu-card
-            class="shadow spacing spacing-around-vertical moreinfo-card spacing-around-horizontal-md spacing-around-horizontal-lg">
-            <anu-card-body>
-                <div class="row center stretch">
-                    <div class="col-sm-12">
-                        <a class="spacing-around" href="#" (click)="changeImage($event)">Change image</a>
-                        <a class="spacing-around" href="#" (click)="changeImage($event, true)">Remove image</a>
-                    </div>
-                </div>
-            </anu-card-body>
-        </anu-card>
-
-        <anu-card
-            class="shadow spacing spacing-around-vertical moreinfo-card spacing-around-horizontal-md spacing-around-horizontal-lg">
-            <anu-card-title>
-                <h2>Link Categories to your Article</h2>
-            </anu-card-title>
-            <anu-card-body>
-                <div class="row">
-                    <anu-multi-select-box keyField="id" labelField="title" [items]="categoriesMultiSelectItems"
-                        [selectedItems]="selectedArticleCategories" (changed)="onCategoriesChanged($event)">
-                    </anu-multi-select-box>
-                </div>
-            </anu-card-body>
-        </anu-card>
-        <anu-card *ngIf="enableFeatures"
-            class="shadow spacing spacing-around-vertical moreinfo-card spacing-around-horizontal-md spacing-around-horizontal-lg">
-            <anu-card-title>
-                <h2>Link Features to your Article</h2>
-            </anu-card-title>
-            <anu-card-body>
-                <div class="row">
-                    <anu-multi-select-box keyField="id" labelField="title" [items]="articleFeatures"
-                        [selectedItems]="selectedArticleFeatures" (changed)="onArticleFeaturesChanged($event)">
-                    </anu-multi-select-box>
-                </div>
-            </anu-card-body>
-        </anu-card>
-        <anu-modal [opened]="toggleImageForm" (cancelClick)="cancelImageChange()">
-            <anu-cms-image-form [src]="article?.image?.src" [alt]="article?.image?.alt" (cancel)="cancelImageChange()" [enableOpenai]="enableOpenai"
-                (save)="saveImageChange($event)"></anu-cms-image-form>
-        </anu-modal>
-
-        <section class="row spacing-vertical right">
-            <a class="btn" href="#" (click)="saveArticle($event)">Save Article</a>
-        </section>
-
-    </section>
-
-    <section class="tab-item-body" [ngClass]="{'active': activeTab.name === 'metainfo'}">
-        <small><i>The <strong>Page title</strong> and <strong>Page description</strong> ideally should be same as to
-                your article's content.</i></small>
-        <anu-meta-form [metaInfo]="article?.metaInfo" [readonlyMetaProps]="readonlyMetaProps"
-            (changed)="articleMetaChanged($event)"></anu-meta-form>
-
-        <section class="row spacing-vertical right">
-            <a class="btn" href="#" (click)="saveArticle($event)">Save Article</a>
-        </section>
-    </section>
-
-    <section class="tab-item-body" [ngClass]="{'active': activeTab.name === 'publish'}">
+  <section
+    class="tab-item-body"
+    [ngClass]="{ active: activeTab.name === 'moreinfo' }"
+  >
+    <anu-card
+      class="shadow spacing spacing-around-v moreinfo-card spacing-around-h-md spacing-around-h-lg"
+    >
+      <anu-card-body>
         <div class="row center stretch">
-            <!-- inReview  -->
-            <div class="col-sm-12">
-                <label class="spacing-horizontal">In Review? <anu-toggle [rounded]="true" [checked]="article?.inReview"
-                        (changed)="inReviewChanged($event)"></anu-toggle></label>
-            </div>
-            <div class="col-sm-12">
-                <span *ngIf="!enablePublish" [ngClass]="article?.isLive ? 'success' : 'warning'">{{article?.isLive ?
-                    'Published' :
-                    'Unpublished'}}</span>
-                <label *ngIf="enablePublish" class="spacing-horizontal">Published? <anu-toggle [rounded]="true"
-                        [checked]="article?.isLive" (changed)="isLiveChanged($event)"></anu-toggle></label>
-            </div>
+          <div class="col-sm-12">
+            <a class="spacing-around" href="#" (click)="changeImage($event)"
+              >Change image</a
+            >
+            <a
+              class="spacing-around"
+              href="#"
+              (click)="changeImage($event, true)"
+              >Remove image</a
+            >
+          </div>
         </div>
-        <h2>Preview Card</h2>
-        <anu-article class="spacing-around-horizontal-md spacing-around-horizontal-lg" [value]="article"></anu-article>
-    </section>
+      </anu-card-body>
+    </anu-card>
 
+    <anu-card
+      class="shadow spacing spacing-around-v moreinfo-card spacing-around-h-md spacing-around-h-lg"
+    >
+      <anu-card-title>
+        <h2>Link Categories to your Article</h2>
+      </anu-card-title>
+      <anu-card-body>
+        <div class="row">
+          <anu-multi-select-box
+            keyField="id"
+            labelField="title"
+            [items]="categoriesMultiSelectItems"
+            [selectedItems]="selectedArticleCategories"
+            (changed)="onCategoriesChanged($event)"
+          >
+          </anu-multi-select-box>
+        </div>
+      </anu-card-body>
+    </anu-card>
+    <anu-card
+      *ngIf="enableFeatures"
+      class="shadow spacing spacing-around-v moreinfo-card spacing-around-h-md spacing-around-h-lg"
+    >
+      <anu-card-title>
+        <h2>Link Features to your Article</h2>
+      </anu-card-title>
+      <anu-card-body>
+        <div class="row">
+          <anu-multi-select-box
+            keyField="id"
+            labelField="title"
+            [items]="articleFeatures"
+            [selectedItems]="selectedArticleFeatures"
+            (changed)="onArticleFeaturesChanged($event)"
+          >
+          </anu-multi-select-box>
+        </div>
+      </anu-card-body>
+    </anu-card>
+    <anu-modal [opened]="toggleImageForm" (cancelClick)="cancelImageChange()">
+      <anu-cms-image-form
+        [src]="article?.image?.src"
+        [alt]="article?.image?.alt"
+        (cancel)="cancelImageChange()"
+        [enableOpenai]="enableOpenai"
+        (save)="saveImageChange($event)"
+      ></anu-cms-image-form>
+    </anu-modal>
+
+    <section class="row spacing-v right">
+      <a class="btn" href="#" (click)="saveArticle($event)">Save Article</a>
+    </section>
+  </section>
+
+  <section
+    class="tab-item-body"
+    [ngClass]="{ active: activeTab.name === 'metainfo' }"
+  >
+    <small
+      ><i
+        >The <strong>Page title</strong> and
+        <strong>Page description</strong> ideally should be same as to your
+        article's content.</i
+      ></small
+    >
+    <anu-meta-form
+      [metaInfo]="article?.metaInfo"
+      [readonlyMetaProps]="readonlyMetaProps"
+      (changed)="articleMetaChanged($event)"
+    ></anu-meta-form>
+
+    <section class="row spacing-v right">
+      <a class="btn" href="#" (click)="saveArticle($event)">Save Article</a>
+    </section>
+  </section>
+
+  <section
+    class="tab-item-body spacing-v"
+    [ngClass]="{ active: activeTab.name === 'publish' }"
+  >
+    <div class="row center stretch">
+      <!-- inReview  -->
+      <div class="col-sm-12">
+        <label class="spacing-h"
+          >In Review?
+          <anu-toggle
+            [rounded]="true"
+            [checked]="article?.inReview"
+            (changed)="inReviewChanged($event)"
+          ></anu-toggle
+        ></label>
+      </div>
+      <div class="col-sm-12">
+        <span
+          *ngIf="!enablePublish"
+          [ngClass]="article?.isLive ? 'success' : 'warning'"
+          >{{ article?.isLive ? 'Published' : 'Unpublished' }}</span
+        >
+        <label *ngIf="enablePublish" class="spacing-h"
+          >Published?
+          <anu-toggle
+            [rounded]="true"
+            [checked]="article?.isLive"
+            (changed)="isLiveChanged($event)"
+          ></anu-toggle
+        ></label>
+      </div>
+    </div>
+    <h2>Preview Card</h2>
+    <anu-article
+      class="spacing-around-h-md spacing-around-h-lg"
+      [value]="article"
+    ></anu-article>
+  </section>
 </section>

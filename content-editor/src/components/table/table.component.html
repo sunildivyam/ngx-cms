@@ -1,0 +1,109 @@
+<anu-toolbar
+  class="toolbar"
+  *ngIf="enableEdit"
+  [items]="toolbarItems"
+  [size]="'size-sm'"
+  (changed)="toolbarChanged($event)"
+></anu-toolbar>
+
+<table
+  *ngIf="value"
+  [ngClass]="value.classNames"
+  [style.width]="value.width || 'auto'"
+  [style.height]="value.height || 'auto'"
+  [cellSpacing]="value.cellSpacing || 'initial'"
+  [cellPadding]="value.cellPadding || 'initial'"
+>
+  <thead *ngIf="value.thRow">
+    <tr>
+      <th
+        class="relative"
+        [ngClass]="thCell.classNames"
+        *ngFor="let thCell of value.thRow.cells"
+      >
+        <!-- Cell Toolbar Start -->
+        <anu-toolbar
+          *ngIf="enableEdit && thCell === activeCell"
+          class="toolbar-cell"
+          [isVertical]="true"
+          [items]="toolbarItems"
+          (changed)="onStylesToolbarClick($event)"
+        ></anu-toolbar>
+        <!-- Cell Toolbar End-->
+
+        <p
+          contenteditable
+          [(ngModel)]="thCell.value"
+          tabindex="0"
+          (anuFormatInline)="textSelected()"
+          (keydown.enter)="enterPressed($event)"
+          (keydown.backspace)="backspacePressed($event)"
+          (blur)="onBlur($event)"
+          (focusin)="activeCell = thCell"
+        ></p>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr [ngClass]="row.classNames" *ngFor="let row of value.rows">
+      <td
+        class="relative"
+        [ngClass]="cell.classNames"
+        [style.width]="cell.width"
+        [style.height]="cell.height"
+        *ngFor="let cell of row.cells"
+      >
+        <!-- Cell Toolbar Start -->
+        <anu-toolbar
+          *ngIf="enableEdit && cell === activeCell"
+          class="toolbar-cell"
+          [isVertical]="true"
+          [items]="toolbarItems"
+          (changed)="onStylesToolbarClick($event)"
+        ></anu-toolbar>
+        <!-- Cell Toolbar End-->
+        <p
+          contenteditable
+          [(ngModel)]="cell.value"
+          tabindex="0"
+          (anuFormatInline)="textSelected()"
+          (keydown.enter)="enterPressed($event)"
+          (keydown.backspace)="backspacePressed($event)"
+          (blur)="onBlur($event)"
+          (focusin)="activeCell = cell"
+        ></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<anu-modal
+  [opened]="showTableForm"
+  modalTitle="Table Information"
+  okLabel="Update Table"
+  [enableOk]="true"
+  [enableCancel]="true"
+  (okClick)="modalOkClicked($event)"
+  (cancelClick)="modalCancelClicked($event)"
+>
+  <anu-table-form
+    [value]="tableInfo"
+    (changed)="tableChanged($event)"
+  ></anu-table-form>
+</anu-modal>
+
+<!-- StylesModal -->
+<anu-modal
+  *ngIf="value"
+  [opened]="showStylesModal"
+  (cancelClick)="showStylesModal = false"
+  [enableCancel]="true"
+  [cancelLabel]="'Close'"
+  [enableOk]="false"
+  modalTitle="Apply Styles"
+>
+  <anu-element-styles
+    [selectedStyles]="activeCell?.classNames"
+    (changed)="elementStylesChanged($event)"
+  ></anu-element-styles>
+</anu-modal>

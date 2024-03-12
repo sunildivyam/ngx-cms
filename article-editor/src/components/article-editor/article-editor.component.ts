@@ -13,7 +13,10 @@ import { MetaInfo } from '@annuadvent/ngx-common-ui/meta';
 import { Tab } from '@annuadvent/ngx-common-ui/tabs';
 import { Article, ArticleFeatures } from '@annuadvent/ngx-cms/article';
 import { Category } from '@annuadvent/ngx-cms/category';
-import { EditorElement, EDITOR_ROOT_ELEMENT } from '@annuadvent/ngx-cms/content-editor';
+import {
+  EditorElement,
+  EDITOR_ROOT_ELEMENT,
+} from '@annuadvent/ngx-cms/content-editor';
 import { ARTICLE_EDITOR_TABS } from '../../constants/article-editor.constants';
 
 const SAMPLE_ARTICLE: Article = {
@@ -24,7 +27,7 @@ const SAMPLE_ARTICLE: Article = {
   },
   features: [],
   categories: [],
-  image: { src: '', alt: '' }
+  image: { src: '', alt: '' },
 };
 
 @Component({
@@ -137,10 +140,7 @@ export class ArticleEditorComponent implements OnInit, OnChanges {
       categories: selectedCategories?.map((cat) => cat?.id),
       metaInfo: {
         ...this.article.metaInfo,
-        url: this.utils.getCanonicalUrl(
-          'stories',
-          this.article.id
-        ),
+        url: this.utils.getCanonicalUrl('stories', this.article.id),
       },
     };
     this.selectedArticleCategories = [...selectedCategories];

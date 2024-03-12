@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { LeafElementComponent } from './leaf-element.component';
+import { LeafElementComponent } from "./leaf-element.component";
 
-describe('LeafElementComponent', () => {
+describe("LeafElementComponent", () => {
   let component: LeafElementComponent;
   let fixture: ComponentFixture<LeafElementComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LeafElementComponent ]
-    })
-    .compileComponents();
+      declarations: [LeafElementComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('LeafElementComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

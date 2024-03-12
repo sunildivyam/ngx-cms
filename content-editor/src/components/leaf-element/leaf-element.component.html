@@ -1,41 +1,151 @@
-<h1 *ngIf="value.tagName === 'h1'" contenteditable [(ngModel)]="value.data.text" tabindex="0"
-    (keydown.backspace)="backspacePressed($event)" (keydown.enter)="enterPressed($event, value)" [name]="value.name"
-    [focus]="value?.focused" (blur)="onBlur($event)" (focusin)="onFocus($event)" (anuFormatInline)="textSelected()">
-</h1>
-<h2 *ngIf="value.tagName === 'h2'" contenteditable [(ngModel)]="value.data.text" tabindex="0"
-    (keydown.backspace)="backspacePressed($event)" (keydown.enter)="enterPressed($event, value)" [name]="value.name"
-    [focus]="value?.focused" (blur)="onBlur($event)" (focusin)="onFocus($event)" (anuFormatInline)="textSelected()">
-</h2>
-<h3 *ngIf="value.tagName === 'h3'" contenteditable [(ngModel)]="value.data.text" tabindex="0"
-    (keydown.backspace)="backspacePressed($event)" (keydown.enter)="enterPressed($event, value)" [name]="value.name"
-    [focus]="value?.focused" (blur)="onBlur($event)" (focusin)="onFocus($event)" (anuFormatInline)="textSelected()">
-</h3>
-<h4 *ngIf="value.tagName === 'h4'" contenteditable [(ngModel)]="value.data.text" tabindex="0"
-    (keydown.backspace)="backspacePressed($event)" (keydown.enter)="enterPressed($event, value)" [name]="value.name"
-    [focus]="value?.focused" (blur)="onBlur($event)" (focusin)="onFocus($event)" (anuFormatInline)="textSelected()">
-</h4>
-<h5 *ngIf="value.tagName === 'h5'" contenteditable [(ngModel)]="value.data.text" tabindex="0"
-    (keydown.backspace)="backspacePressed($event)" (keydown.enter)="enterPressed($event, value)" [name]="value.name"
-    [focus]="value?.focused" (blur)="onBlur($event)" (focusin)="onFocus($event)" (anuFormatInline)="textSelected()">
-</h5>
-<h6 *ngIf="value.tagName === 'h6'" contenteditable [(ngModel)]="value.data.text" tabindex="0"
-    (keydown.backspace)="backspacePressed($event)" (keydown.enter)="enterPressed($event, value)" [name]="value.name"
-    [focus]="value?.focused" (blur)="onBlur($event)" (focusin)="onFocus($event)" (anuFormatInline)="textSelected()">
-</h6>
+<h1
+  *ngIf="value.tagName === 'h1'"
+  contenteditable
+  [(ngModel)]="value.data.text"
+  tabindex="0"
+  (keydown.backspace)="backspacePressed($event)"
+  (keydown.enter)="enterPressed($event, value)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (blur)="onBlur($event)"
+  (focusin)="onFocus($event)"
+  (anuFormatInline)="textSelected()"
+></h1>
+<h2
+  *ngIf="value.tagName === 'h2'"
+  contenteditable
+  [(ngModel)]="value.data.text"
+  tabindex="0"
+  (keydown.backspace)="backspacePressed($event)"
+  (keydown.enter)="enterPressed($event, value)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (blur)="onBlur($event)"
+  (focusin)="onFocus($event)"
+  (anuFormatInline)="textSelected()"
+></h2>
+<h3
+  *ngIf="value.tagName === 'h3'"
+  contenteditable
+  [(ngModel)]="value.data.text"
+  tabindex="0"
+  (keydown.backspace)="backspacePressed($event)"
+  (keydown.enter)="enterPressed($event, value)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (blur)="onBlur($event)"
+  (focusin)="onFocus($event)"
+  (anuFormatInline)="textSelected()"
+></h3>
+<h4
+  *ngIf="value.tagName === 'h4'"
+  contenteditable
+  [(ngModel)]="value.data.text"
+  tabindex="0"
+  (keydown.backspace)="backspacePressed($event)"
+  (keydown.enter)="enterPressed($event, value)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (blur)="onBlur($event)"
+  (focusin)="onFocus($event)"
+  (anuFormatInline)="textSelected()"
+></h4>
+<h5
+  *ngIf="value.tagName === 'h5'"
+  contenteditable
+  [(ngModel)]="value.data.text"
+  tabindex="0"
+  (keydown.backspace)="backspacePressed($event)"
+  (keydown.enter)="enterPressed($event, value)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (blur)="onBlur($event)"
+  (focusin)="onFocus($event)"
+  (anuFormatInline)="textSelected()"
+></h5>
+<h6
+  *ngIf="value.tagName === 'h6'"
+  contenteditable
+  [(ngModel)]="value.data.text"
+  tabindex="0"
+  (keydown.backspace)="backspacePressed($event)"
+  (keydown.enter)="enterPressed($event, value)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (blur)="onBlur($event)"
+  (focusin)="onFocus($event)"
+  (anuFormatInline)="textSelected()"
+></h6>
 
-<li *ngIf="value.tagName === 'li'" contenteditable [(ngModel)]="value.data.text" (keydown.enter)="enterPressed($event, value)" tabindex="0"
-    (anuFormatInline)="textSelected()" (keydown.backspace)="backspacePressed($event)" [name]="value.name"
-    [focus]="value?.focused" (blur)="onBlur($event)" (focusin)="onFocus($event)">
-</li>
+<li
+  *ngIf="value.tagName === 'li'"
+  contenteditable
+  [(ngModel)]="value.data.text"
+  (keydown.enter)="enterPressed($event, value)"
+  tabindex="0"
+  (anuFormatInline)="textSelected()"
+  (keydown.backspace)="backspacePressed($event)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (blur)="onBlur($event)"
+  (focusin)="onFocus($event)"
+></li>
 
-<p *ngIf="value.tagName === 'p'" contenteditable [(ngModel)]="value.data.text" (keydown.enter)="enterPressed($event, value)" tabindex="0"
-    (anuFormatInline)="textSelected()" (keydown.backspace)="backspacePressed($event)" [name]="value.name"
-    [focus]="value?.focused" (focusin)="onFocus($event)" (blur)="onBlur($event)"></p>
+<p
+  *ngIf="value.tagName === 'p'"
+  contenteditable
+  [(ngModel)]="value.data.text"
+  (keydown.enter)="enterPressed($event, value)"
+  tabindex="0"
+  (anuFormatInline)="textSelected()"
+  (keydown.backspace)="backspacePressed($event)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (focusin)="onFocus($event)"
+  (blur)="onBlur($event)"
+></p>
 
-<img *ngIf="value.tagName === 'img'" contenteditable [src]="value?.data?.src" [alt]="value?.data?.alt" (keydown.enter)="enterPressed($event, value)" tabindex="0"
-    (anuFormatInline)="textSelected()" (keydown.backspace)="backspacePressed($event)" [name]="value.name"
-    [focus]="value?.focused" (focusin)="onFocus($event)" (blur)="onBlur($event)"/>
+<img
+  *ngIf="value.tagName === 'img'"
+  contenteditable
+  [src]="value?.data?.src"
+  [alt]="value?.data?.alt"
+  (keydown.enter)="enterPressed($event, value)"
+  tabindex="0"
+  (anuFormatInline)="textSelected()"
+  (keydown.backspace)="backspacePressed($event)"
+  [name]="value.name"
+  [focus]="value?.focused"
+  (focusin)="onFocus($event)"
+  (blur)="onBlur($event)"
+/>
 
-<anu-code-block *ngIf="value.tagName === 'anu-code-block'" [source]="value?.data?.source" [language]="value?.data?.language" [enableEdit]="true" tabindex="0"
-(keydown.enter)="enterPressed($event, value)" (keydown.backspace)="backspacePressed($event)" (changed)="codeBlockChanged($event)" [id]="value.name"
-(sourceModalOpenStatusChanged)="sourceModalOpenStatusChanged($event)" [focus]="value?.focused" (focusin)="onFocus($event)" (blur)="onBlur($event)"></anu-code-block>
+<anu-code-block
+  *ngIf="value.tagName === 'anu-code-block'"
+  [source]="value?.data?.source"
+  [language]="value?.data?.language"
+  [enableEdit]="true"
+  tabindex="0"
+  (keydown.enter)="enterPressed($event, value)"
+  (keydown.backspace)="backspacePressed($event)"
+  (changed)="codeBlockChanged($event)"
+  [id]="value.name"
+  (sourceModalOpenStatusChanged)="sourceModalOpenStatusChanged($event)"
+  [focus]="value?.focused"
+  (focusin)="onFocus($event)"
+  (blur)="onBlur($event)"
+></anu-code-block>
+
+<anu-table
+  *ngIf="value.tagName === 'anu-table'"
+  [value]="value?.data?.tableData"
+  [enableEdit]="true"
+  tabindex="0"
+  (keydown.enter)="enterPressed($event, value)"
+  (keydown.backspace)="backspacePressed($event)"
+  (changed)="tableChanged($event)"
+  [id]="value.name"
+  [focus]="value?.focused"
+  (focusin)="onFocus($event)"
+  (blur)="onBlur($event)"
+></anu-table>

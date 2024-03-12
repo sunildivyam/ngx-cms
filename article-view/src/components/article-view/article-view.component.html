@@ -1,40 +1,67 @@
-<div class="flex-container primary-lightest-grad relative article-view-header">
-    <img class="article-view-image" *ngIf="value?.image?.src" [src]="value.image.src" [alt]="value.image.alt" />
-    <!-- Article heading -->
-    <h1 class="article-view-heading shadow container spacing" [innerHtml]="value?.metaInfo?.title"></h1>
-    <!-- Article Description -->
-    <p class="article-view-description container spacing" [innerHtml]="value?.metaInfo?.description"></p>
+<div
+  class="flex-container primary-dark-grad relative article-view-header spacing-v"
+>
+  <img
+    class="article-view-image shadow"
+    *ngIf="value?.image?.src"
+    [src]="value.image.src"
+    [alt]="value.image.alt"
+  />
+  <!-- Article Description -->
+  <!-- <p
+    class="article-view-description container spacing"
+    [innerHtml]="value?.metaInfo?.description"
+  ></p> -->
 </div>
+
 <div class="flex-container primary-deep-light-grad article-view-meta-container">
-    <!-- Article Meta info -->
-    <small *ngIf="showMetaInfo" class="row nowrap stretch">
-        <!-- Implement userInfo Service first then uncomment this code
+  <!-- Article Meta info -->
+  <small *ngIf="showMetaInfo" class="row nowrap stretch">
+    <!-- Implement userInfo Service first then uncomment this code
         <div>
             <strong>Author: </strong><span><small>{{getUserDisplayName(value?.userId)}}</small></span>
         </div>
     -->
-        <div>
-            <strong>Updated: </strong><span><small>{{utilsSvc.dateToLocalString(value?.updated)}}</small></span>
-        </div>
-        <!-- <div>
+    <div>
+      <strong>Updated: </strong
+      ><span
+        ><small>{{ utilsSvc.dateToLocalString(value?.updated) }}</small></span
+      >
+    </div>
+    <!-- <div>
         <strong>Created: </strong><span><small>{{utilsSvc.dateToLocalString(value?.created)}}</small></span>
     </div> -->
-    </small>
+  </small>
 </div>
 
 <div *ngIf="!showAside" class="flex-container article-view-body-container">
-    <!-- Article body -->
-    <anu-article-element [value]="value?.body"></anu-article-element>
+  <div class="flex-container article-view-header">
+    <h1
+      class="article-view-heading container"
+      [innerHtml]="value?.metaInfo?.title"
+    ></h1>
+  </div>
+  <!-- Article body -->
+  <anu-article-element
+    class="container"
+    [value]="value?.body"
+  ></anu-article-element>
 </div>
 
 <div *ngIf="showAside" class="flex-container article-view-body-container">
-    <div class="row">
-        <div [ngClass]="leftAsideClasses">
-            <!-- Article body -->
-            <anu-article-element [value]="value?.body"></anu-article-element>
-        </div>
-        <div [ngClass]="rightAsideClasses">
-            <ng-content></ng-content>
-        </div>
+  <div class="row">
+    <div [ngClass]="leftAsideClasses">
+      <div class="flex-container article-view-header">
+        <h1
+          class="article-view-heading container"
+          [innerHtml]="value?.metaInfo?.title"
+        ></h1>
+      </div>
+      <!-- Article body -->
+      <anu-article-element [value]="value?.body"></anu-article-element>
     </div>
+    <div [ngClass]="rightAsideClasses">
+      <ng-content></ng-content>
+    </div>
+  </div>
 </div>

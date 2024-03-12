@@ -1,59 +1,143 @@
-<div *ngIf="!editorElement?.isContainer" [ngClass]="{'visible': editorElement?.focused}"
-    class="row center nowrap styles-toolbar">
-    <a href="#" class="toolbar-btn" (click)="toggleToolbar($event, editorElement)">&#187;</a>
-    <anu-toolbar [isVertical]="true" [ngClass]="{'opened': isToolbar}" [items]="styleToolbar"
-        (changed)="styleToolbarSelected($event)"></anu-toolbar>
+<div
+  *ngIf="!editorElement?.isContainer"
+  [ngClass]="{ visible: editorElement?.focused }"
+  class="row center nowrap styles-toolbar"
+>
+  <a href="#" class="toolbar-btn" (click)="toggleToolbar($event, editorElement)"
+    >&#187;</a
+  >
+  <anu-toolbar
+    class="shadow-half"
+    [isVertical]="true"
+    [ngClass]="{ opened: isToolbar }"
+    [items]="styleToolbar"
+    (changed)="styleToolbarSelected($event)"
+  ></anu-toolbar>
 </div>
 
 <!-- Headings h1 - h6 -->
-<anu-leaf-element class="col-12"
-    *ngIf="['h1','h2','h3','h4','h5','h6', 'p', 'li', 'img', 'anu-code-block'].includes(editorElement?.tagName)"
-    [value]="editorElement" (changed)="onBlur()" (focusin)="focusin()" (enterKeyPressed)="enterKeyPressed($event)"
-    (backspaceKeyPressed)="backspaceKeyPressed($event)" [fullTree]="fullTree"></anu-leaf-element>
+<anu-leaf-element
+  class="col-12"
+  *ngIf="
+    [
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'p',
+      'li',
+      'img',
+      'anu-code-block',
+      'anu-table'
+    ].includes(editorElement?.tagName)
+  "
+  [ngClass]="editorElement.classNames"
+  [value]="editorElement"
+  (changed)="onBlur()"
+  (focusin)="focusin()"
+  (enterKeyPressed)="enterKeyPressed($event)"
+  (backspaceKeyPressed)="backspaceKeyPressed($event)"
+  [fullTree]="fullTree"
+></anu-leaf-element>
 
 <!-- Container Elements -->
 <ng-container *ngIf="editorElement?.isContainer">
-    <article *ngIf="editorElement?.tagName === 'article'">
-        <ng-container *ngFor="let child of editorElement?.children">
-            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child"
-                [fullTree]="fullTree" (changed)="onBlur()" (focusin)="focusin()">
-            </anu-content-element>
-        </ng-container>
-    </article>
-    <div *ngIf="editorElement?.tagName === 'div'">
-        <ng-container *ngFor="let child of editorElement?.children">
-            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child"
-                [fullTree]="fullTree" (changed)="onBlur()" (focusin)="focusin()">
-            </anu-content-element>
-        </ng-container>
-    </div>
-    <ul *ngIf="editorElement?.tagName === 'ul'">
-        <ng-container *ngFor="let child of editorElement?.children">
-            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child"
-                [fullTree]="fullTree" (changed)="onBlur()" (focusin)="focusin()">
-            </anu-content-element>
-        </ng-container>
-    </ul>
-    <ol *ngIf="editorElement?.tagName === 'ol'">
-        <ng-container *ngFor="let child of editorElement?.children">
-            <anu-content-element [enableOpenai]="enableOpenai" class="col-12" [editorElement]="child"
-                [fullTree]="fullTree" (changed)="onBlur()" (focusin)="focusin()">
-            </anu-content-element>
-        </ng-container>
-    </ol>
+  <article *ngIf="editorElement?.tagName === 'article'">
+    <ng-container *ngFor="let child of editorElement?.children">
+      <anu-content-element
+        [enableOpenai]="enableOpenai"
+        class="col-12"
+        [editorElement]="child"
+        [fullTree]="fullTree"
+        (changed)="onBlur()"
+        (focusin)="focusin()"
+      >
+      </anu-content-element>
+    </ng-container>
+  </article>
+  <div *ngIf="editorElement?.tagName === 'div'">
+    <ng-container *ngFor="let child of editorElement?.children">
+      <anu-content-element
+        [enableOpenai]="enableOpenai"
+        class="col-12"
+        [editorElement]="child"
+        [fullTree]="fullTree"
+        (changed)="onBlur()"
+        (focusin)="focusin()"
+      >
+      </anu-content-element>
+    </ng-container>
+  </div>
+  <ul *ngIf="editorElement?.tagName === 'ul'">
+    <ng-container *ngFor="let child of editorElement?.children">
+      <anu-content-element
+        [enableOpenai]="enableOpenai"
+        class="col-12"
+        [editorElement]="child"
+        [fullTree]="fullTree"
+        (changed)="onBlur()"
+        (focusin)="focusin()"
+      >
+      </anu-content-element>
+    </ng-container>
+  </ul>
+  <ol *ngIf="editorElement?.tagName === 'ol'">
+    <ng-container *ngFor="let child of editorElement?.children">
+      <anu-content-element
+        [enableOpenai]="enableOpenai"
+        class="col-12"
+        [editorElement]="child"
+        [fullTree]="fullTree"
+        (changed)="onBlur()"
+        (focusin)="focusin()"
+      >
+      </anu-content-element>
+    </ng-container>
+  </ol>
 </ng-container>
 
 <!-- Image Form Modal-->
 <ng-container *ngIf="toggleImageForm">
-    <anu-modal [opened]="toggleImageForm" (cancelClick)="cancelImageModal()">
-        <anu-cms-image-form [src]="imageInfo.src" [alt]="imageInfo.alt" (cancel)="cancelImageModal()"
-            [enableOpenai]="enableOpenai" (save)="saveImage($event)">
-        </anu-cms-image-form>
-    </anu-modal>
+  <anu-modal [opened]="toggleImageForm" (cancelClick)="cancelImageModal()">
+    <anu-cms-image-form
+      [src]="imageInfo.src"
+      [alt]="imageInfo.alt"
+      (cancel)="cancelImageModal()"
+      [enableOpenai]="enableOpenai"
+      (save)="saveImage($event)"
+    >
+    </anu-cms-image-form>
+  </anu-modal>
 </ng-container>
 
 <!-- markupModal -->
-<anu-modal *ngIf="editorElement?.data" [opened]="showMarkupModal" (cancelClick)="showMarkupModal = false"
-    (okClick)="markupModalOk()" okLabel="Update" [enableCancel]="true" [enableOk]="true" modalTitle="Update Markup">
-    <textarea [(ngModel)]="markModalText"></textarea>
+<anu-modal
+  *ngIf="editorElement?.data"
+  [opened]="showMarkupModal"
+  (cancelClick)="showMarkupModal = false"
+  (okClick)="markupModalOk()"
+  okLabel="Update"
+  [enableCancel]="true"
+  [enableOk]="true"
+  modalTitle="Update Markup"
+>
+  <textarea [(ngModel)]="markModalText"></textarea>
+</anu-modal>
+
+<!-- StylesModal -->
+<anu-modal
+  *ngIf="editorElement?.data"
+  [opened]="showStylesModal"
+  (cancelClick)="showStylesModal = false"
+  [enableCancel]="true"
+  [cancelLabel]="'Close'"
+  [enableOk]="false"
+  modalTitle="Apply Styles"
+>
+  <anu-element-styles
+    [selectedStyles]="editorElement?.classNames"
+    (changed)="elementStylesChanged($event)"
+  ></anu-element-styles>
 </anu-modal>

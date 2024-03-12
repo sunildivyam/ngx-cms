@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { EditorElement, EditorElementData } from '../interfaces/content-editor.interface';
+import {
+  EditorElement,
+  EditorElementData,
+} from '../interfaces/content-editor.interface';
 import { DOCUMENT } from '@angular/common';
 import * as showdown from 'showdown';
 
@@ -7,7 +10,7 @@ import * as showdown from 'showdown';
   providedIn: 'root',
 })
 export class Html2JsonService {
-  constructor(@Inject(DOCUMENT) private document: Document) { }
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   public md2html(
     mdText: string,
@@ -42,7 +45,7 @@ export class Html2JsonService {
       (el as HTMLElement).tagName || (el as ChildNode).nodeName
     ).toLowerCase();
     const name = (el as HTMLElement).id || `${tagName}-${Date.now()}`;
-    const isContainer = ['ol', 'ul', 'article'].includes(tagName);
+    const isContainer = ['ol', 'ul', 'article', 'div'].includes(tagName);
     const focused = false;
     const editorEl: EditorElement = { name, tagName, isContainer, focused };
 
@@ -74,6 +77,18 @@ export class Html2JsonService {
                 : (el as HTMLElement).textContent,
           },
         };
+      } else if (tagName === 'a') {
+        // embed anchor tag and its content to a p tag, p is from allowed list of tags.
+        const pEl = this.document.createElement('p');
+        pEl.appendChild(el);
+
+        return {
+          ...editorEl,
+          tagName: 'p',
+          data: {
+            text: pEl.innerHTML,
+          },
+        };
       } else {
         for (let i = 0; i < elementChildren.length; i++) {
           const elObj = this.parseHtmlElement(elementChildren[i]);
@@ -102,10 +117,6 @@ export class Html2JsonService {
         const imgEl = el as HTMLImageElement;
         content.src = imgEl.src || '';
         content.alt = imgEl.alt || '';
-        break;
-      case 'A':
-        const aEl = el as HTMLAnchorElement;
-        content.href = aEl.href || '';
         break;
       case 'CODE':
         const codeEl = el as HTMLElement;

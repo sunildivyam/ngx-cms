@@ -7,19 +7,19 @@ import {
   Inject,
   OnDestroy,
   Renderer2,
-} from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+} from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 /*
-* This is a barebones contenteditable {@link ControlValueAccessor} allowing you to use
-* Angular forms with native contenteditable HTML. For security reasons you might want
-* to consider sanitizing pasted/dropped content before using it. Also make sure that
-* you do not set any dangerous content as control value yourself, because directive
-* just outputs control value as-is.
-*/
+ * This is a barebones contenteditable {@link ControlValueAccessor} allowing you to use
+ * Angular forms with native contenteditable HTML. For security reasons you might want
+ * to consider sanitizing pasted/dropped content before using it. Also make sure that
+ * you do not set any dangerous content as control value yourself, because directive
+ * just outputs control value as-is.
+ */
 @Directive({
   selector:
-    '[contenteditable][formControlName], [contenteditable][formControl], [contenteditable][ngModel]',
+    "[contenteditable][formControlName], [contenteditable][formControl], [contenteditable][ngModel]",
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -28,36 +28,38 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     },
   ],
 })
-export class ContenteditableValueAccessorDirective implements ControlValueAccessor, AfterViewInit, OnDestroy {
+export class ContenteditableValueAccessorDirective
+  implements ControlValueAccessor, AfterViewInit, OnDestroy
+{
   private observer: any;
 
   /**
    * onTouch callback that marks control as touched and allows FormHooks use
    */
-  private onTouched = () => { };
+  private onTouched = () => {};
 
   /**
    * onChange callback that writes value to control and allows FormHooks use
    */
-  private onChange: (value: string) => void = () => { };
+  private onChange: (value: string) => void = () => {};
 
   constructor(
     @Inject(ElementRef) private readonly elementRef: ElementRef,
-    @Inject(Renderer2) private readonly renderer: Renderer2,
+    @Inject(Renderer2) private readonly renderer: Renderer2
   ) {
     /**
-    * MutationObserver IE11 fallback (as opposed to input event for modern browsers).
-    * When mutation removes a tag, i.e. delete is pressed on the last remaining character
-    * inside a tag — callback is triggered before the DOM is actually changed, therefore
-    * setTimeout is used
-    */
-    if (typeof MutationObserver !== 'undefined') {
+     * MutationObserver IE11 fallback (as opposed to input event for modern browsers).
+     * When mutation removes a tag, i.e. delete is pressed on the last remaining character
+     * inside a tag — callback is triggered before the DOM is actually changed, therefore
+     * setTimeout is used
+     */
+    if (typeof MutationObserver !== "undefined") {
       this.observer = new MutationObserver(() => {
         setTimeout(() => {
           this.onChange(
             ContenteditableValueAccessorDirective.processValue(
-              this.elementRef.nativeElement.innerHTML,
-            ),
+              this.elementRef.nativeElement.innerHTML
+            )
           );
         });
       });
@@ -91,22 +93,22 @@ export class ContenteditableValueAccessorDirective implements ControlValueAccess
    * also disconnect MutationObserver as it is not needed if this
    * event works in current browser
    */
-  @HostListener('input')
+  @HostListener("input")
   onInput() {
     if (this.observer) {
       this.observer.disconnect();
     }
     this.onChange(
       ContenteditableValueAccessorDirective.processValue(
-        this.elementRef.nativeElement.innerHTML,
-      ),
+        this.elementRef.nativeElement.innerHTML
+      )
     );
   }
 
   /**
    * Listen to blur event to mark control as touched
    */
-  @HostListener('blur')
+  @HostListener("blur")
   onBlur() {
     this.onTouched();
   }
@@ -119,8 +121,8 @@ export class ContenteditableValueAccessorDirective implements ControlValueAccess
   writeValue(value: string | null) {
     this.renderer.setProperty(
       this.elementRef.nativeElement,
-      'innerHTML',
-      ContenteditableValueAccessorDirective.processValue(value),
+      "innerHTML",
+      ContenteditableValueAccessorDirective.processValue(value)
     );
   }
 
@@ -150,8 +152,8 @@ export class ContenteditableValueAccessorDirective implements ControlValueAccess
   public setDisabledState(disabled: boolean) {
     this.renderer.setAttribute(
       this.elementRef.nativeElement,
-      'contenteditable',
-      String(!disabled),
+      "contenteditable",
+      String(!disabled)
     );
   }
 
@@ -160,8 +162,8 @@ export class ContenteditableValueAccessorDirective implements ControlValueAccess
    * also single <br> is replaced with empty string when passed to the control
    */
   private static processValue(value: unknown): string {
-    const processed = String(value == null ? '' : value);
+    const processed = String(value == null ? "" : value);
 
-    return processed.trim() === '<br>' ? '' : processed;
+    return processed.trim() === "<br>" ? "" : processed;
   }
 }

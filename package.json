@@ -1,6 +1,6 @@
 {
   "name": "@annuadvent/ngx-cms",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "description": "The @annuadvent/ngx-cms angular library focuses on providing Angular components and services specifically tailored for content management systems (CMS). It offers a set of pre-built UI components optimized for managing and displaying content, such as rich text editors, image galleries, content grids, and content organization tools. Additionally, it provides services for handling content CRUD operations, authentication, and authorization within the CMS environment.",
   "homepage": "https://github.com/sunildivyam/ngx-cms",
@@ -27,9 +27,9 @@
   "peerDependencies": {
     "@angular/common": "^16.1.0",
     "@angular/core": "^16.1.0",
-    "@annuadvent/ngx-common-ui": "1.0.2",
-    "@annuadvent/ngx-core": "1.0.2",
-    "@annuadvent/ngx-tools": "1.0.2",
+    "@annuadvent/ngx-common-ui": "1.0.3",
+    "@annuadvent/ngx-core": "1.0.3",
+    "@annuadvent/ngx-tools": "1.0.3",
     "showdown": "^2.1.0"
   },
   "dependencies": {

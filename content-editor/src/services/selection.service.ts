@@ -1,26 +1,26 @@
-import { Inject, Injectable } from '@angular/core';
-import { Link } from '@annuadvent/ngx-common-ui/link-form';
-import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
-import { Observable, Subject } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
-import { Rectangle } from '../interfaces/content-editor.interface';
-import { SUPPORTED_TAGS } from '../constants/content-editor.constants';
+import { Inject, Injectable } from "@angular/core";
+import { Link } from "@annuadvent/ngx-common-ui/link-form";
+import { ImageInfo } from "@annuadvent/ngx-cms/cms-image-form";
+import { Observable, Subject } from "rxjs";
+import { DOCUMENT } from "@angular/common";
+import { Rectangle } from "../interfaces/content-editor.interface";
+import { SUPPORTED_TAGS } from "../constants/content-editor.constants";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class SelectionService {
   private savedSelection: Array<Range>;
   private _selection = new Subject<boolean>();
 
-  constructor(@Inject(DOCUMENT) private document: Document) { }
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   // Get the deepest Element node in the DOM tree that contains the entire range.
   private getRangeContainer(range: Range): Node {
     let container = range.commonAncestorContainer;
     // If the selected node is a Text node, climb up to an element node - in Internet
     // Explorer, the .contains() method only works with Element nodes.
-    while (container && container.nodeName !== 'ANU-CONTENT-EDITOR') {
+    while (container && container.nodeName !== "ANU-CONTENT-EDITOR") {
       container = container.parentNode;
     }
 
@@ -49,7 +49,7 @@ export class SelectionService {
     const fragment = range.cloneContents();
     const imgs = fragment.querySelectorAll(SUPPORTED_TAGS.IMAGE);
 
-    if (imgs && imgs.length) return true
+    if (imgs && imgs.length) return true;
 
     return false;
   }
@@ -81,7 +81,7 @@ export class SelectionService {
 
   public getSelectionRect(): Rectangle | null {
     const selection = this.restoreSelection(this.savedSelection);
-    if (!selection || selection.type !== 'Range' || !selection.rangeCount) {
+    if (!selection || selection.type !== "Range" || !selection.rangeCount) {
       return null;
     }
 
@@ -108,10 +108,9 @@ export class SelectionService {
     return selectionRect;
   }
 
-
   public addLink(link: Link) {
     const selection = this.restoreSelection(this.savedSelection);
-    if (!selection || selection.type !== 'Range' || !selection.rangeCount) {
+    if (!selection || selection.type !== "Range" || !selection.rangeCount) {
       return;
     }
 
@@ -144,7 +143,7 @@ export class SelectionService {
 
   public addImage(image: ImageInfo) {
     const selection = this.restoreSelection(this.savedSelection);
-    if (!selection || selection.type !== 'Range' || !selection.rangeCount) {
+    if (!selection || selection.type !== "Range" || !selection.rangeCount) {
       return;
     }
 
@@ -168,7 +167,7 @@ export class SelectionService {
 
   public addFormating(tagName: string) {
     const selection = this.restoreSelection(this.savedSelection);
-    if (!selection || selection.type !== 'Range' || !selection.rangeCount) {
+    if (!selection || selection.type !== "Range" || !selection.rangeCount) {
       return;
     }
 

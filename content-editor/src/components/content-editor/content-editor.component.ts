@@ -1,6 +1,20 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { EditorElement, Rectangle } from '../../interfaces/content-editor.interface';
-import { EDITOR_ROOT_ELEMENT, TOOLBAR_FORMATTING } from '../../constants/content-editor.constants';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  EditorElement,
+  Rectangle,
+} from '../../interfaces/content-editor.interface';
+import {
+  EDITOR_ROOT_ELEMENT,
+  TOOLBAR_FORMATTING,
+} from '../../constants/content-editor.constants';
 import { ToolbarItem } from '@annuadvent/ngx-common-ui/toolbar';
 import { Link } from '@annuadvent/ngx-common-ui/link-form';
 import { ImageInfo } from '@annuadvent/ngx-cms/cms-image-form';
@@ -9,7 +23,7 @@ import { SelectionService } from '../../services/selection.service';
 @Component({
   selector: 'anu-content-editor',
   templateUrl: './content-editor.component.html',
-  styleUrls: ['./content-editor.component.scss']
+  styleUrls: ['./content-editor.component.scss'],
 })
 export class ContentEditorComponent implements OnInit {
   @Input() value: EditorElement = { ...EDITOR_ROOT_ELEMENT };
@@ -25,7 +39,7 @@ export class ContentEditorComponent implements OnInit {
     href: 'https://',
     label: '',
     title: '',
-    target: '_blank'
+    target: '_blank',
   };
 
   imageInfo: ImageInfo = {
@@ -37,10 +51,9 @@ export class ContentEditorComponent implements OnInit {
   toggleImageForm: boolean = false;
 
   constructor(private selService: SelectionService) {
-    this.selectionRect = { top: 0, left: 0, bottom: 0, right: 0 }
+    this.selectionRect = { top: 0, left: 0, bottom: 0, right: 0 };
     this.selService.selection.subscribe(this.handleTextSelection);
   }
-
 
   handleTextSelection = (hasSelection: boolean) => {
     this.isTextSelected = hasSelection;
@@ -48,15 +61,16 @@ export class ContentEditorComponent implements OnInit {
       setTimeout(() => {
         this.selectionRect = this.selService.getSelectionRect();
         if (this.selectionRect) {
-          this.selectionRect.top = this.selectionRect.top - this.popupEl.nativeElement.offsetHeight - this.selectionRect.height;
+          this.selectionRect.top =
+            this.selectionRect.top -
+            this.popupEl.nativeElement.offsetHeight -
+            this.selectionRect.height;
         }
-      })
+      });
     }
-  }
+  };
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 
   public contentChanged(el: EditorElement) {
     this.changed.emit(this.value);
@@ -89,7 +103,7 @@ export class ContentEditorComponent implements OnInit {
           href: 'https://',
           label: this.selService.selectionText,
           title: this.selService.selectionText,
-          target: '_blank'
+          target: '_blank',
         };
         this.toggleLinkForm = !this.toggleLinkForm;
         break;

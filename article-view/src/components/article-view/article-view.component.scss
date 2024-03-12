@@ -1,44 +1,37 @@
-@import 'mixins';
+@import "mixins";
 
 :host {
-    .article-view {
-
-        &-heading {
-            z-index: 1;
-            color: var(--anu-accent-deep-light);
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        &-image {
-            width: 100%;
-            height: auto;
-            position: absolute;
-        }
-
-        &-description {
-            z-index: 1;
-            color: var(--anu-accent-deep-light);
-            background: rgba(0, 0, 0, 0.5);
-
-            @include medium {
-                margin-top: 15rem;
-            }
-
-            @include large {
-                margin-top: 15rem;
-            }
-        }
-
-        &-meta-container {
-            z-index: 1;
-        }
-
-        &-body-container {
-            z-index: 1;
-        }
-
-        &-header {
-            overflow-y: hidden;
-        }
+  .article-view {
+    &-image {
+      width: 100%;
+      height: auto;
+      // position: absolute;
     }
+
+    &-description {
+      z-index: 1;
+      color: var(--anu-accent-deep-light);
+      background: rgba(0, 0, 0, 0.5);
+
+      @include medium {
+        margin-top: 15rem;
+      }
+
+      @include large {
+        margin-top: 15rem;
+      }
+    }
+
+    &-meta-container {
+      z-index: 1;
+    }
+
+    &-body-container {
+      z-index: 1;
+    }
+
+    &-header {
+      overflow-y: hidden;
+    }
+  }
 }

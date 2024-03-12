@@ -1,40 +1,110 @@
-<ng-container *ngTemplateOutlet="tree;context:{value:value}"></ng-container>
+<ng-container
+  *ngTemplateOutlet="tree; context: { value: value }"
+></ng-container>
 <ng-template #tree let-value="value">
-    <!-- Headings h1 - h6 -->
-    <h1 [id]="value?.name" *ngIf="value?.tagName === 'h1'" [innerHtml]="value?.data?.text"></h1>
-    <h2 [id]="value?.name" *ngIf="value?.tagName === 'h2'" [innerHtml]="value?.data?.text"></h2>
-    <h3 [id]="value?.name" *ngIf="value?.tagName === 'h3'" [innerHtml]="value?.data?.text"></h3>
-    <h4 [id]="value?.name" *ngIf="value?.tagName === 'h4'" [innerHtml]="value?.data?.text"></h4>
-    <h5 [id]="value?.name" *ngIf="value?.tagName === 'h5'" [innerHtml]="value?.data?.text"></h5>
-    <h6 [id]="value?.name" *ngIf="value?.tagName === 'h6'" [innerHtml]="value?.data?.text"></h6>
-    <p [id]="value?.name" *ngIf="value?.tagName === 'p'" [innerHtml]="value?.data?.text"></p>
-    <li [id]="value?.name" *ngIf="value?.tagName === 'li'" [innerHtml]="value?.data?.text"></li>
-    <img [id]="value?.name" *ngIf="value?.tagName === 'img'" [src]="value?.data?.src" [alt]="value?.data?.alt" class="shadow"/>
-    <anu-code-block [id]="value?.name" *ngIf="value?.tagName === 'anu-code-block'"
+  <!-- Headings h1 - h6 -->
+  <h1
+    [id]="value?.name"
+    [ngClass]="value?.classNames"
+    *ngIf="value?.tagName === 'h1'"
+    [innerHtml]="value?.data?.text"
+  ></h1>
+  <h2
+    [id]="value?.name"
+    [ngClass]="value?.classNames"
+    *ngIf="value?.tagName === 'h2'"
+    [innerHtml]="value?.data?.text"
+  ></h2>
+  <h3
+    [id]="value?.name"
+    [ngClass]="value?.classNames"
+    *ngIf="value?.tagName === 'h3'"
+    [innerHtml]="value?.data?.text"
+  ></h3>
+  <h4
+    [id]="value?.name"
+    [ngClass]="value?.classNames"
+    *ngIf="value?.tagName === 'h4'"
+    [innerHtml]="value?.data?.text"
+  ></h4>
+  <h5
+    [id]="value?.name"
+    [ngClass]="value?.classNames"
+    *ngIf="value?.tagName === 'h5'"
+    [innerHtml]="value?.data?.text"
+  ></h5>
+  <h6
+    [id]="value?.name"
+    [ngClass]="value?.classNames"
+    *ngIf="value?.tagName === 'h6'"
+    [innerHtml]="value?.data?.text"
+  ></h6>
+  <p
+    [id]="value?.name"
+    [ngClass]="value?.classNames"
+    *ngIf="value?.tagName === 'p'"
+    [innerHtml]="value?.data?.text"
+  ></p>
+  <li
+    [id]="value?.name"
+    [ngClass]="value?.classNames"
+    *ngIf="value?.tagName === 'li'"
+    [innerHtml]="value?.data?.text"
+  ></li>
+  <div [ngClass]="value?.classNames">
+    <img
+      [id]="value?.name"
+      *ngIf="value?.tagName === 'img'"
+      [src]="value?.data?.src"
+      [alt]="value?.data?.alt"
+    />
+  </div>
+
+  <anu-code-block
+    [id]="value?.name"
+    *ngIf="value?.tagName === 'anu-code-block'"
     [source]="value?.data?.source"
     [language]="value?.data?.language"
-    [enableEdit]="false"></anu-code-block>
+    [enableEdit]="false"
+  ></anu-code-block>
 
-    <ng-container *ngIf="value?.isContainer && value?.children && value?.children.length">
-        <div *ngIf="value?.tagName === 'div'">
-            <ng-container *ngFor="let child of value?.children">
-                <ng-container *ngTemplateOutlet="tree;context:{value:child}"></ng-container>
-            </ng-container>
-        </div>
-        <article *ngIf="value?.tagName === 'article'">
-            <ng-container *ngFor="let child of value?.children">
-                <ng-container *ngTemplateOutlet="tree;context:{value:child}"></ng-container>
-            </ng-container>
-        </article>
-        <ul *ngIf="value?.tagName === 'ul'">
-            <ng-container *ngFor="let child of value?.children">
-                <ng-container *ngTemplateOutlet="tree;context:{value:child}"></ng-container>
-            </ng-container>
-        </ul>
-        <ol *ngIf="value?.tagName === 'ol'">
-            <ng-container *ngFor="let child of value?.children">
-                <ng-container *ngTemplateOutlet="tree;context:{value:child}"></ng-container>
-            </ng-container>
-        </ol>
-    </ng-container>
+  <anu-table
+    [id]="value?.name"
+    *ngIf="value?.tagName === 'anu-table'"
+    [value]="value?.data?.tableData"
+    [enableEdit]="false"
+  ></anu-table>
+
+  <ng-container
+    *ngIf="value?.isContainer && value?.children && value?.children.length"
+  >
+    <div *ngIf="value?.tagName === 'div'">
+      <ng-container *ngFor="let child of value?.children">
+        <ng-container
+          *ngTemplateOutlet="tree; context: { value: child }"
+        ></ng-container>
+      </ng-container>
+    </div>
+    <article *ngIf="value?.tagName === 'article'">
+      <ng-container *ngFor="let child of value?.children">
+        <ng-container
+          *ngTemplateOutlet="tree; context: { value: child }"
+        ></ng-container>
+      </ng-container>
+    </article>
+    <ul *ngIf="value?.tagName === 'ul'">
+      <ng-container *ngFor="let child of value?.children">
+        <ng-container
+          *ngTemplateOutlet="tree; context: { value: child }"
+        ></ng-container>
+      </ng-container>
+    </ul>
+    <ol *ngIf="value?.tagName === 'ol'">
+      <ng-container *ngFor="let child of value?.children">
+        <ng-container
+          *ngTemplateOutlet="tree; context: { value: child }"
+        ></ng-container>
+      </ng-container>
+    </ol>
+  </ng-container>
 </ng-template>

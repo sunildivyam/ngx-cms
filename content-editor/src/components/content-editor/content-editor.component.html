@@ -1,20 +1,48 @@
-<anu-content-element [enableOpenai]="enableOpenai" (changed)="contentChanged($event)" [editorElement]="value"
-    [fullTree]="value">
+<anu-content-element
+  [enableOpenai]="enableOpenai"
+  (changed)="contentChanged($event)"
+  [editorElement]="value"
+  [fullTree]="value"
+>
 </anu-content-element>
 
-<div #popup [ngClass]="{'opened': isTextSelected}" class="popup" [style.top.px]="selectionRect.bottom"
-    [style.left.px]="selectionRect.left">
-    <anu-toolbar [items]="formattingToolbar" (changed)="formattingToolbarSelected($event)"></anu-toolbar>
-    <!-- Link Form Modal-->
-    <anu-modal modalTitle="Update hyperlink information" [opened]="toggleLinkForm" (cancelClick)="cancelLinkModal()">
-        <anu-link-form [href]="link.href" [label]="link.label" [title]="link.title" [target]="link.target"
-            (cancel)="cancelLinkModal()" (save)="saveLink($event)">
-        </anu-link-form>
-    </anu-modal>
-    <!-- Image Form Modal-->
-    <anu-modal [opened]="toggleImageForm" (cancelClick)="cancelImageModal()">
-        <anu-cms-image-form [src]="imageInfo.src" [alt]="imageInfo.alt" (cancel)="cancelImageModal()" [enableOpenai]="enableOpenai"
-            (save)="saveImage($event)">
-        </anu-cms-image-form>
-    </anu-modal>
+<div
+  #popup
+  [ngClass]="{ opened: isTextSelected }"
+  class="popup"
+  [style.top.px]="selectionRect.bottom"
+  [style.left.px]="selectionRect.left"
+>
+  <anu-toolbar
+    class="shadow-half"
+    [items]="formattingToolbar"
+    (changed)="formattingToolbarSelected($event)"
+  ></anu-toolbar>
+  <!-- Link Form Modal-->
+  <anu-modal
+    modalTitle="Update hyperlink information"
+    [opened]="toggleLinkForm"
+    (cancelClick)="cancelLinkModal()"
+  >
+    <anu-link-form
+      [href]="link.href"
+      [label]="link.label"
+      [title]="link.title"
+      [target]="link.target"
+      (cancel)="cancelLinkModal()"
+      (save)="saveLink($event)"
+    >
+    </anu-link-form>
+  </anu-modal>
+  <!-- Image Form Modal-->
+  <anu-modal [opened]="toggleImageForm" (cancelClick)="cancelImageModal()">
+    <anu-cms-image-form
+      [src]="imageInfo.src"
+      [alt]="imageInfo.alt"
+      (cancel)="cancelImageModal()"
+      [enableOpenai]="enableOpenai"
+      (save)="saveImage($event)"
+    >
+    </anu-cms-image-form>
+  </anu-modal>
 </div>
